@@ -538,15 +538,15 @@
             text-align: center;
         }
         
-        .modal-form .form-group, .settings-form .form-group {
+        .modal-form .form-group, .settings-form .form-group, #export-filters .form-group {
             margin-bottom: 15px;
         }
-        .modal-form label, .settings-form label {
+        .modal-form label, .settings-form label, #export-filters label {
             display: block;
             margin-bottom: 5px;
             font-weight: 500;
         }
-        .modal-form input, .modal-form select, .settings-form input, .settings-form select {
+        .modal-form input, .modal-form select, .settings-form input, .settings-form select, #export-filters input {
             width: 100%;
             padding: 10px;
             border-radius: 8px;
@@ -554,13 +554,15 @@
             box-sizing: border-box;
         }
         body.light-mode .modal-form input, body.light-mode .modal-form select,
-        body.light-mode .settings-form input, body.light-mode .settings-form select {
+        body.light-mode .settings-form input, body.light-mode .settings-form select,
+        body.light-mode #export-filters input {
             background-color: var(--light-bg);
             border-color: var(--light-border);
             color: var(--light-text);
         }
         body.dark-mode .modal-form input, body.dark-mode .modal-form select,
-        body.dark-mode .settings-form input, body.dark-mode .settings-form select {
+        body.dark-mode .settings-form input, body.dark-mode .settings-form select,
+        body.dark-mode #export-filters input {
             background-color: var(--dark-bg);
             border-color: var(--dark-border);
             color: var(--dark-text);
@@ -635,6 +637,48 @@
         .toggle-password:hover {
             opacity: 1;
         }
+
+        /* PIN Lock Screen */
+        #pin-lock-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--light-bg);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        body.dark-mode #pin-lock-screen {
+             background-color: var(--dark-bg);
+        }
+        #pin-container {
+            text-align: center;
+            padding: 40px;
+        }
+        #pin-input {
+            font-size: 2rem;
+            letter-spacing: 1rem;
+            text-align: center;
+            border: none;
+            border-bottom: 2px solid;
+            background: transparent;
+            width: 200px;
+            margin: 20px 0;
+        }
+        #pin-input:focus {
+            outline: none;
+        }
+        #pin-container.shake {
+            animation: shake 0.5s;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+            20%, 40%, 60%, 80% { transform: translateX(10px); }
+        }
         
         /* Responsive Design */
         @media (max-width: 768px) {
@@ -680,6 +724,19 @@
     </style>
 </head>
 <body class="light-mode">
+    
+    <!-- =========== PIN LOCK SCREEN =========== -->
+    <div id="pin-lock-screen" class="hidden">
+        <div id="pin-container">
+            <h2>Insira o seu PIN</h2>
+            <form id="pin-form">
+                <input type="password" id="pin-input" maxlength="6" pattern="\d{6}" required autocomplete="off">
+                <br>
+                <button type="submit" class="auth-btn" style="margin-top: 20px;">Desbloquear</button>
+            </form>
+        </div>
+    </div>
+
 
     <!-- =========== AUTHENTICATION PAGE =========== -->
     <div id="auth-page">
@@ -829,7 +886,7 @@
 
             <!-- Transactions Section -->
             <section id="transactions-section" class="content-section hidden">
-                 <div class="page-header">
+                <div class="page-header">
                     <h2>Histórico de Transações</h2>
                     <div class="quick-actions">
                         <button class="btn btn-success" id="export-xls-btn"><i class="fas fa-file-excel"></i> <span>Exportar (Excel)</span></button>
@@ -837,8 +894,20 @@
                         <button class="btn btn-danger" id="export-pdf-btn"><i class="fas fa-file-pdf"></i> <span>Exportar (PDF)</span></button>
                     </div>
                 </div>
+                <div id="export-filters" class="card" style="margin-bottom: 20px;">
+                    <h3 style="margin-top:0;">Filtros de Exportação</h3>
+                    <div class="dashboard-grid" style="align-items: flex-end; grid-template-columns: 1fr 1fr auto;">
+                        <div class="form-group">
+                            <label for="export-start-date">Data de Início</label>
+                            <input type="date" id="export-start-date">
+                        </div>
+                        <div class="form-group">
+                            <label for="export-end-date">Data de Fim</label>
+                            <input type="date" id="export-end-date">
+                        </div>
+                    </div>
+                </div>
                 <div class="card">
-                    <!-- Filters here if needed -->
                     <div class="transaction-list">
                         <ul id="full-transactions-list">
                             <!-- Populated by JS -->
@@ -949,6 +1018,28 @@
                             </div>
                             <button type="submit" class="btn btn-primary">Guardar Moeda</button>
                         </form>
+                    </div>
+                    <div class="card">
+                        <h3>Segurança</h3>
+                        <form id="pin-settings-form" class="settings-form">
+                            <div class="form-group">
+                                <label for="settings-pin">PIN de Acesso (6 dígitos)</label>
+                                <input type="password" id="settings-pin" maxlength="6" pattern="\d{6}" placeholder="PIN atual ou novo PIN" autocomplete="off">
+                            </div>
+                            <div class="quick-actions">
+                                <button type="submit" class="btn btn-primary">Definir/Alterar PIN</button>
+                                <button type="button" id="remove-pin-btn" class="btn btn-danger">Remover PIN</button>
+                            </div>
+                        </form>
+                    </div>
+                     <div class="card">
+                        <h3>Gestão de Dados</h3>
+                        <p>Exporte todos os seus dados para um ficheiro para os guardar em segurança ou mover para outro dispositivo.</p>
+                        <div class="quick-actions">
+                            <button id="backup-btn" class="btn btn-primary"><i class="fas fa-download"></i> Criar Backup</button>
+                            <button id="restore-btn" class="btn btn-warning"><i class="fas fa-upload"></i> Restaurar Backup</button>
+                            <input type="file" id="restore-input" class="hidden" accept=".json">
+                        </div>
                     </div>
                     <div class="card">
                         <h3>Sessão</h3>
@@ -1158,6 +1249,7 @@
         const toast = document.getElementById('toast');
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
         const sidebar = document.getElementById('sidebar');
+        const pinLockScreen = document.getElementById('pin-lock-screen');
         
         // --- UTILITY FUNCTIONS ---
         function formatCurrency(valueInBase) {
@@ -1188,8 +1280,9 @@
 
         const getTodayDate = () => new Date().toISOString().split('T')[0];
 
-        function showToast(message) {
+        function showToast(message, type = 'success') {
             toast.textContent = message;
+            toast.style.backgroundColor = type === 'success' ? 'var(--success-color)' : 'var(--danger-color)';
             toast.classList.add('show');
             setTimeout(() => {
                 toast.classList.remove('show');
@@ -1233,6 +1326,10 @@
             if (!userData.settings.exchangeRates) {
                  userData.settings.exchangeRates = {};
             }
+            if (userData.settings.pin === undefined) {
+                userData.settings.pin = null;
+            }
+
             const defaultRates = { USD: 850.00, EUR: 920.00, GBP: 1050.00, BRL: 160.00, AOA: 1.0 };
             for(const currency in defaultRates) {
                 if(!userData.settings.exchangeRates[currency]) {
@@ -1366,6 +1463,7 @@
                 categories: JSON.parse(JSON.stringify(defaultCategories)), // Deep copy
                 settings: {
                     displayCurrency: 'AOA',
+                    pin: null,
                     exchangeRates: {
                         USD: 850.00, 
                         EUR: 920.00,
@@ -1785,6 +1883,11 @@
             document.getElementById('settings-display-currency').value = data.settings.displayCurrency;
             document.getElementById('settings-rate-usd').value = data.settings.exchangeRates.USD;
             document.getElementById('settings-rate-eur').value = data.settings.exchangeRates.EUR;
+            document.getElementById('settings-rate-gbp').value = data.settings.exchangeRates.GBP;
+            document.getElementById('settings-rate-brl').value = data.settings.exchangeRates.BRL;
+            // PIN
+            document.getElementById('settings-pin').value = '';
+            document.getElementById('settings-pin').placeholder = data.settings.pin ? 'PIN atual definido' : 'Definir novo PIN';
         }
         
         function renderChart(canvasId, type, data, options = {}) {
@@ -2104,7 +2207,7 @@
             }
         });
 
-        // Settings Forms
+        // --- SETTINGS FORMS ---
         document.getElementById('profile-settings-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const data = getUserData();
@@ -2129,10 +2232,85 @@
             data.settings.displayCurrency = document.getElementById('settings-display-currency').value;
             data.settings.exchangeRates.USD = parseFloat(document.getElementById('settings-rate-usd').value);
             data.settings.exchangeRates.EUR = parseFloat(document.getElementById('settings-rate-eur').value);
+            data.settings.exchangeRates.GBP = parseFloat(document.getElementById('settings-rate-gbp').value);
+            data.settings.exchangeRates.BRL = parseFloat(document.getElementById('settings-rate-brl').value);
             saveDataToStorage();
             updateUI(); // Redraw everything with the new currency
             showToast('Definições de moeda atualizadas!');
         });
+        
+        // PIN Settings
+        document.getElementById('pin-settings-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const data = getUserData();
+            const pinInput = document.getElementById('settings-pin');
+            const newPin = pinInput.value;
+
+            if (newPin.length !== 6 || !/^\d{6}$/.test(newPin)) {
+                showToast('O PIN deve conter exatamente 6 dígitos numéricos.', 'error');
+                return;
+            }
+
+            data.settings.pin = newPin;
+            saveDataToStorage();
+            pinInput.value = '';
+            renderSettings(); // Update placeholder
+            showToast('PIN definido/alterado com sucesso!');
+        });
+
+        document.getElementById('remove-pin-btn').addEventListener('click', () => {
+            const data = getUserData();
+            if (data.settings.pin) {
+                data.settings.pin = null;
+                saveDataToStorage();
+                renderSettings();
+                showToast('PIN removido com sucesso!');
+            } else {
+                showToast('Nenhum PIN definido.', 'error');
+            }
+        });
+
+
+        // --- BACKUP AND RESTORE ---
+        document.getElementById('backup-btn').addEventListener('click', () => {
+            const dataToBackup = getUserData();
+            const jsonString = JSON.stringify(dataToBackup, null, 2);
+            const blob = new Blob([jsonString], {type: "application/json"});
+            saveAs(blob, `beijing_backup_${getTodayDate()}.json`);
+            showToast('Backup criado com sucesso!');
+        });
+        
+        document.getElementById('restore-btn').addEventListener('click', () => {
+             document.getElementById('restore-input').click();
+        });
+
+        document.getElementById('restore-input').addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const restoredData = JSON.parse(e.target.result);
+                    // Basic validation
+                    if (restoredData.profile && restoredData.accounts && restoredData.transactions) {
+                        if (confirm('Tem a certeza? Isto irá substituir todos os seus dados atuais.')) {
+                            state.users[state.currentUser] = ensureDataStructure(restoredData);
+                            saveDataToStorage();
+                            showToast('Dados restaurados com sucesso! A recarregar...');
+                            setTimeout(() => window.location.reload(), 1500);
+                        }
+                    } else {
+                       showToast('Ficheiro de backup inválido.', 'error');
+                    }
+                } catch (error) {
+                    showToast('Erro ao ler o ficheiro de backup.', 'error');
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = ''; // Reset input
+        });
+
 
         document.getElementById('logout-btn-settings').addEventListener('click', handleLogout);
 
@@ -2226,7 +2404,7 @@
                     const transaction = data.transactions.find(t => t.id === id);
                     const account = data.accounts.find(a => a.id === transaction.accountId);
                     if (account) {
-                       account.balance -= transaction.type === 'receita' ? transaction.amount : -transaction.amount;
+                       account.balance += (transaction.type === 'receita' ? -transaction.amount : transaction.amount);
                     }
                 }
                 
@@ -2255,22 +2433,59 @@
         
         // --- EXPORT FUNCTIONS ---
 
-        function getReportData() {
+        function getReportData(startDate, endDate) {
             const data = getUserData();
-            const incomes = data.transactions.filter(t => t.type === 'receita');
-            const expenses = data.transactions.filter(t => t.type === 'despesa');
+            let transactionsToExport = data.transactions;
+
+            if (startDate && endDate) {
+                const start = new Date(startDate);
+                start.setHours(0, 0, 0, 0);
+                const end = new Date(endDate);
+                end.setHours(23, 59, 59, 999);
+                
+                transactionsToExport = data.transactions.filter(t => {
+                    const tDate = new Date(t.date);
+                    return tDate >= start && tDate <= end;
+                });
+            }
+
+            const incomes = transactionsToExport.filter(t => t.type === 'receita');
+            const expenses = transactionsToExport.filter(t => t.type === 'despesa');
             const totalIncome = incomes.reduce((sum, t) => sum + t.amount, 0);
             const totalExpense = expenses.reduce((sum, t) => sum + t.amount, 0);
-            return { data, incomes, expenses, totalIncome, totalExpense };
+            return { data, incomes, expenses, totalIncome, totalExpense, transactionsToExport };
         }
+        
+        function handleExport(exportType) {
+            const startDate = document.getElementById('export-start-date').value;
+            const endDate = document.getElementById('export-end-date').value;
 
-        document.getElementById('export-xls-btn').addEventListener('click', () => {
-            const { data, incomes, expenses, totalIncome, totalExpense } = getReportData();
-            if (data.transactions.length === 0) {
-                alert('Nenhuma transação para exportar.');
+            if ((startDate && !endDate) || (!startDate && endDate)) {
+                alert('Por favor, selecione uma data de início e de fim, ou deixe ambos os campos em branco para exportar tudo.');
+                return;
+            }
+            if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
+                alert('A data de início não pode ser posterior à data de fim.');
                 return;
             }
 
+            const { transactionsToExport } = getReportData(startDate, endDate);
+            if (transactionsToExport.length === 0) {
+                alert('Nenhuma transação para exportar no período selecionado.');
+                return;
+            }
+
+            if (exportType === 'xls') exportToXLS(startDate, endDate);
+            if (exportType === 'doc') exportToDoc(startDate, endDate);
+            if (exportType === 'pdf') exportToPDF(startDate, endDate);
+        }
+
+        document.getElementById('export-xls-btn').addEventListener('click', () => handleExport('xls'));
+        document.getElementById('export-doc-btn').addEventListener('click', () => handleExport('doc'));
+        document.getElementById('export-pdf-btn').addEventListener('click', () => handleExport('pdf'));
+
+        function exportToXLS(startDate, endDate) {
+            const { data, incomes, expenses, totalIncome, totalExpense } = getReportData(startDate, endDate);
             const wb = XLSX.utils.book_new();
             const ws_data = [
                 ["Relatório Financeiro - Beijing"],
@@ -2310,11 +2525,16 @@
 
             XLSX.utils.book_append_sheet(wb, ws, 'Relatório');
             XLSX.writeFile(wb, `beijing_relatorio_${getTodayDate()}.xlsx`);
-        });
+        }
 
-        function generateReportHTML() {
-            const { data, incomes, expenses, totalIncome, totalExpense } = getReportData();
+        function generateReportHTML(startDate, endDate) {
+            const { data, incomes, expenses, totalIncome, totalExpense } = getReportData(startDate, endDate);
             const difference = totalIncome - totalExpense;
+            
+            let periodText = 'Todas as transações registadas';
+            if (startDate && endDate) {
+                periodText = `De ${new Date(startDate).toLocaleDateString('pt-PT')} a ${new Date(endDate).toLocaleDateString('pt-PT')}`;
+            }
 
             let analysisText;
             if (totalIncome > totalExpense) {
@@ -2325,17 +2545,22 @@
                 analysisText = `A análise do período reflete um equilíbrio financeiro. As receitas, totalizando <strong>${totalIncome.toFixed(2)} Kz</strong>, foram iguais às despesas.`;
             }
 
-            const logoBase64 = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTUwIDQwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSI0MCIgaGVpZHRoPSI0MCIgcng9IjgiIGZpbGw9IiNGMDUyNTIiLz48dGV4dCB4PSIyMCIgeT0iMjkiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyOCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaGyPSJtaWRkbGUiIGZvbnQtd2VpZ2h0PSJib2xkIj7CsTwvdGV4dD48dGV4dCB4PSI1MCIgeT0iMjkiIGZvbnQtZmFtaWx5PSJQb3BwaW5zLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjI4IiBmb250LXdlaWdodD0iNjAwIiBmaWxsPSIjMzMzMzMzIj5CZWlqaW5nPC90ZXh0Pjwvc3ZnPg==';
+            const logoSVG = `<svg width="150" height="40" viewBox="0 0 150 40" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="0" y="0" width="40" height="40" rx="8" fill="#D92D20"/>
+                                <text x="20" y="29" font-family="Arial, sans-serif" font-size="28" fill="white" text-anchor="middle" font-weight="bold">¥</text>
+                                <text x="50" y="29" font-family="'Poppins', sans-serif" font-size="28" font-weight="600" fill="#333333">Beijing</text>
+                            </svg>`;
 
             return `
                 <div style="font-family: Arial, sans-serif; margin: 40px; color: #000;">
-                    <header style="text-align: center; border-bottom: 1px solid #ccc; padding-bottom: 10px;">
-                        <img src="${logoBase64}" alt="Beijing Logo" style="width: 150px; height: 40px;">
-                        <h1 style="font-size: 24px; color: #333;">Relatório Financeiro</h1>
+                    <header style="text-align: center; border-bottom: 1px solid #ccc; padding-bottom: 10px; display: flex; align-items: center; justify-content: center;">
+                        ${logoSVG}
                     </header>
+                    <h1 style="font-size: 24px; color: #333; text-align: center; margin-top: 20px;">Relatório Financeiro</h1>
                     <section style="margin-top: 30px;">
                         <p><strong>Utilizador:</strong> ${data.profile.name}</p>
                         <p><strong>Data de Emissão:</strong> ${new Date().toLocaleDateString('pt-PT')}</p>
+                        <p><strong>Período do Relatório:</strong> ${periodText}</p>
                     </section>
                     <section style="margin-top: 30px;">
                         <h2 style="font-size: 18px; color: #333; border-bottom: 1px solid #eee; padding-bottom: 5px;">Análise Sumária</h2>
@@ -2404,27 +2629,14 @@
             `;
         }
         
-        // --- WORD EXPORT ---
-        document.getElementById('export-doc-btn').addEventListener('click', () => {
-            const { data } = getReportData();
-            if (data.transactions.length === 0) {
-                alert('Nenhuma transação para exportar.');
-                return;
-            }
-            const contentHtml = generateReportHTML();
+        function exportToDoc(startDate, endDate) {
+            const contentHtml = generateReportHTML(startDate, endDate);
             const converted = htmlDocx.asBlob(contentHtml);
             saveAs(converted, `beijing_relatorio_${getTodayDate()}.doc`);
-        });
+        }
 
-        // --- PDF EXPORT ---
-        document.getElementById('export-pdf-btn').addEventListener('click', () => {
-            const { data } = getReportData();
-            if (data.transactions.length === 0) {
-                alert('Nenhuma transação para exportar.');
-                return;
-            }
-            
-            const reportHtml = generateReportHTML();
+        function exportToPDF(startDate, endDate) {
+            const reportHtml = generateReportHTML(startDate, endDate);
             const printContainer = document.createElement('div');
             printContainer.style.position = 'absolute';
             printContainer.style.left = '-9999px';
@@ -2461,12 +2673,44 @@
                 pdf.save(`beijing_relatorio_${getTodayDate()}.pdf`);
                 document.body.removeChild(printContainer);
             });
+        }
+        
+        // --- PIN Lock ---
+        function showPinScreen() {
+            pinLockScreen.classList.remove('hidden');
+            document.getElementById('pin-input').focus();
+        }
+
+        document.getElementById('pin-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const data = getUserData();
+            const input = document.getElementById('pin-input');
+            const pinContainer = document.getElementById('pin-container');
+
+            if (input.value === data.settings.pin) {
+                pinLockScreen.classList.add('hidden');
+            } else {
+                showToast('PIN incorreto.', 'error');
+                pinContainer.classList.add('shake');
+                input.value = '';
+                setTimeout(() => pinContainer.classList.remove('shake'), 500);
+            }
         });
+
 
         // --- APP INITIALIZATION ---
         function initApp() {
+            const data = getUserData();
+            
             authPage.classList.add('hidden');
             appPage.classList.remove('hidden');
+            
+            if (data.settings.pin) {
+                showPinScreen();
+            } else {
+                pinLockScreen.classList.add('hidden');
+            }
+
             navigateTo('dashboard');
         }
 
@@ -2482,3 +2726,4 @@
     </script>
 </body>
 </html>
+
