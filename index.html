@@ -402,22 +402,22 @@
         }
         
         /* Transaction List */
-        .transaction-list ul {
+        .transaction-list ul, .notification-list ul {
             list-style: none;
             padding: 0;
             margin: 0;
         }
-        .transaction-list li {
+        .transaction-list li, .notification-list li {
             display: flex;
             align-items: center;
             padding: 15px 0;
             border-bottom: 1px solid;
         }
-        body.light-mode .transaction-list li { border-color: var(--light-border); }
-        body.dark-mode .transaction-list li { border-color: var(--dark-border); }
-        .transaction-list li:last-child { border-bottom: none; }
+        body.light-mode .transaction-list li, body.light-mode .notification-list li { border-color: var(--light-border); }
+        body.dark-mode .transaction-list li, body.dark-mode .notification-list li { border-color: var(--dark-border); }
+        .transaction-list li:last-child, .notification-list li:last-child { border-bottom: none; }
         
-        .transaction-icon {
+        .transaction-icon, .notification-icon {
             width: 40px;
             height: 40px;
             border-radius: 50%;
@@ -426,11 +426,16 @@
             align-items: center;
             color: white;
             margin-right: 15px;
+            flex-shrink: 0;
         }
         .transaction-icon.receita { background-color: var(--success-color); }
         .transaction-icon.despesa { background-color: var(--danger-color); }
+        .notification-icon.tip { background-color: var(--primary-color); }
+        .notification-icon.warning { background-color: var(--warning-color); }
+        .notification-icon.praise { background-color: var(--secondary-color); }
+
         
-        .transaction-details {
+        .transaction-details, .notification-details {
             flex-grow: 1;
         }
         .transaction-details .description { font-weight: 600; }
@@ -802,6 +807,7 @@
             <div id="sidebar-collapsible-content">
                 <nav id="main-nav">
                     <a href="#dashboard" class="nav-link active"><i class="fas fa-chart-pie"></i> <span>Dashboard</span></a>
+                    <a href="#notifications" class="nav-link"><i class="fas fa-bell"></i> <span>Notificações</span></a>
                     <a href="#accounts" class="nav-link"><i class="fas fa-wallet"></i> <span>Contas Bancárias</span></a>
                     <a href="#transactions" class="nav-link"><i class="fas fa-exchange-alt"></i> <span>Transações</span></a>
                     <a href="#budgets" class="nav-link"><i class="fas fa-bullseye"></i> <span>Orçamentos</span></a>
@@ -869,6 +875,41 @@
                         <ul id="recent-transactions-list">
                             <!-- Populated by JS -->
                         </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Notifications Section -->
+            <section id="notifications-section" class="content-section hidden">
+                <div class="page-header">
+                    <h2>Notificações Inteligentes</h2>
+                </div>
+                <div class="dashboard-grid" style="grid-template-columns: 1fr;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Dica Motivacional do Dia</h3>
+                        </div>
+                        <div class="notification-list">
+                            <ul id="motivational-tip-list">
+                                <!-- Populated by JS -->
+                            </ul>
+                        </div>
+                    </div>
+                     <div class="card">
+                        <div class="card-header">
+                            <h3>Previsão de Fluxo de Caixa (Próximos 30 dias)</h3>
+                        </div>
+                        <canvas id="cashflow-chart"></canvas>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Análise e Dicas Inteligentes</h3>
+                        </div>
+                        <div class="notification-list">
+                            <ul id="smart-tips-list">
+                                <!-- Populated by JS -->
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -1238,6 +1279,17 @@
             despesa: ['Alimentação', 'Transporte', 'Lazer', 'Contas da Casa', 'Saúde', 'Educação', 'Compras']
         };
 
+        const motivationalTips = [
+            "O segredo para progredir é começar. Controle as suas pequenas despesas de hoje.",
+            "Não poupe o que resta depois de gastar, mas gaste o que resta depois de poupar.",
+            "Um orçamento está a dizer ao seu dinheiro para onde ir, em vez de se perguntar para onde ele foi.",
+            "Cuidado com as pequenas despesas; um pequeno vazamento afundará um grande navio.",
+            "Cada Kwanza que poupa é um passo em direção à sua liberdade financeira.",
+            "A sua saúde financeira de amanhã é construída com as boas decisões de hoje.",
+            "Definir metas é o primeiro passo para transformar o invisível em visível.",
+            "O hábito de poupar é, por si só, uma educação; promove todas as virtudes."
+        ];
+
         // --- DOM ELEMENTS ---
         const authPage = document.getElementById('auth-page');
         const appPage = document.getElementById('app-page');
@@ -1551,6 +1603,7 @@
             
             const currentViewFunction = {
                 'dashboard': renderDashboard,
+                'notifications': renderNotifications,
                 'accounts': renderAccounts,
                 'transactions': renderTransactions,
                 'budgets': renderBudgets,
@@ -1615,6 +1668,168 @@
                 plugins: { tooltip: { callbacks: { label: (context) => formatCurrency(context.raw) } } }
             });
         }
+        
+        function renderNotifications() {
+            const data = getUserData();
+            const motivationalList = document.getElementById('motivational-tip-list');
+            const smartTipsList = document.getElementById('smart-tips-list');
+            
+            // Motivational Tip of the Day
+            const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
+            const tipIndex = dayOfYear % motivationalTips.length;
+            motivationalList.innerHTML = `
+                 <li>
+                    <div class="notification-icon tip">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <div class="notification-details">
+                       ${motivationalTips[tipIndex]}
+                    </div>
+                </li>
+            `;
+
+            // Smart Tips
+            const smartTips = generateSmartTips(data);
+            if(smartTips.length > 0) {
+                smartTipsList.innerHTML = smartTips.map(tip => `
+                    <li>
+                        <div class="notification-icon ${tip.type}">
+                            <i class="fas ${tip.icon}"></i>
+                        </div>
+                        <div class="notification-details">
+                           ${tip.text}
+                        </div>
+                    </li>
+                `).join('');
+            } else {
+                smartTipsList.innerHTML = `<li>Nenhuma dica especial por agora. Continue a registar as suas finanças!</li>`;
+            }
+
+            // Cashflow Forecast
+            renderCashflowForecast(data);
+        }
+
+        function generateSmartTips(data) {
+            const tips = [];
+            const now = new Date();
+            const currentMonth = now.getMonth();
+            const lastMonth = (now.getMonth() - 1 + 12) % 12;
+            const currentYear = now.getFullYear();
+            const lastMonthYear = lastMonth === 11 ? currentYear - 1 : currentYear;
+
+            // Tip 1: Spending increase
+            const expensesByCategoryThisMonth = {};
+            const expensesByCategoryLastMonth = {};
+            
+            data.transactions.forEach(t => {
+                const tDate = new Date(t.date);
+                if (t.type === 'despesa') {
+                    if(tDate.getMonth() === currentMonth && tDate.getFullYear() === currentYear) {
+                        expensesByCategoryThisMonth[t.category] = (expensesByCategoryThisMonth[t.category] || 0) + t.amount;
+                    }
+                    if(tDate.getMonth() === lastMonth && tDate.getFullYear() === lastMonthYear) {
+                         expensesByCategoryLastMonth[t.category] = (expensesByCategoryLastMonth[t.category] || 0) + t.amount;
+                    }
+                }
+            });
+
+            for(const category in expensesByCategoryThisMonth) {
+                const lastMonthAmount = expensesByCategoryLastMonth[category] || 0;
+                const thisMonthAmount = expensesByCategoryThisMonth[category];
+                if(lastMonthAmount > 0 && thisMonthAmount > lastMonthAmount * 1.2) { // 20% increase
+                     tips.push({ 
+                        type: 'warning', 
+                        icon: 'fa-chart-line',
+                        text: `Atenção: Os seus gastos com <strong>${category}</strong> aumentaram significativamente este mês em comparação com o mês passado.`
+                    });
+                }
+            }
+            
+            // Tip 2: Budget success
+            data.budgets.forEach(b => {
+                let spent = 0;
+                data.transactions.forEach(t => {
+                    const tDate = new Date(t.date + 'T00:00:00');
+                    if (t.type === 'despesa' && t.category === b.category && isDateInPeriod(tDate, b.period, b.customPeriodDays)) {
+                        spent += t.amount;
+                    }
+                });
+                if (spent < b.amount) {
+                    tips.push({
+                        type: 'praise',
+                        icon: 'fa-check-circle',
+                        text: `Excelente! Está a conseguir manter-se dentro do seu orçamento para <strong>${b.category}</strong>.`
+                    });
+                }
+            });
+
+            // Tip 3: Largest expense
+            const monthlyExpenses = data.transactions.filter(t => {
+                const tDate = new Date(t.date);
+                return t.type === 'despesa' && tDate.getMonth() === currentMonth && tDate.getFullYear() === currentYear;
+            });
+            if(monthlyExpenses.length > 0) {
+                const largestExpense = monthlyExpenses.reduce((max, t) => t.amount > max.amount ? t : max, monthlyExpenses[0]);
+                tips.push({
+                    type: 'tip',
+                    icon: 'fa-search-dollar',
+                    text: `A sua maior despesa este mês foi de <strong>${formatCurrency(largestExpense.amount)}</strong> em <strong>${largestExpense.category}</strong>. É um gasto esperado?`
+                });
+            }
+
+            return tips;
+        }
+
+        function renderCashflowForecast(data) {
+            const now = new Date();
+            let totalBalance = data.accounts.reduce((sum, acc) => sum + acc.balance, 0);
+            
+            // Calculate average daily net income over the last 60 days
+            let totalNetIncomeLast60Days = 0;
+            const sixtyDaysAgo = new Date();
+            sixtyDaysAgo.setDate(now.getDate() - 60);
+
+            data.transactions.forEach(t => {
+                const tDate = new Date(t.date);
+                if (tDate >= sixtyDaysAgo) {
+                    totalNetIncomeLast60Days += (t.type === 'receita' ? t.amount : -t.amount);
+                }
+            });
+            
+            const averageDailyNet = totalNetIncomeLast60Days / 60;
+
+            const forecastLabels = [];
+            const forecastData = [];
+            
+            for(let i=0; i<30; i++) {
+                const forecastDate = new Date();
+                forecastDate.setDate(now.getDate() + i);
+                forecastLabels.push(forecastDate.toLocaleDateString('pt-PT', {day: '2-digit', month: '2-digit'}));
+                forecastData.push(totalBalance + (averageDailyNet * i));
+            }
+            
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            const textColor = isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)';
+
+            renderChart('cashflow-chart', 'line', {
+                labels: forecastLabels,
+                datasets: [{
+                    label: 'Previsão de Saldo',
+                    data: forecastData,
+                    borderColor: 'var(--primary-color)',
+                    backgroundColor: 'rgba(74, 144, 226, 0.1)',
+                    fill: true,
+                    tension: 0.1
+                }]
+            }, {
+                plugins: { tooltip: { callbacks: { label: (context) => `Saldo previsto: ${formatCurrency(context.raw)}` } } },
+                scales: { 
+                    x: { ticks: { color: textColor } }, 
+                    y: { ticks: { color: textColor, callback: (value) => formatCurrency(value).replace(/,.*/, '') } } // Format Y axis
+                },
+            });
+        }
+
 
         function renderAccounts() {
             const data = getUserData();
