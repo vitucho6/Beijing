@@ -66,14 +66,14 @@
         }
         
         /* SVG Logo Styling */
-        #app-logo .logo-text {
+        #app-logo .logo-text, #pin-lock-screen .logo-text {
             font-family: 'Poppins', sans-serif;
             font-size: 28px;
             font-weight: 600;
             transition: fill 0.3s;
         }
-        body.light-mode #app-logo .logo-text { fill: var(--light-text); }
-        body.dark-mode #app-logo .logo-text { fill: var(--dark-text); }
+        body.light-mode #app-logo .logo-text, body.light-mode #pin-lock-screen .logo-text { fill: var(--light-text); }
+        body.dark-mode #app-logo .logo-text, body.dark-mode #pin-lock-screen .logo-text { fill: var(--dark-text); }
 
 
         /* Utility Classes */
@@ -331,6 +331,8 @@
         
         .page-header {
             display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 30px;
@@ -399,6 +401,7 @@
         .quick-actions {
             display: flex;
             gap: 15px;
+            flex-wrap: wrap;
         }
         
         /* Transaction List */
@@ -672,9 +675,14 @@
             background: transparent;
             width: 200px;
             margin: 20px 0;
+            color: inherit;
         }
+        body.light-mode #pin-input { border-color: var(--light-border); }
+        body.dark-mode #pin-input { border-color: var(--dark-border); }
+
         #pin-input:focus {
             outline: none;
+            border-color: var(--primary-color);
         }
         #pin-container.shake {
             animation: shake 0.5s;
@@ -733,12 +741,14 @@
     <!-- =========== PIN LOCK SCREEN =========== -->
     <div id="pin-lock-screen" class="hidden">
         <div id="pin-container">
+            <svg width="150" height="40" viewBox="0 0 150 40" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 30px;">
+                <rect x="0" y="0" width="40" height="40" rx="8" fill="var(--logo-red)"/>
+                <text x="20" y="29" font-family="Arial, sans-serif" font-size="28" fill="white" text-anchor="middle" font-weight="bold">¥</text>
+                <text x="50" y="29" class="logo-text">Beijing</text>
+            </svg>
             <h2>Insira o seu PIN</h2>
-            <form id="pin-form">
-                <input type="password" id="pin-input" maxlength="6" pattern="\d{6}" required autocomplete="off">
-                <br>
-                <button type="submit" class="auth-btn" style="margin-top: 20px;">Desbloquear</button>
-            </form>
+            <p style="opacity: 0.7; margin-top: -15px;">A sua carteira está protegida.</p>
+            <input type="password" id="pin-input" maxlength="6" pattern="\d{6}" required autocomplete="off" autofocus>
         </div>
     </div>
 
@@ -836,9 +846,17 @@
                     <h2 id="welcome-message">Dashboard</h2>
                 </div>
                 <div class="dashboard-grid">
-                    <div class="summary-card">
-                        <h3>Saldo Total</h3>
-                        <p class="amount" id="total-balance">0,00 Kz</p>
+                     <div class="summary-card">
+                        <h3>Saldo Total (em Contas)</h3>
+                        <p class="amount" id="total-balance-accounts">0,00 Kz</p>
+                    </div>
+                     <div class="summary-card">
+                        <h3>Saldo Disponível</h3>
+                        <p class="amount" id="available-balance" style="color: var(--primary-color);">0,00 Kz</p>
+                    </div>
+                     <div class="summary-card">
+                        <h3>Total Poupado</h3>
+                        <p class="amount" id="total-saved" style="color: var(--secondary-color);">0,00 Kz</p>
                     </div>
                     <div class="summary-card">
                         <h3>Receitas (Mês)</h3>
@@ -882,12 +900,12 @@
             <!-- Notifications Section -->
             <section id="notifications-section" class="content-section hidden">
                 <div class="page-header">
-                    <h2>Notificações Inteligentes</h2>
+                    <h2>Notificações</h2>
                 </div>
                 <div class="dashboard-grid" style="grid-template-columns: 1fr;">
                     <div class="card">
                         <div class="card-header">
-                            <h3>Dica Motivacional do Dia</h3>
+                            <h3>Dica do Dia</h3>
                         </div>
                         <div class="notification-list">
                             <ul id="motivational-tip-list">
@@ -903,7 +921,7 @@
                     </div>
                     <div class="card">
                         <div class="card-header">
-                            <h3>Análise e Dicas Inteligentes</h3>
+                            <h3>Análises e Informações</h3>
                         </div>
                         <div class="notification-list">
                             <ul id="smart-tips-list">
@@ -918,7 +936,10 @@
             <section id="accounts-section" class="content-section hidden">
                 <div class="page-header">
                     <h2>Contas Bancárias</h2>
-                    <button class="btn btn-primary" id="add-account-btn"><i class="fas fa-plus"></i> <span>Adicionar Conta Bancária</span></button>
+                    <div class="quick-actions">
+                        <button class="btn btn-primary" id="add-account-btn"><i class="fas fa-plus"></i> <span>Adicionar Conta</span></button>
+                        <button class="btn btn-secondary" id="transfer-btn"><i class="fas fa-exchange-alt"></i> <span>Transferir</span></button>
+                    </div>
                 </div>
                 <div id="accounts-grid" class="item-grid">
                     <!-- Populated by JS -->
@@ -1094,6 +1115,29 @@
 
     <!-- =========== MODALS =========== -->
     <div id="modal-container">
+        <!-- Transfer Modal -->
+        <div id="transfer-modal" class="modal-overlay hidden">
+            <div class="modal-content">
+                <button class="modal-close-btn">&times;</button>
+                <h3>Transferir entre Contas</h3>
+                <form id="transfer-form" class="modal-form">
+                    <div class="form-group">
+                        <label for="transfer-from">De:</label>
+                        <select id="transfer-from" required></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="transfer-to">Para:</label>
+                        <select id="transfer-to" required></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="transfer-amount">Valor (Kz)</label>
+                        <input type="number" id="transfer-amount" step="0.01" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Confirmar Transferência</button>
+                </form>
+            </div>
+        </div>
+
         <!-- Transaction Modal -->
         <div id="transaction-modal" class="modal-overlay hidden">
             <div class="modal-content">
@@ -1236,10 +1280,6 @@
                     <div class="form-group">
                         <label for="contribute-amount">Valor a Contribuir (Kz)</label>
                         <input type="number" id="contribute-amount" step="0.01" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="contribute-from-account">Retirar da Conta</label>
-                        <select id="contribute-from-account" required></select>
                     </div>
                     <button type="submit" class="btn btn-primary">Contribuir</button>
                 </form>
@@ -1392,12 +1432,13 @@
             if (!userData.categories) {
                 userData.categories = JSON.parse(JSON.stringify(defaultCategories));
             }
-            if (userData.goals) {
-                userData.goals.forEach(goal => {
-                    if (!goal.startDate) goal.startDate = getTodayDate();
-                    if (!goal.endDate) goal.endDate = getTodayDate();
-                });
+            if (!userData.goals) {
+                userData.goals = [];
             }
+            userData.goals.forEach(goal => {
+                if (!goal.startDate) goal.startDate = getTodayDate();
+                if (!goal.endDate) goal.endDate = getTodayDate();
+            });
             if (userData.budgets) {
                 userData.budgets.forEach(budget => {
                     if (budget.period === 'custom' && !budget.customPeriodDays) {
@@ -1626,6 +1667,8 @@
             const currentYear = now.getFullYear();
 
             let totalBalance = data.accounts.reduce((sum, acc) => sum + acc.balance, 0);
+            let totalSaved = data.goals.reduce((sum, goal) => sum + goal.saved, 0);
+            let availableBalance = totalBalance - totalSaved;
             let monthlyIncome = 0;
             let monthlyExpenses = 0;
 
@@ -1637,7 +1680,9 @@
                 }
             });
 
-            document.getElementById('total-balance').textContent = formatCurrency(totalBalance);
+            document.getElementById('total-balance-accounts').textContent = formatCurrency(totalBalance);
+            document.getElementById('available-balance').textContent = formatCurrency(availableBalance);
+            document.getElementById('total-saved').textContent = formatCurrency(totalSaved);
             document.getElementById('monthly-income').textContent = formatCurrency(monthlyIncome);
             document.getElementById('monthly-expenses').textContent = formatCurrency(monthlyExpenses);
 
@@ -1745,7 +1790,7 @@
                 }
             }
             
-            // Tip 2: Budget success
+            // Tip 2: Budget Alerts
             data.budgets.forEach(b => {
                 let spent = 0;
                 data.transactions.forEach(t => {
@@ -1754,16 +1799,49 @@
                         spent += t.amount;
                     }
                 });
-                if (spent < b.amount) {
+                const progress = (b.amount > 0) ? (spent / b.amount) * 100 : 0;
+
+                if (progress >= 100) {
+                     tips.push({
+                        type: 'warning',
+                        icon: 'fa-exclamation-triangle',
+                        text: `Alerta: Excedeu o seu orçamento para <strong>${b.category}</strong>!`
+                    });
+                } else if (progress >= 90) {
                     tips.push({
-                        type: 'praise',
-                        icon: 'fa-check-circle',
-                        text: `Excelente! Está a conseguir manter-se dentro do seu orçamento para <strong>${b.category}</strong>.`
+                        type: 'warning',
+                        icon: 'fa-exclamation-circle',
+                        text: `Cuidado! Já gastou <strong>${progress.toFixed(0)}%</strong> do seu orçamento para <strong>${b.category}</strong>.`
+                    });
+                } else if (progress >= 50) {
+                    tips.push({
+                        type: 'tip',
+                        icon: 'fa-info-circle',
+                        text: `Informação: Já ultrapassou <strong>${progress.toFixed(0)}%</strong> do seu orçamento para <strong>${b.category}</strong>.`
                     });
                 }
             });
 
-            // Tip 3: Largest expense
+            // Tip 3: Goal Alerts
+            data.goals.forEach(g => {
+                const progress = (g.target > 0) ? (g.saved / g.target) * 100 : 0;
+                if (progress >= 95 && progress < 100) {
+                    tips.push({
+                        type: 'praise',
+                        icon: 'fa-trophy',
+                        text: `Está quase a conseguir! Falta pouco para atingir a sua meta <strong>'${g.name}'</strong>.`
+                    });
+                } else if (progress >= 50) {
+                    tips.push({
+                        type: 'praise',
+                        icon: 'fa-star',
+                        text: `Excelente progresso! Já alcançou mais de metade da sua meta <strong>'${g.name}'</strong>. Continue assim!`
+                    });
+                }
+            });
+
+
+            // Tip 4: Largest expense
             const monthlyExpenses = data.transactions.filter(t => {
                 const tDate = new Date(t.date);
                 return t.type === 'despesa' && tDate.getMonth() === currentMonth && tDate.getFullYear() === currentYear;
@@ -1834,7 +1912,15 @@
         function renderAccounts() {
             const data = getUserData();
             const grid = document.getElementById('accounts-grid');
+            const transferBtn = document.getElementById('transfer-btn');
             grid.innerHTML = '';
+
+            if (data.accounts.length >= 2) {
+                transferBtn.classList.remove('hidden');
+            } else {
+                transferBtn.classList.add('hidden');
+            }
+
             if (data.accounts.length === 0) {
                 grid.innerHTML = '<p>Nenhuma conta adicionada. Crie a sua primeira conta!</p>';
                 return;
@@ -1969,7 +2055,7 @@
             }
             
             data.goals.forEach(g => {
-                const progress = Math.min((g.saved / g.target) * 100, 100);
+                const progress = (g.target > 0) ? Math.min((g.saved / g.target) * 100, 100) : 0;
                 const startDate = new Date(g.startDate).toLocaleDateString('pt-PT');
                 const endDate = new Date(g.endDate).toLocaleDateString('pt-PT');
 
@@ -2128,12 +2214,14 @@
             select.innerHTML += `<option value="Outros">Outros (Adicionar Nova)...</option>`;
         }
         
-        function populateAccountSelect(selectId) {
+        function populateAccountSelect(selectId, excludeId = null) {
             const data = getUserData();
             const select = document.getElementById(selectId);
             select.innerHTML = '';
             data.accounts.forEach(acc => {
-                select.innerHTML += `<option value="${acc.id}">${acc.name}</option>`;
+                if (acc.id !== excludeId) {
+                    select.innerHTML += `<option value="${acc.id}">${acc.name}</option>`;
+                }
             });
         }
 
@@ -2171,6 +2259,52 @@
             updateUI();
             hideAllModals();
         });
+
+        // Transfer Logic
+        document.getElementById('transfer-btn').addEventListener('click', () => {
+            const fromSelect = document.getElementById('transfer-from');
+            const toSelect = document.getElementById('transfer-to');
+            
+            populateAccountSelect('transfer-from');
+            populateAccountSelect('transfer-to', parseInt(fromSelect.value));
+
+            fromSelect.addEventListener('change', () => {
+                 populateAccountSelect('transfer-to', parseInt(fromSelect.value));
+            });
+
+            document.getElementById('transfer-form').reset();
+            showModal('transfer-modal');
+        });
+
+        document.getElementById('transfer-form').addEventListener('submit', e => {
+            e.preventDefault();
+            const data = getUserData();
+            const fromId = parseInt(document.getElementById('transfer-from').value);
+            const toId = parseInt(document.getElementById('transfer-to').value);
+            const amount = parseFloat(document.getElementById('transfer-amount').value);
+
+            if (fromId === toId) {
+                alert('A conta de origem e destino não podem ser a mesma.');
+                return;
+            }
+
+            const fromAccount = data.accounts.find(a => a.id === fromId);
+            const toAccount = data.accounts.find(a => a.id === toId);
+
+            if (fromAccount.balance < amount) {
+                alert('Saldo insuficiente na conta de origem.');
+                return;
+            }
+
+            fromAccount.balance -= amount;
+            toAccount.balance += amount;
+
+            saveDataToStorage();
+            updateUI();
+            hideAllModals();
+            showToast('Transferência realizada com sucesso!');
+        });
+
 
         // Transaction CRUD
         function openTransactionModal(type = null) {
@@ -2373,11 +2507,23 @@
             const startDate = document.getElementById('goal-start-date').value;
             const endDate = document.getElementById('goal-end-date').value;
 
+            // Check if the user is trying to allocate more money than they have
+            let totalBalance = data.accounts.reduce((sum, acc) => sum + acc.balance, 0);
+            let totalCurrentlySaved = data.goals.reduce((sum, goal) => goal.id !== state.editingId ? sum + goal.saved : sum, 0);
+            
+            if (totalCurrentlySaved + saved > totalBalance) {
+                alert('Não pode alocar mais dinheiro às metas do que o saldo total das suas contas.');
+                return;
+            }
+
             const goalData = { id: Date.now(), name, target, saved, startDate, endDate };
             
             if (state.editingId) {
                 const index = data.goals.findIndex(g => g.id === state.editingId);
                 goalData.id = state.editingId;
+                // Preserve the original saved amount unless changed in the form
+                const originalGoal = data.goals[index];
+                goalData.saved = isNaN(saved) ? originalGoal.saved : saved;
                 data.goals[index] = goalData;
             } else {
                 data.goals.push(goalData);
@@ -2393,33 +2539,26 @@
             const data = getUserData();
             const goalId = parseInt(document.getElementById('contribute-goal-id').value);
             const amount = parseFloat(document.getElementById('contribute-amount').value);
-            const accountId = parseInt(document.getElementById('contribute-from-account').value);
-
+            
             const goal = data.goals.find(g => g.id === goalId);
-            const account = data.accounts.find(a => a.id === accountId);
 
-            if (account.balance >= amount) {
-                // Add to goal
-                goal.saved += amount;
-                // Create expense transaction
-                data.transactions.push({
-                    id: Date.now(),
-                    type: 'despesa',
-                    amount,
-                    accountId,
-                    category: 'Metas',
-                    date: getTodayDate(),
-                    description: `Contribuição para: ${goal.name}`
-                });
-                // Update account balance
-                account.balance -= amount;
-                
-                saveDataToStorage();
-                updateUI();
-                hideAllModals();
-            } else {
-                alert('Saldo insuficiente na conta selecionada.');
+            // New logic: Check against available balance
+            let totalBalance = data.accounts.reduce((sum, acc) => sum + acc.balance, 0);
+            let totalSaved = data.goals.reduce((sum, g) => sum + g.saved, 0);
+            let availableBalance = totalBalance - totalSaved;
+
+            if (amount > availableBalance) {
+                 alert('Não pode poupar mais do que o seu saldo disponível (Saldo Total - Total Poupado).');
+                 return;
             }
+
+            // Add to goal without creating a transaction
+            goal.saved += amount;
+            
+            saveDataToStorage();
+            updateUI();
+            hideAllModals();
+            showToast(`Adicionado ${formatCurrency(amount)} a ${goal.name}!`);
         });
 
         // --- SETTINGS FORMS ---
@@ -2641,7 +2780,7 @@
         function handleContribute(id, type) {
             if (type === 'goal') {
                 document.getElementById('contribute-goal-id').value = id;
-                populateAccountSelect('contribute-from-account');
+                document.getElementById('contribute-goal-form').reset();
                 showModal('contribute-goal-modal');
             }
         }
@@ -2896,19 +3035,23 @@
             document.getElementById('pin-input').focus();
         }
 
-        document.getElementById('pin-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const data = getUserData();
+        document.getElementById('pin-input').addEventListener('input', () => {
             const input = document.getElementById('pin-input');
-            const pinContainer = document.getElementById('pin-container');
+            if (input.value.length === 6) {
+                const data = getUserData();
+                const pinContainer = document.getElementById('pin-container');
 
-            if (input.value === data.settings.pin) {
-                pinLockScreen.classList.add('hidden');
-            } else {
-                showToast('PIN incorreto.', 'error');
-                pinContainer.classList.add('shake');
-                input.value = '';
-                setTimeout(() => pinContainer.classList.remove('shake'), 500);
+                if (input.value === data.settings.pin) {
+                    pinLockScreen.classList.add('hidden');
+                    input.value = ''; // Clear input for next time
+                } else {
+                    showToast('PIN incorreto.', 'error');
+                    pinContainer.classList.add('shake');
+                    setTimeout(() => {
+                        input.value = '';
+                        pinContainer.classList.remove('shake');
+                    }, 500);
+                }
             }
         });
 
