@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beijing - O seu Gestor Financeiro Pessoal</title>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <title>Beijing</title>
     
     <!-- Google Fonts: Poppins -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -66,14 +67,14 @@
         }
         
         /* SVG Logo Styling */
-        #app-logo .logo-text, #pin-lock-screen .logo-text {
+        #app-logo .logo-text {
             font-family: 'Poppins', sans-serif;
             font-size: 28px;
             font-weight: 600;
             transition: fill 0.3s;
         }
-        body.light-mode #app-logo .logo-text, body.light-mode #pin-lock-screen .logo-text { fill: var(--light-text); }
-        body.dark-mode #app-logo .logo-text, body.dark-mode #pin-lock-screen .logo-text { fill: var(--dark-text); }
+        body.light-mode #app-logo .logo-text { fill: var(--light-text); }
+        body.dark-mode #app-logo .logo-text { fill: var(--dark-text); }
 
 
         /* Utility Classes */
@@ -331,8 +332,6 @@
         
         .page-header {
             display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 30px;
@@ -401,26 +400,25 @@
         .quick-actions {
             display: flex;
             gap: 15px;
-            flex-wrap: wrap;
         }
         
         /* Transaction List */
-        .transaction-list ul, .notification-list ul {
+        .transaction-list ul {
             list-style: none;
             padding: 0;
             margin: 0;
         }
-        .transaction-list li, .notification-list li {
+        .transaction-list li {
             display: flex;
             align-items: center;
             padding: 15px 0;
             border-bottom: 1px solid;
         }
-        body.light-mode .transaction-list li, body.light-mode .notification-list li { border-color: var(--light-border); }
-        body.dark-mode .transaction-list li, body.dark-mode .notification-list li { border-color: var(--dark-border); }
-        .transaction-list li:last-child, .notification-list li:last-child { border-bottom: none; }
+        body.light-mode .transaction-list li { border-color: var(--light-border); }
+        body.dark-mode .transaction-list li { border-color: var(--dark-border); }
+        .transaction-list li:last-child { border-bottom: none; }
         
-        .transaction-icon, .notification-icon {
+        .transaction-icon {
             width: 40px;
             height: 40px;
             border-radius: 50%;
@@ -429,16 +427,11 @@
             align-items: center;
             color: white;
             margin-right: 15px;
-            flex-shrink: 0;
         }
         .transaction-icon.receita { background-color: var(--success-color); }
         .transaction-icon.despesa { background-color: var(--danger-color); }
-        .notification-icon.tip { background-color: var(--primary-color); }
-        .notification-icon.warning { background-color: var(--warning-color); }
-        .notification-icon.praise { background-color: var(--secondary-color); }
-
         
-        .transaction-details, .notification-details {
+        .transaction-details {
             flex-grow: 1;
         }
         .transaction-details .description { font-weight: 600; }
@@ -546,15 +539,15 @@
             text-align: center;
         }
         
-        .modal-form .form-group, .settings-form .form-group, #export-filters .form-group {
+        .modal-form .form-group, .settings-form .form-group {
             margin-bottom: 15px;
         }
-        .modal-form label, .settings-form label, #export-filters label {
+        .modal-form label, .settings-form label {
             display: block;
             margin-bottom: 5px;
             font-weight: 500;
         }
-        .modal-form input, .modal-form select, .settings-form input, .settings-form select, #export-filters input {
+        .modal-form input, .modal-form select, .settings-form input, .settings-form select {
             width: 100%;
             padding: 10px;
             border-radius: 8px;
@@ -562,15 +555,13 @@
             box-sizing: border-box;
         }
         body.light-mode .modal-form input, body.light-mode .modal-form select,
-        body.light-mode .settings-form input, body.light-mode .settings-form select,
-        body.light-mode #export-filters input {
+        body.light-mode .settings-form input, body.light-mode .settings-form select {
             background-color: var(--light-bg);
             border-color: var(--light-border);
             color: var(--light-text);
         }
         body.dark-mode .modal-form input, body.dark-mode .modal-form select,
-        body.dark-mode .settings-form input, body.dark-mode .settings-form select,
-        body.dark-mode #export-filters input {
+        body.dark-mode .settings-form input, body.dark-mode .settings-form select {
             background-color: var(--dark-bg);
             border-color: var(--dark-border);
             color: var(--dark-text);
@@ -645,53 +636,6 @@
         .toggle-password:hover {
             opacity: 1;
         }
-
-        /* PIN Lock Screen */
-        #pin-lock-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-color: var(--light-bg);
-            z-index: 9999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        body.dark-mode #pin-lock-screen {
-             background-color: var(--dark-bg);
-        }
-        #pin-container {
-            text-align: center;
-            padding: 40px;
-        }
-        #pin-input {
-            font-size: 2rem;
-            letter-spacing: 1rem;
-            text-align: center;
-            border: none;
-            border-bottom: 2px solid;
-            background: transparent;
-            width: 200px;
-            margin: 20px 0;
-            color: inherit;
-        }
-        body.light-mode #pin-input { border-color: var(--light-border); }
-        body.dark-mode #pin-input { border-color: var(--dark-border); }
-
-        #pin-input:focus {
-            outline: none;
-            border-color: var(--primary-color);
-        }
-        #pin-container.shake {
-            animation: shake 0.5s;
-        }
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
-            20%, 40%, 60%, 80% { transform: translateX(10px); }
-        }
         
         /* Responsive Design */
         @media (max-width: 768px) {
@@ -737,21 +681,6 @@
     </style>
 </head>
 <body class="light-mode">
-    
-    <!-- =========== PIN LOCK SCREEN =========== -->
-    <div id="pin-lock-screen" class="hidden">
-        <div id="pin-container">
-            <svg width="150" height="40" viewBox="0 0 150 40" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 30px;">
-                <rect x="0" y="0" width="40" height="40" rx="8" fill="var(--logo-red)"/>
-                <text x="20" y="29" font-family="Arial, sans-serif" font-size="28" fill="white" text-anchor="middle" font-weight="bold">¥</text>
-                <text x="50" y="29" class="logo-text">Beijing</text>
-            </svg>
-            <h2>Insira o seu PIN</h2>
-            <p style="opacity: 0.7; margin-top: -15px;">A sua carteira está protegida.</p>
-            <input type="password" id="pin-input" maxlength="6" pattern="\d{6}" required autocomplete="off" autofocus>
-        </div>
-    </div>
-
 
     <!-- =========== AUTHENTICATION PAGE =========== -->
     <div id="auth-page">
@@ -817,8 +746,7 @@
             <div id="sidebar-collapsible-content">
                 <nav id="main-nav">
                     <a href="#dashboard" class="nav-link active"><i class="fas fa-chart-pie"></i> <span>Dashboard</span></a>
-                    <a href="#notifications" class="nav-link"><i class="fas fa-bell"></i> <span>Notificações</span></a>
-                    <a href="#accounts" class="nav-link"><i class="fas fa-wallet"></i> <span>Contas</span></a>
+                    <a href="#accounts" class="nav-link"><i class="fas fa-wallet"></i> <span>Contas Bancárias</span></a>
                     <a href="#transactions" class="nav-link"><i class="fas fa-exchange-alt"></i> <span>Transações</span></a>
                     <a href="#budgets" class="nav-link"><i class="fas fa-bullseye"></i> <span>Orçamentos</span></a>
                     <a href="#goals" class="nav-link"><i class="fas fa-flag-checkered"></i> <span>Metas</span></a>
@@ -846,17 +774,9 @@
                     <h2 id="welcome-message">Dashboard</h2>
                 </div>
                 <div class="dashboard-grid">
-                     <div class="summary-card">
-                        <h3>Saldo Total (em Contas)</h3>
-                        <p class="amount" id="total-balance-accounts">0,00 Kz</p>
-                    </div>
-                     <div class="summary-card">
-                        <h3>Saldo Disponível</h3>
-                        <p class="amount" id="available-balance" style="color: var(--primary-color);">0,00 Kz</p>
-                    </div>
-                     <div class="summary-card">
-                        <h3>Total Poupado</h3>
-                        <p class="amount" id="total-saved" style="color: var(--secondary-color);">0,00 Kz</p>
+                    <div class="summary-card">
+                        <h3>Saldo Total</h3>
+                        <p class="amount" id="total-balance">0,00 Kz</p>
                     </div>
                     <div class="summary-card">
                         <h3>Receitas (Mês)</h3>
@@ -896,50 +816,12 @@
                     </div>
                 </div>
             </section>
-            
-            <!-- Notifications Section -->
-            <section id="notifications-section" class="content-section hidden">
-                <div class="page-header">
-                    <h2>Notificações</h2>
-                </div>
-                <div class="dashboard-grid" style="grid-template-columns: 1fr;">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3>Dica do Dia</h3>
-                        </div>
-                        <div class="notification-list">
-                            <ul id="motivational-tip-list">
-                                <!-- Populated by JS -->
-                            </ul>
-                        </div>
-                    </div>
-                     <div class="card">
-                        <div class="card-header">
-                            <h3>Previsão de Fluxo de Caixa (Próximos 30 dias)</h3>
-                        </div>
-                        <canvas id="cashflow-chart"></canvas>
-                    </div>
-                    <div class="card">
-                        <div class="card-header">
-                            <h3>Análises e Informações</h3>
-                        </div>
-                        <div class="notification-list">
-                            <ul id="smart-tips-list">
-                                <!-- Populated by JS -->
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </section>
 
             <!-- Accounts Section -->
             <section id="accounts-section" class="content-section hidden">
                 <div class="page-header">
-                    <h2>Contas</h2>
-                    <div class="quick-actions">
-                        <button class="btn btn-primary" id="add-account-btn"><i class="fas fa-plus"></i> <span>Adicionar Conta</span></button>
-                        <button class="btn btn-secondary" id="transfer-btn"><i class="fas fa-exchange-alt"></i> <span>Transferir</span></button>
-                    </div>
+                    <h2>Contas Bancárias</h2>
+                    <button class="btn btn-primary" id="add-account-btn"><i class="fas fa-plus"></i> <span>Adicionar Conta Bancária</span></button>
                 </div>
                 <div id="accounts-grid" class="item-grid">
                     <!-- Populated by JS -->
@@ -948,7 +830,7 @@
 
             <!-- Transactions Section -->
             <section id="transactions-section" class="content-section hidden">
-                <div class="page-header">
+                 <div class="page-header">
                     <h2>Histórico de Transações</h2>
                     <div class="quick-actions">
                         <button class="btn btn-success" id="export-xls-btn"><i class="fas fa-file-excel"></i> <span>Exportar (Excel)</span></button>
@@ -956,20 +838,8 @@
                         <button class="btn btn-danger" id="export-pdf-btn"><i class="fas fa-file-pdf"></i> <span>Exportar (PDF)</span></button>
                     </div>
                 </div>
-                <div id="export-filters" class="card" style="margin-bottom: 20px;">
-                    <h3 style="margin-top:0;">Filtros de Exportação</h3>
-                    <div class="dashboard-grid" style="align-items: flex-end; grid-template-columns: 1fr 1fr auto;">
-                        <div class="form-group">
-                            <label for="export-start-date">Data de Início</label>
-                            <input type="date" id="export-start-date">
-                        </div>
-                        <div class="form-group">
-                            <label for="export-end-date">Data de Fim</label>
-                            <input type="date" id="export-end-date">
-                        </div>
-                    </div>
-                </div>
                 <div class="card">
+                    <!-- Filters here if needed -->
                     <div class="transaction-list">
                         <ul id="full-transactions-list">
                             <!-- Populated by JS -->
@@ -1082,28 +952,6 @@
                         </form>
                     </div>
                     <div class="card">
-                        <h3>Segurança</h3>
-                        <form id="pin-settings-form" class="settings-form">
-                            <div class="form-group">
-                                <label for="settings-pin">PIN de Acesso (6 dígitos)</label>
-                                <input type="password" id="settings-pin" maxlength="6" pattern="\d{6}" placeholder="PIN atual ou novo PIN" autocomplete="off">
-                            </div>
-                            <div class="quick-actions">
-                                <button type="submit" class="btn btn-primary">Definir/Alterar PIN</button>
-                                <button type="button" id="remove-pin-btn" class="btn btn-danger">Remover PIN</button>
-                            </div>
-                        </form>
-                    </div>
-                     <div class="card">
-                        <h3>Gestão de Dados</h3>
-                        <p>Exporte todos os seus dados para um ficheiro para os guardar em segurança ou mover para outro dispositivo.</p>
-                        <div class="quick-actions">
-                            <button id="backup-btn" class="btn btn-primary"><i class="fas fa-download"></i> Criar Backup</button>
-                            <button id="restore-btn" class="btn btn-warning"><i class="fas fa-upload"></i> Restaurar Backup</button>
-                            <input type="file" id="restore-input" class="hidden" accept=".json">
-                        </div>
-                    </div>
-                    <div class="card">
                         <h3>Sessão</h3>
                         <p>Termine a sua sessão atual de forma segura.</p>
                         <button id="logout-btn-settings" class="btn btn-danger" style="width: 100%; margin-top: 10px;">Terminar Sessão</button>
@@ -1115,29 +963,6 @@
 
     <!-- =========== MODALS =========== -->
     <div id="modal-container">
-        <!-- Transfer Modal -->
-        <div id="transfer-modal" class="modal-overlay hidden">
-            <div class="modal-content">
-                <button class="modal-close-btn">&times;</button>
-                <h3>Transferir entre Contas</h3>
-                <form id="transfer-form" class="modal-form">
-                    <div class="form-group">
-                        <label for="transfer-from">De:</label>
-                        <select id="transfer-from" required></select>
-                    </div>
-                    <div class="form-group">
-                        <label for="transfer-to">Para:</label>
-                        <select id="transfer-to" required></select>
-                    </div>
-                    <div class="form-group">
-                        <label for="transfer-amount">Valor (Kz)</label>
-                        <input type="number" id="transfer-amount" step="0.01" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary" style="width: 100%;">Confirmar Transferência</button>
-                </form>
-            </div>
-        </div>
-
         <!-- Transaction Modal -->
         <div id="transaction-modal" class="modal-overlay hidden">
             <div class="modal-content">
@@ -1184,7 +1009,7 @@
         <div id="account-modal" class="modal-overlay hidden">
             <div class="modal-content">
                 <button class="modal-close-btn">&times;</button>
-                <h3 id="account-modal-title">Adicionar Conta</h3>
+                <h3 id="account-modal-title">Adicionar Conta Bancária</h3>
                 <form id="account-form" class="modal-form">
                     <input type="hidden" id="account-id">
                     <div class="form-group">
@@ -1281,6 +1106,10 @@
                         <label for="contribute-amount">Valor a Contribuir (Kz)</label>
                         <input type="number" id="contribute-amount" step="0.01" required>
                     </div>
+                    <div class="form-group">
+                        <label for="contribute-from-account">Retirar da Conta</label>
+                        <select id="contribute-from-account" required></select>
+                    </div>
                     <button type="submit" class="btn btn-primary">Contribuir</button>
                 </form>
             </div>
@@ -1319,17 +1148,6 @@
             despesa: ['Alimentação', 'Transporte', 'Lazer', 'Contas da Casa', 'Saúde', 'Educação', 'Compras']
         };
 
-        const motivationalTips = [
-            "O segredo para progredir é começar. Controle as suas pequenas despesas de hoje.",
-            "Não poupe o que resta depois de gastar, mas gaste o que resta depois de poupar.",
-            "Um orçamento está a dizer ao seu dinheiro para onde ir, em vez de se perguntar para onde ele foi.",
-            "Cuidado com as pequenas despesas; um pequeno vazamento afundará um grande navio.",
-            "Cada Kwanza que poupa é um passo em direção à sua liberdade financeira.",
-            "A sua saúde financeira de amanhã é construída com as boas decisões de hoje.",
-            "Definir metas é o primeiro passo para transformar o invisível em visível.",
-            "O hábito de poupar é, por si só, uma educação; promove todas as virtudes."
-        ];
-
         // --- DOM ELEMENTS ---
         const authPage = document.getElementById('auth-page');
         const appPage = document.getElementById('app-page');
@@ -1341,7 +1159,6 @@
         const toast = document.getElementById('toast');
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
         const sidebar = document.getElementById('sidebar');
-        const pinLockScreen = document.getElementById('pin-lock-screen');
         
         // --- UTILITY FUNCTIONS ---
         function formatCurrency(valueInBase) {
@@ -1372,9 +1189,8 @@
 
         const getTodayDate = () => new Date().toISOString().split('T')[0];
 
-        function showToast(message, type = 'success') {
+        function showToast(message) {
             toast.textContent = message;
-            toast.style.backgroundColor = type === 'success' ? 'var(--success-color)' : 'var(--danger-color)';
             toast.classList.add('show');
             setTimeout(() => {
                 toast.classList.remove('show');
@@ -1418,10 +1234,6 @@
             if (!userData.settings.exchangeRates) {
                  userData.settings.exchangeRates = {};
             }
-            if (userData.settings.pin === undefined) {
-                userData.settings.pin = null;
-            }
-
             const defaultRates = { USD: 850.00, EUR: 920.00, GBP: 1050.00, BRL: 160.00, AOA: 1.0 };
             for(const currency in defaultRates) {
                 if(!userData.settings.exchangeRates[currency]) {
@@ -1432,13 +1244,12 @@
             if (!userData.categories) {
                 userData.categories = JSON.parse(JSON.stringify(defaultCategories));
             }
-            if (!userData.goals) {
-                userData.goals = [];
+            if (userData.goals) {
+                userData.goals.forEach(goal => {
+                    if (!goal.startDate) goal.startDate = getTodayDate();
+                    if (!goal.endDate) goal.endDate = getTodayDate();
+                });
             }
-            userData.goals.forEach(goal => {
-                if (!goal.startDate) goal.startDate = getTodayDate();
-                if (!goal.endDate) goal.endDate = getTodayDate();
-            });
             if (userData.budgets) {
                 userData.budgets.forEach(budget => {
                     if (budget.period === 'custom' && !budget.customPeriodDays) {
@@ -1556,7 +1367,6 @@
                 categories: JSON.parse(JSON.stringify(defaultCategories)), // Deep copy
                 settings: {
                     displayCurrency: 'AOA',
-                    pin: null,
                     exchangeRates: {
                         USD: 850.00, 
                         EUR: 920.00,
@@ -1644,7 +1454,6 @@
             
             const currentViewFunction = {
                 'dashboard': renderDashboard,
-                'notifications': renderNotifications,
                 'accounts': renderAccounts,
                 'transactions': renderTransactions,
                 'budgets': renderBudgets,
@@ -1667,8 +1476,6 @@
             const currentYear = now.getFullYear();
 
             let totalBalance = data.accounts.reduce((sum, acc) => sum + acc.balance, 0);
-            let totalSaved = data.goals.reduce((sum, goal) => sum + goal.saved, 0);
-            let availableBalance = totalBalance - totalSaved;
             let monthlyIncome = 0;
             let monthlyExpenses = 0;
 
@@ -1680,9 +1487,7 @@
                 }
             });
 
-            document.getElementById('total-balance-accounts').textContent = formatCurrency(totalBalance);
-            document.getElementById('available-balance').textContent = formatCurrency(availableBalance);
-            document.getElementById('total-saved').textContent = formatCurrency(totalSaved);
+            document.getElementById('total-balance').textContent = formatCurrency(totalBalance);
             document.getElementById('monthly-income').textContent = formatCurrency(monthlyIncome);
             document.getElementById('monthly-expenses').textContent = formatCurrency(monthlyExpenses);
 
@@ -1713,214 +1518,11 @@
                 plugins: { tooltip: { callbacks: { label: (context) => formatCurrency(context.raw) } } }
             });
         }
-        
-        function renderNotifications() {
-            const data = getUserData();
-            const motivationalList = document.getElementById('motivational-tip-list');
-            const smartTipsList = document.getElementById('smart-tips-list');
-            
-            // Motivational Tip of the Day
-            const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
-            const tipIndex = dayOfYear % motivationalTips.length;
-            motivationalList.innerHTML = `
-                 <li>
-                    <div class="notification-icon tip">
-                        <i class="fas fa-lightbulb"></i>
-                    </div>
-                    <div class="notification-details">
-                       ${motivationalTips[tipIndex]}
-                    </div>
-                </li>
-            `;
-
-            // Smart Tips
-            const smartTips = generateSmartTips(data);
-            if(smartTips.length > 0) {
-                smartTipsList.innerHTML = smartTips.map(tip => `
-                    <li>
-                        <div class="notification-icon ${tip.type}">
-                            <i class="fas ${tip.icon}"></i>
-                        </div>
-                        <div class="notification-details">
-                           ${tip.text}
-                        </div>
-                    </li>
-                `).join('');
-            } else {
-                smartTipsList.innerHTML = `<li>Nenhuma dica especial por agora. Continue a registar as suas finanças!</li>`;
-            }
-
-            // Cashflow Forecast
-            renderCashflowForecast(data);
-        }
-
-        function generateSmartTips(data) {
-            const tips = [];
-            const now = new Date();
-            const currentMonth = now.getMonth();
-            const lastMonth = (now.getMonth() - 1 + 12) % 12;
-            const currentYear = now.getFullYear();
-            const lastMonthYear = lastMonth === 11 ? currentYear - 1 : currentYear;
-
-            // Tip 1: Spending increase
-            const expensesByCategoryThisMonth = {};
-            const expensesByCategoryLastMonth = {};
-            
-            data.transactions.forEach(t => {
-                const tDate = new Date(t.date);
-                if (t.type === 'despesa') {
-                    if(tDate.getMonth() === currentMonth && tDate.getFullYear() === currentYear) {
-                        expensesByCategoryThisMonth[t.category] = (expensesByCategoryThisMonth[t.category] || 0) + t.amount;
-                    }
-                    if(tDate.getMonth() === lastMonth && tDate.getFullYear() === lastMonthYear) {
-                         expensesByCategoryLastMonth[t.category] = (expensesByCategoryLastMonth[t.category] || 0) + t.amount;
-                    }
-                }
-            });
-
-            for(const category in expensesByCategoryThisMonth) {
-                const lastMonthAmount = expensesByCategoryLastMonth[category] || 0;
-                const thisMonthAmount = expensesByCategoryThisMonth[category];
-                if(lastMonthAmount > 0 && thisMonthAmount > lastMonthAmount * 1.2) { // 20% increase
-                     tips.push({ 
-                        type: 'warning', 
-                        icon: 'fa-chart-line',
-                        text: `Atenção: Os seus gastos com <strong>${category}</strong> aumentaram significativamente este mês em comparação com o mês passado.`
-                    });
-                }
-            }
-            
-            // Tip 2: Budget Alerts
-            data.budgets.forEach(b => {
-                let spent = 0;
-                data.transactions.forEach(t => {
-                    const tDate = new Date(t.date + 'T00:00:00');
-                    if (t.type === 'despesa' && t.category === b.category && isDateInPeriod(tDate, b.period, b.customPeriodDays)) {
-                        spent += t.amount;
-                    }
-                });
-                const progress = (b.amount > 0) ? (spent / b.amount) * 100 : 0;
-
-                if (progress >= 100) {
-                     tips.push({
-                        type: 'warning',
-                        icon: 'fa-exclamation-triangle',
-                        text: `Alerta: Excedeu o seu orçamento para <strong>${b.category}</strong>!`
-                    });
-                } else if (progress >= 90) {
-                    tips.push({
-                        type: 'warning',
-                        icon: 'fa-exclamation-circle',
-                        text: `Cuidado! Já gastou <strong>${progress.toFixed(0)}%</strong> do seu orçamento para <strong>${b.category}</strong>.`
-                    });
-                } else if (progress >= 50) {
-                    tips.push({
-                        type: 'tip',
-                        icon: 'fa-info-circle',
-                        text: `Informação: Já ultrapassou <strong>${progress.toFixed(0)}%</strong> do seu orçamento para <strong>${b.category}</strong>.`
-                    });
-                }
-            });
-
-            // Tip 3: Goal Alerts
-            data.goals.forEach(g => {
-                const progress = (g.target > 0) ? (g.saved / g.target) * 100 : 0;
-                if (progress >= 95 && progress < 100) {
-                    tips.push({
-                        type: 'praise',
-                        icon: 'fa-trophy',
-                        text: `Está quase a conseguir! Falta pouco para atingir a sua meta <strong>'${g.name}'</strong>.`
-                    });
-                } else if (progress >= 50) {
-                    tips.push({
-                        type: 'praise',
-                        icon: 'fa-star',
-                        text: `Excelente progresso! Já alcançou mais de metade da sua meta <strong>'${g.name}'</strong>. Continue assim!`
-                    });
-                }
-            });
-
-
-            // Tip 4: Largest expense
-            const monthlyExpenses = data.transactions.filter(t => {
-                const tDate = new Date(t.date);
-                return t.type === 'despesa' && tDate.getMonth() === currentMonth && tDate.getFullYear() === currentYear;
-            });
-            if(monthlyExpenses.length > 0) {
-                const largestExpense = monthlyExpenses.reduce((max, t) => t.amount > max.amount ? t : max, monthlyExpenses[0]);
-                tips.push({
-                    type: 'tip',
-                    icon: 'fa-search-dollar',
-                    text: `A sua maior despesa este mês foi de <strong>${formatCurrency(largestExpense.amount)}</strong> em <strong>${largestExpense.category}</strong>. É um gasto esperado?`
-                });
-            }
-
-            return tips;
-        }
-
-        function renderCashflowForecast(data) {
-            const now = new Date();
-            let totalBalance = data.accounts.reduce((sum, acc) => sum + acc.balance, 0);
-            
-            // Calculate average daily net income over the last 60 days
-            let totalNetIncomeLast60Days = 0;
-            const sixtyDaysAgo = new Date();
-            sixtyDaysAgo.setDate(now.getDate() - 60);
-
-            data.transactions.forEach(t => {
-                const tDate = new Date(t.date);
-                if (tDate >= sixtyDaysAgo) {
-                    totalNetIncomeLast60Days += (t.type === 'receita' ? t.amount : -t.amount);
-                }
-            });
-            
-            const averageDailyNet = totalNetIncomeLast60Days / 60;
-
-            const forecastLabels = [];
-            const forecastData = [];
-            
-            for(let i=0; i<30; i++) {
-                const forecastDate = new Date();
-                forecastDate.setDate(now.getDate() + i);
-                forecastLabels.push(forecastDate.toLocaleDateString('pt-PT', {day: '2-digit', month: '2-digit'}));
-                forecastData.push(totalBalance + (averageDailyNet * i));
-            }
-            
-            const isDarkMode = document.body.classList.contains('dark-mode');
-            const textColor = isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)';
-
-            renderChart('cashflow-chart', 'line', {
-                labels: forecastLabels,
-                datasets: [{
-                    label: 'Previsão de Saldo',
-                    data: forecastData,
-                    borderColor: 'var(--primary-color)',
-                    backgroundColor: 'rgba(74, 144, 226, 0.1)',
-                    fill: true,
-                    tension: 0.1
-                }]
-            }, {
-                plugins: { tooltip: { callbacks: { label: (context) => `Saldo previsto: ${formatCurrency(context.raw)}` } } },
-                scales: { 
-                    x: { ticks: { color: textColor } }, 
-                    y: { ticks: { color: textColor, callback: (value) => formatCurrency(value).replace(/,.*/, '') } } // Format Y axis
-                },
-            });
-        }
-
 
         function renderAccounts() {
             const data = getUserData();
             const grid = document.getElementById('accounts-grid');
-            const transferBtn = document.getElementById('transfer-btn');
             grid.innerHTML = '';
-
-            if (data.accounts.length >= 2) {
-                transferBtn.classList.remove('hidden');
-            } else {
-                transferBtn.classList.add('hidden');
-            }
-
             if (data.accounts.length === 0) {
                 grid.innerHTML = '<p>Nenhuma conta adicionada. Crie a sua primeira conta!</p>';
                 return;
@@ -2055,7 +1657,7 @@
             }
             
             data.goals.forEach(g => {
-                const progress = (g.target > 0) ? Math.min((g.saved / g.target) * 100, 100) : 0;
+                const progress = Math.min((g.saved / g.target) * 100, 100);
                 const startDate = new Date(g.startDate).toLocaleDateString('pt-PT');
                 const endDate = new Date(g.endDate).toLocaleDateString('pt-PT');
 
@@ -2184,11 +1786,6 @@
             document.getElementById('settings-display-currency').value = data.settings.displayCurrency;
             document.getElementById('settings-rate-usd').value = data.settings.exchangeRates.USD;
             document.getElementById('settings-rate-eur').value = data.settings.exchangeRates.EUR;
-            document.getElementById('settings-rate-gbp').value = data.settings.exchangeRates.GBP;
-            document.getElementById('settings-rate-brl').value = data.settings.exchangeRates.BRL;
-            // PIN
-            document.getElementById('settings-pin').value = '';
-            document.getElementById('settings-pin').placeholder = data.settings.pin ? 'PIN atual definido' : 'Definir novo PIN';
         }
         
         function renderChart(canvasId, type, data, options = {}) {
@@ -2214,14 +1811,12 @@
             select.innerHTML += `<option value="Outros">Outros (Adicionar Nova)...</option>`;
         }
         
-        function populateAccountSelect(selectId, excludeId = null) {
+        function populateAccountSelect(selectId) {
             const data = getUserData();
             const select = document.getElementById(selectId);
             select.innerHTML = '';
             data.accounts.forEach(acc => {
-                if (acc.id !== excludeId) {
-                    select.innerHTML += `<option value="${acc.id}">${acc.name}</option>`;
-                }
+                select.innerHTML += `<option value="${acc.id}">${acc.name}</option>`;
             });
         }
 
@@ -2259,52 +1854,6 @@
             updateUI();
             hideAllModals();
         });
-
-        // Transfer Logic
-        document.getElementById('transfer-btn').addEventListener('click', () => {
-            const fromSelect = document.getElementById('transfer-from');
-            const toSelect = document.getElementById('transfer-to');
-            
-            populateAccountSelect('transfer-from');
-            populateAccountSelect('transfer-to', parseInt(fromSelect.value));
-
-            fromSelect.addEventListener('change', () => {
-                 populateAccountSelect('transfer-to', parseInt(fromSelect.value));
-            });
-
-            document.getElementById('transfer-form').reset();
-            showModal('transfer-modal');
-        });
-
-        document.getElementById('transfer-form').addEventListener('submit', e => {
-            e.preventDefault();
-            const data = getUserData();
-            const fromId = parseInt(document.getElementById('transfer-from').value);
-            const toId = parseInt(document.getElementById('transfer-to').value);
-            const amount = parseFloat(document.getElementById('transfer-amount').value);
-
-            if (fromId === toId) {
-                alert('A conta de origem e destino não podem ser a mesma.');
-                return;
-            }
-
-            const fromAccount = data.accounts.find(a => a.id === fromId);
-            const toAccount = data.accounts.find(a => a.id === toId);
-
-            if (fromAccount.balance < amount) {
-                alert('Saldo insuficiente na conta de origem.');
-                return;
-            }
-
-            fromAccount.balance -= amount;
-            toAccount.balance += amount;
-
-            saveDataToStorage();
-            updateUI();
-            hideAllModals();
-            showToast('Transferência realizada com sucesso!');
-        });
-
 
         // Transaction CRUD
         function openTransactionModal(type = null) {
@@ -2507,23 +2056,11 @@
             const startDate = document.getElementById('goal-start-date').value;
             const endDate = document.getElementById('goal-end-date').value;
 
-            // Check if the user is trying to allocate more money than they have
-            let totalBalance = data.accounts.reduce((sum, acc) => sum + acc.balance, 0);
-            let totalCurrentlySaved = data.goals.reduce((sum, goal) => goal.id !== state.editingId ? sum + goal.saved : sum, 0);
-            
-            if (totalCurrentlySaved + saved > totalBalance) {
-                alert('Não pode alocar mais dinheiro às metas do que o saldo total das suas contas.');
-                return;
-            }
-
             const goalData = { id: Date.now(), name, target, saved, startDate, endDate };
             
             if (state.editingId) {
                 const index = data.goals.findIndex(g => g.id === state.editingId);
                 goalData.id = state.editingId;
-                // Preserve the original saved amount unless changed in the form
-                const originalGoal = data.goals[index];
-                goalData.saved = isNaN(saved) ? originalGoal.saved : saved;
                 data.goals[index] = goalData;
             } else {
                 data.goals.push(goalData);
@@ -2539,29 +2076,36 @@
             const data = getUserData();
             const goalId = parseInt(document.getElementById('contribute-goal-id').value);
             const amount = parseFloat(document.getElementById('contribute-amount').value);
-            
+            const accountId = parseInt(document.getElementById('contribute-from-account').value);
+
             const goal = data.goals.find(g => g.id === goalId);
+            const account = data.accounts.find(a => a.id === accountId);
 
-            // New logic: Check against available balance
-            let totalBalance = data.accounts.reduce((sum, acc) => sum + acc.balance, 0);
-            let totalSaved = data.goals.reduce((sum, g) => sum + g.saved, 0);
-            let availableBalance = totalBalance - totalSaved;
-
-            if (amount > availableBalance) {
-                 alert('Não pode poupar mais do que o seu saldo disponível (Saldo Total - Total Poupado).');
-                 return;
+            if (account.balance >= amount) {
+                // Add to goal
+                goal.saved += amount;
+                // Create expense transaction
+                data.transactions.push({
+                    id: Date.now(),
+                    type: 'despesa',
+                    amount,
+                    accountId,
+                    category: 'Metas',
+                    date: getTodayDate(),
+                    description: `Contribuição para: ${goal.name}`
+                });
+                // Update account balance
+                account.balance -= amount;
+                
+                saveDataToStorage();
+                updateUI();
+                hideAllModals();
+            } else {
+                alert('Saldo insuficiente na conta selecionada.');
             }
-
-            // Add to goal without creating a transaction
-            goal.saved += amount;
-            
-            saveDataToStorage();
-            updateUI();
-            hideAllModals();
-            showToast(`Adicionado ${formatCurrency(amount)} a ${goal.name}!`);
         });
 
-        // --- SETTINGS FORMS ---
+        // Settings Forms
         document.getElementById('profile-settings-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const data = getUserData();
@@ -2586,85 +2130,10 @@
             data.settings.displayCurrency = document.getElementById('settings-display-currency').value;
             data.settings.exchangeRates.USD = parseFloat(document.getElementById('settings-rate-usd').value);
             data.settings.exchangeRates.EUR = parseFloat(document.getElementById('settings-rate-eur').value);
-            data.settings.exchangeRates.GBP = parseFloat(document.getElementById('settings-rate-gbp').value);
-            data.settings.exchangeRates.BRL = parseFloat(document.getElementById('settings-rate-brl').value);
             saveDataToStorage();
             updateUI(); // Redraw everything with the new currency
             showToast('Definições de moeda atualizadas!');
         });
-        
-        // PIN Settings
-        document.getElementById('pin-settings-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const data = getUserData();
-            const pinInput = document.getElementById('settings-pin');
-            const newPin = pinInput.value;
-
-            if (newPin.length !== 6 || !/^\d{6}$/.test(newPin)) {
-                showToast('O PIN deve conter exatamente 6 dígitos numéricos.', 'error');
-                return;
-            }
-
-            data.settings.pin = newPin;
-            saveDataToStorage();
-            pinInput.value = '';
-            renderSettings(); // Update placeholder
-            showToast('PIN definido/alterado com sucesso!');
-        });
-
-        document.getElementById('remove-pin-btn').addEventListener('click', () => {
-            const data = getUserData();
-            if (data.settings.pin) {
-                data.settings.pin = null;
-                saveDataToStorage();
-                renderSettings();
-                showToast('PIN removido com sucesso!');
-            } else {
-                showToast('Nenhum PIN definido.', 'error');
-            }
-        });
-
-
-        // --- BACKUP AND RESTORE ---
-        document.getElementById('backup-btn').addEventListener('click', () => {
-            const dataToBackup = getUserData();
-            const jsonString = JSON.stringify(dataToBackup, null, 2);
-            const blob = new Blob([jsonString], {type: "application/json"});
-            saveAs(blob, `beijing_backup_${getTodayDate()}.json`);
-            showToast('Backup criado com sucesso!');
-        });
-        
-        document.getElementById('restore-btn').addEventListener('click', () => {
-             document.getElementById('restore-input').click();
-        });
-
-        document.getElementById('restore-input').addEventListener('change', (event) => {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                try {
-                    const restoredData = JSON.parse(e.target.result);
-                    // Basic validation
-                    if (restoredData.profile && restoredData.accounts && restoredData.transactions) {
-                        if (confirm('Tem a certeza? Isto irá substituir todos os seus dados atuais.')) {
-                            state.users[state.currentUser] = ensureDataStructure(restoredData);
-                            saveDataToStorage();
-                            showToast('Dados restaurados com sucesso! A recarregar...');
-                            setTimeout(() => window.location.reload(), 1500);
-                        }
-                    } else {
-                       showToast('Ficheiro de backup inválido.', 'error');
-                    }
-                } catch (error) {
-                    showToast('Erro ao ler o ficheiro de backup.', 'error');
-                }
-            };
-            reader.readAsText(file);
-            event.target.value = ''; // Reset input
-        });
-
 
         document.getElementById('logout-btn-settings').addEventListener('click', handleLogout);
 
@@ -2758,7 +2227,7 @@
                     const transaction = data.transactions.find(t => t.id === id);
                     const account = data.accounts.find(a => a.id === transaction.accountId);
                     if (account) {
-                       account.balance += (transaction.type === 'receita' ? -transaction.amount : transaction.amount);
+                       account.balance -= transaction.type === 'receita' ? transaction.amount : -transaction.amount;
                     }
                 }
                 
@@ -2780,66 +2249,29 @@
         function handleContribute(id, type) {
             if (type === 'goal') {
                 document.getElementById('contribute-goal-id').value = id;
-                document.getElementById('contribute-goal-form').reset();
+                populateAccountSelect('contribute-from-account');
                 showModal('contribute-goal-modal');
             }
         }
         
         // --- EXPORT FUNCTIONS ---
 
-        function getReportData(startDate, endDate) {
+        function getReportData() {
             const data = getUserData();
-            let transactionsToExport = data.transactions;
-
-            if (startDate && endDate) {
-                const start = new Date(startDate);
-                start.setHours(0, 0, 0, 0);
-                const end = new Date(endDate);
-                end.setHours(23, 59, 59, 999);
-                
-                transactionsToExport = data.transactions.filter(t => {
-                    const tDate = new Date(t.date);
-                    return tDate >= start && tDate <= end;
-                });
-            }
-
-            const incomes = transactionsToExport.filter(t => t.type === 'receita');
-            const expenses = transactionsToExport.filter(t => t.type === 'despesa');
+            const incomes = data.transactions.filter(t => t.type === 'receita');
+            const expenses = data.transactions.filter(t => t.type === 'despesa');
             const totalIncome = incomes.reduce((sum, t) => sum + t.amount, 0);
             const totalExpense = expenses.reduce((sum, t) => sum + t.amount, 0);
-            return { data, incomes, expenses, totalIncome, totalExpense, transactionsToExport };
-        }
-        
-        function handleExport(exportType) {
-            const startDate = document.getElementById('export-start-date').value;
-            const endDate = document.getElementById('export-end-date').value;
-
-            if ((startDate && !endDate) || (!startDate && endDate)) {
-                alert('Por favor, selecione uma data de início e de fim, ou deixe ambos os campos em branco para exportar tudo.');
-                return;
-            }
-            if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
-                alert('A data de início não pode ser posterior à data de fim.');
-                return;
-            }
-
-            const { transactionsToExport } = getReportData(startDate, endDate);
-            if (transactionsToExport.length === 0) {
-                alert('Nenhuma transação para exportar no período selecionado.');
-                return;
-            }
-
-            if (exportType === 'xls') exportToXLS(startDate, endDate);
-            if (exportType === 'doc') exportToDoc(startDate, endDate);
-            if (exportType === 'pdf') exportToPDF(startDate, endDate);
+            return { data, incomes, expenses, totalIncome, totalExpense };
         }
 
-        document.getElementById('export-xls-btn').addEventListener('click', () => handleExport('xls'));
-        document.getElementById('export-doc-btn').addEventListener('click', () => handleExport('doc'));
-        document.getElementById('export-pdf-btn').addEventListener('click', () => handleExport('pdf'));
+        document.getElementById('export-xls-btn').addEventListener('click', () => {
+            const { data, incomes, expenses, totalIncome, totalExpense } = getReportData();
+            if (data.transactions.length === 0) {
+                alert('Nenhuma transação para exportar.');
+                return;
+            }
 
-        function exportToXLS(startDate, endDate) {
-            const { data, incomes, expenses, totalIncome, totalExpense } = getReportData(startDate, endDate);
             const wb = XLSX.utils.book_new();
             const ws_data = [
                 ["Relatório Financeiro - Beijing"],
@@ -2879,16 +2311,11 @@
 
             XLSX.utils.book_append_sheet(wb, ws, 'Relatório');
             XLSX.writeFile(wb, `beijing_relatorio_${getTodayDate()}.xlsx`);
-        }
+        });
 
-        function generateReportHTML(startDate, endDate) {
-            const { data, incomes, expenses, totalIncome, totalExpense } = getReportData(startDate, endDate);
+        function generateReportHTML() {
+            const { data, incomes, expenses, totalIncome, totalExpense } = getReportData();
             const difference = totalIncome - totalExpense;
-            
-            let periodText = 'Todas as transações registadas';
-            if (startDate && endDate) {
-                periodText = `De ${new Date(startDate).toLocaleDateString('pt-PT')} a ${new Date(endDate).toLocaleDateString('pt-PT')}`;
-            }
 
             let analysisText;
             if (totalIncome > totalExpense) {
@@ -2899,22 +2326,17 @@
                 analysisText = `A análise do período reflete um equilíbrio financeiro. As receitas, totalizando <strong>${totalIncome.toFixed(2)} Kz</strong>, foram iguais às despesas.`;
             }
 
-            const logoSVG = `<svg width="150" height="40" viewBox="0 0 150 40" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="0" y="0" width="40" height="40" rx="8" fill="#D92D20"/>
-                                <text x="20" y="29" font-family="Arial, sans-serif" font-size="28" fill="white" text-anchor="middle" font-weight="bold">¥</text>
-                                <text x="50" y="29" font-family="'Poppins', sans-serif" font-size="28" font-weight="600" fill="#333333">Beijing</text>
-                            </svg>`;
+            const logoBase64 = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTUwIDQwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSI0MCIgaGVpZHRoPSI0MCIgcng9IjgiIGZpbGw9IiNGMDUyNTIiLz48dGV4dCB4PSIyMCIgeT0iMjkiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyOCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaGyPSJtaWRkbGUiIGZvbnQtd2VpZ2h0PSJib2xkIj7CsTwvdGV4dD48dGV4dCB4PSI1MCIgeT0iMjkiIGZvbnQtZmFtaWx5PSJQb3BwaW5zLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjI4IiBmb250LXdlaWdodD0iNjAwIiBmaWxsPSIjMzMzMzMzIj5CZWlqaW5nPC90ZXh0Pjwvc3ZnPg==';
 
             return `
                 <div style="font-family: Arial, sans-serif; margin: 40px; color: #000;">
-                    <header style="text-align: center; border-bottom: 1px solid #ccc; padding-bottom: 10px; display: flex; align-items: center; justify-content: center;">
-                        ${logoSVG}
+                    <header style="text-align: center; border-bottom: 1px solid #ccc; padding-bottom: 10px;">
+                        <img src="${logoBase64}" alt="Beijing Logo" style="width: 150px; height: 40px;">
+                        <h1 style="font-size: 24px; color: #333;">Relatório Financeiro</h1>
                     </header>
-                    <h1 style="font-size: 24px; color: #333; text-align: center; margin-top: 20px;">Relatório Financeiro</h1>
                     <section style="margin-top: 30px;">
                         <p><strong>Utilizador:</strong> ${data.profile.name}</p>
                         <p><strong>Data de Emissão:</strong> ${new Date().toLocaleDateString('pt-PT')}</p>
-                        <p><strong>Período do Relatório:</strong> ${periodText}</p>
                     </section>
                     <section style="margin-top: 30px;">
                         <h2 style="font-size: 18px; color: #333; border-bottom: 1px solid #eee; padding-bottom: 5px;">Análise Sumária</h2>
@@ -2983,14 +2405,27 @@
             `;
         }
         
-        function exportToDoc(startDate, endDate) {
-            const contentHtml = generateReportHTML(startDate, endDate);
+        // --- WORD EXPORT ---
+        document.getElementById('export-doc-btn').addEventListener('click', () => {
+            const { data } = getReportData();
+            if (data.transactions.length === 0) {
+                alert('Nenhuma transação para exportar.');
+                return;
+            }
+            const contentHtml = generateReportHTML();
             const converted = htmlDocx.asBlob(contentHtml);
             saveAs(converted, `beijing_relatorio_${getTodayDate()}.doc`);
-        }
+        });
 
-        function exportToPDF(startDate, endDate) {
-            const reportHtml = generateReportHTML(startDate, endDate);
+        // --- PDF EXPORT ---
+        document.getElementById('export-pdf-btn').addEventListener('click', () => {
+            const { data } = getReportData();
+            if (data.transactions.length === 0) {
+                alert('Nenhuma transação para exportar.');
+                return;
+            }
+            
+            const reportHtml = generateReportHTML();
             const printContainer = document.createElement('div');
             printContainer.style.position = 'absolute';
             printContainer.style.left = '-9999px';
@@ -3027,48 +2462,12 @@
                 pdf.save(`beijing_relatorio_${getTodayDate()}.pdf`);
                 document.body.removeChild(printContainer);
             });
-        }
-        
-        // --- PIN Lock ---
-        function showPinScreen() {
-            pinLockScreen.classList.remove('hidden');
-            document.getElementById('pin-input').focus();
-        }
-
-        document.getElementById('pin-input').addEventListener('input', () => {
-            const input = document.getElementById('pin-input');
-            if (input.value.length === 6) {
-                const data = getUserData();
-                const pinContainer = document.getElementById('pin-container');
-
-                if (input.value === data.settings.pin) {
-                    pinLockScreen.classList.add('hidden');
-                    input.value = ''; // Clear input for next time
-                } else {
-                    showToast('PIN incorreto.', 'error');
-                    pinContainer.classList.add('shake');
-                    setTimeout(() => {
-                        input.value = '';
-                        pinContainer.classList.remove('shake');
-                    }, 500);
-                }
-            }
         });
-
 
         // --- APP INITIALIZATION ---
         function initApp() {
-            const data = getUserData();
-            
             authPage.classList.add('hidden');
             appPage.classList.remove('hidden');
-            
-            if (data.settings.pin) {
-                showPinScreen();
-            } else {
-                pinLockScreen.classList.add('hidden');
-            }
-
             navigateTo('dashboard');
         }
 
@@ -3084,5 +2483,3 @@
     </script>
 </body>
 </html>
-
-
