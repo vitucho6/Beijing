@@ -48,12 +48,18 @@
 
         html {
             scroll-behavior: smooth;
+            box-sizing: border-box;
+        }
+        
+        *, *:before, *:after {
+            box-sizing: inherit;
         }
 
         body {
             font-family: 'Poppins', sans-serif;
             margin: 0;
             transition: background-color 0.3s, color 0.3s;
+            min-height: 100vh;
         }
 
         body.light-mode {
@@ -94,6 +100,7 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            padding: 20px;
         }
 
         .auth-container {
@@ -125,7 +132,7 @@
             font-weight: 500;
         }
 
-        .auth-form input {
+        .auth-form input, .auth-form select {
             width: 100%;
             padding: 12px;
             border-radius: 8px;
@@ -134,18 +141,18 @@
             transition: background-color 0.3s, border-color 0.3s;
         }
 
-        body.light-mode .auth-form input {
+        body.light-mode .auth-form input, body.light-mode .auth-form select {
             background-color: var(--light-bg);
             border-color: var(--light-border);
             color: var(--light-text);
         }
-        body.dark-mode .auth-form input {
+        body.dark-mode .auth-form input, body.dark-mode .auth-form select {
             background-color: var(--dark-bg);
             border-color: var(--dark-border);
             color: var(--dark-text);
         }
 
-        .auth-form input:focus {
+        .auth-form input:focus, .auth-form select:focus {
             outline: none;
             border-color: var(--primary-color);
         }
@@ -188,6 +195,7 @@
         /* --- Main App --- */
         #app-page {
             display: flex;
+            min-height: 100vh;
         }
 
         #sidebar {
@@ -201,8 +209,8 @@
             flex-direction: column;
             border-right: 1px solid;
             transition: background-color 0.3s, border-color 0.3s;
-            box-sizing: border-box;
             z-index: 100;
+            overflow-y: auto;
         }
         
         body.light-mode #sidebar { background-color: var(--light-card); border-color: var(--light-border); }
@@ -213,6 +221,7 @@
             justify-content: center;
             align-items: center;
             margin-bottom: 30px;
+            flex-shrink: 0;
         }
         
         #mobile-menu-btn {
@@ -221,6 +230,7 @@
             border: none;
             font-size: 1.5rem;
             cursor: pointer;
+            margin-right: 15px;
         }
         body.light-mode #mobile-menu-btn { color: var(--light-text); }
         body.dark-mode #mobile-menu-btn { color: var(--dark-text); }
@@ -262,6 +272,8 @@
 
         .sidebar-footer {
             margin-top: auto;
+            padding-top: 20px;
+            flex-shrink: 0;
         }
         
         .theme-switch-wrapper {
@@ -318,11 +330,13 @@
             margin-left: 250px;
             width: calc(100% - 250px);
             padding: 30px;
+            min-height: 100vh;
         }
         
         /* Main Content Sections */
         .content-section {
             animation: fadeIn 0.5s;
+            padding-bottom: 50px;
         }
 
         @keyframes fadeIn {
@@ -352,6 +366,7 @@
             font-weight: 500;
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
+            white-space: nowrap;
         }
         .btn:hover {
             transform: translateY(-2px);
@@ -360,6 +375,7 @@
         .btn-primary { background-color: var(--primary-color); }
         .btn-success { background-color: var(--success-color); }
         .btn-danger { background-color: var(--danger-color); }
+        .btn-secondary { background-color: #6c757d; }
 
         /* Dashboard */
         .dashboard-grid {
@@ -373,6 +389,7 @@
             border-radius: 12px;
             box-shadow: var(--shadow);
             transition: background-color 0.3s;
+            overflow: hidden; 
         }
         body.light-mode .summary-card, body.light-mode .card { background-color: var(--light-card); }
         body.dark-mode .summary-card, body.dark-mode .card { background-color: var(--dark-card); }
@@ -386,6 +403,7 @@
         .summary-card .amount {
             font-size: 2rem;
             font-weight: 700;
+            word-wrap: break-word;
         }
         
         .card-header {
@@ -393,6 +411,8 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
         }
         
         .card-header h3 {
@@ -401,7 +421,7 @@
         
         .quick-actions {
             display: flex;
-            gap: 15px;
+            gap: 10px;
             flex-wrap: wrap;
         }
         
@@ -437,17 +457,35 @@
         .notification-icon.tip { background-color: var(--primary-color); }
         .notification-icon.warning { background-color: var(--warning-color); }
         .notification-icon.praise { background-color: var(--secondary-color); }
-
         
+        .recurring-badge {
+            font-size: 0.7rem;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
         .transaction-details, .notification-details {
             flex-grow: 1;
+            min-width: 0; 
         }
-        .transaction-details .description { font-weight: 600; }
+        .transaction-details .description { 
+            font-weight: 600; 
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: flex;
+            align-items: center;
+        }
         .transaction-details .category { font-size: 0.9rem; opacity: 0.7; }
         
         .transaction-amount {
             font-weight: 600;
             font-size: 1.1rem;
+            white-space: nowrap;
         }
         .transaction-amount.receita { color: var(--success-color); }
         .transaction-amount.despesa { color: var(--danger-color); }
@@ -455,7 +493,7 @@
         /* Accounts, Budgets, Goals Grid */
         .item-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 20px;
         }
         
@@ -510,6 +548,7 @@
             align-items: center;
             z-index: 1000;
             animation: fadeIn 0.3s;
+            padding: 20px; 
         }
         
         .modal-content {
@@ -519,6 +558,8 @@
             border-radius: 12px;
             position: relative;
             animation: slideIn 0.3s;
+            max-height: 90vh; 
+            overflow-y: auto;
         }
         body.light-mode .modal-content { background-color: var(--light-card); }
         body.dark-mode .modal-content { background-color: var(--dark-card); }
@@ -550,12 +591,12 @@
         .modal-form .form-group, .settings-form .form-group, #export-filters .form-group {
             margin-bottom: 15px;
         }
-        .modal-form label, .settings-form label, #export-filters label {
+        .modal-form label, .settings-form label, #export-filters label, #transaction-search-filters label {
             display: block;
             margin-bottom: 5px;
             font-weight: 500;
         }
-        .modal-form input, .modal-form select, .settings-form input, .settings-form select, #export-filters input {
+        .modal-form input, .modal-form select, .settings-form input, .settings-form select, #export-filters input, #transaction-search-filters input, #transaction-search-filters select {
             width: 100%;
             padding: 10px;
             border-radius: 8px;
@@ -564,14 +605,14 @@
         }
         body.light-mode .modal-form input, body.light-mode .modal-form select,
         body.light-mode .settings-form input, body.light-mode .settings-form select,
-        body.light-mode #export-filters input {
+        body.light-mode #export-filters input, body.light-mode #transaction-search-filters input, body.light-mode #transaction-search-filters select {
             background-color: var(--light-bg);
             border-color: var(--light-border);
             color: var(--light-text);
         }
         body.dark-mode .modal-form input, body.dark-mode .modal-form select,
         body.dark-mode .settings-form input, body.dark-mode .settings-form select,
-        body.dark-mode #export-filters input {
+        body.dark-mode #export-filters input, body.dark-mode #transaction-search-filters input, body.dark-mode #transaction-search-filters select {
             background-color: var(--dark-bg);
             border-color: var(--dark-border);
             color: var(--dark-text);
@@ -602,6 +643,22 @@
             color: white;
         }
 
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            transform: scale(1.2);
+            cursor: pointer;
+        }
+        .checkbox-group label {
+            margin-bottom: 0;
+            cursor: pointer;
+        }
+
         .toast {
             position: fixed;
             bottom: 20px;
@@ -615,6 +672,8 @@
             opacity: 0;
             transition: opacity 0.5s, bottom 0.5s;
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            text-align: center;
+            max-width: 90%;
         }
         .toast.show {
             opacity: 1;
@@ -632,15 +691,7 @@
             cursor: pointer;
             opacity: 0.6;
             transition: opacity 0.2s;
-        }
-        .password-group .toggle-password {
-            /* Adjust for inputs without labels inside the group */
-            top: auto;
-            bottom: 13px;
-        }
-        .form-group > .password-group .toggle-password {
-            /* Adjust for inputs with labels outside the group */
-            top: 50%;
+            z-index: 2;
         }
 
         .toggle-password:hover {
@@ -705,23 +756,33 @@
                 position: relative;
                 border-right: none;
                 border-bottom: 1px solid;
-                padding: 10px 15px;
+                padding: 15px;
                 flex-direction: column;
-                align-items: flex-start;
+                align-items: center;
+                display: block; 
             }
             .sidebar-header {
+                display: flex;
                 justify-content: space-between;
                 width: 100%;
                 margin-bottom: 0;
+                align-items: center;
             }
             
             #mobile-menu-btn {
                 display: block;
+                order: 0;
             }
+            
+            #app-logo {
+                order: 1;
+            }
+            
             #sidebar-collapsible-content {
                 display: none;
                 width: 100%;
-                margin-top: 10px;
+                margin-top: 20px;
+                flex-direction: column;
             }
             #sidebar.mobile-nav-open #sidebar-collapsible-content {
                 display: flex;
@@ -730,9 +791,19 @@
                 margin-left: 0;
                 width: 100%;
                 padding: 15px;
+                min-height: auto;
             }
             .page-header h2 {
                 font-size: 1.5rem;
+            }
+            
+            /* Stack export and search filters on mobile */
+            #export-filters .dashboard-grid, #transaction-search-filters.dashboard-grid {
+                grid-template-columns: 1fr !important;
+                align-items: stretch !important;
+            }
+            #export-filters .form-group, #transaction-search-filters .form-group {
+                margin-bottom: 10px;
             }
         }
     </style>
@@ -922,7 +993,7 @@
                     </div>
                     <div class="card">
                         <div class="card-header">
-                            <h3>Análises e Informações</h3>
+                            <h3>Alertas e Análises</h3>
                         </div>
                         <div class="notification-list">
                             <ul id="smart-tips-list">
@@ -957,19 +1028,30 @@
                         <button class="btn btn-danger" id="export-pdf-btn"><i class="fas fa-file-pdf"></i> <span>Exportar (PDF)</span></button>
                     </div>
                 </div>
-                <div id="export-filters" class="card" style="margin-bottom: 20px;">
-                    <h3 style="margin-top:0;">Filtros de Exportação</h3>
-                    <div class="dashboard-grid" style="align-items: flex-end; grid-template-columns: 1fr 1fr auto;">
-                        <div class="form-group">
-                            <label for="export-start-date">Data de Início</label>
-                            <input type="date" id="export-start-date">
+                
+                <!-- Pesquisa e Filtros -->
+                <div class="card" style="margin-bottom: 20px; padding: 15px 25px;">
+                    <h3 style="margin-top: 0; font-size: 1.1rem;">Filtros e Pesquisa</h3>
+                    <div id="transaction-search-filters" class="dashboard-grid" style="grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 15px;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <input type="text" id="search-input" placeholder="🔍 Pesquisar descrição...">
                         </div>
-                        <div class="form-group">
-                            <label for="export-end-date">Data de Fim</label>
-                            <input type="date" id="export-end-date">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <select id="filter-type">
+                                <option value="all">Todos os Tipos</option>
+                                <option value="receita">Apenas Receitas</option>
+                                <option value="despesa">Apenas Despesas</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <select id="filter-category"><option value="all">Todas as Categorias</option></select>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <select id="filter-account"><option value="all">Todas as Contas</option></select>
                         </div>
                     </div>
                 </div>
+
                 <div class="card">
                     <div class="transaction-list">
                         <ul id="full-transactions-list">
@@ -1009,10 +1091,12 @@
                 <div class="dashboard-grid">
                     <div class="card">
                         <h3>Despesas por Categoria (Mês)</h3>
+                        <p style="font-size: 0.8rem; opacity: 0.7; margin-top: -10px;">Clique numa fatia para ver detalhes</p>
                         <canvas id="expenses-by-category-chart"></canvas>
                     </div>
                     <div class="card">
                         <h3>Receitas por Categoria (Mês)</h3>
+                        <p style="font-size: 0.8rem; opacity: 0.7; margin-top: -10px;">Clique numa fatia para ver detalhes</p>
                         <canvas id="income-by-category-chart"></canvas>
                     </div>
                 </div>
@@ -1116,6 +1200,19 @@
 
     <!-- =========== MODALS =========== -->
     <div id="modal-container">
+        
+        <!-- Drilldown Modal para Gráficos -->
+        <div id="drilldown-modal" class="modal-overlay hidden">
+            <div class="modal-content">
+                <button class="modal-close-btn">&times;</button>
+                <h3 id="drilldown-title">Detalhes da Categoria</h3>
+                <p id="drilldown-subtitle" style="text-align: center; opacity: 0.8; margin-top: -20px; margin-bottom: 20px;"></p>
+                <div class="transaction-list">
+                    <ul id="drilldown-list"></ul>
+                </div>
+            </div>
+        </div>
+
         <!-- Transfer Modal -->
         <div id="transfer-modal" class="modal-overlay hidden">
             <div class="modal-content">
@@ -1172,6 +1269,22 @@
                         <label for="transaction-date">Data</label>
                         <input type="date" id="transaction-date" required>
                     </div>
+                    
+                    <!-- Secção de Transação Recorrente -->
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="transaction-is-recurring">
+                        <label for="transaction-is-recurring">Repetir esta transação automaticamente</label>
+                    </div>
+                    <div class="form-group hidden" id="recurring-frequency-group">
+                        <label for="transaction-frequency">Frequência</label>
+                        <select id="transaction-frequency">
+                            <option value="daily">Diariamente</option>
+                            <option value="weekly">Semanalmente</option>
+                            <option value="monthly" selected>Mensalmente</option>
+                            <option value="yearly">Anualmente</option>
+                        </select>
+                    </div>
+
                     <div class="form-group">
                         <label for="transaction-description">Descrição (opcional)</label>
                         <input type="text" id="transaction-description">
@@ -1282,6 +1395,10 @@
                         <label for="contribute-amount">Valor a Contribuir (Kz)</label>
                         <input type="number" id="contribute-amount" step="0.01" required>
                     </div>
+                    <div class="form-group">
+                        <label for="contribute-from-account">Retirar da Conta</label>
+                        <select id="contribute-from-account" required></select>
+                    </div>
                     <button type="submit" class="btn btn-primary">Contribuir</button>
                 </form>
             </div>
@@ -1360,7 +1477,7 @@
                 }).format(displayValue);
                 
                 if (displayCurrency === 'AOA') {
-                    formatted = formatted.replace('AOA', 'Kz').replace(/\s/g, ''); // Remove space for Kz
+                    formatted = formatted.replace('AOA', 'Kz').replace(/\s/g, ''); 
                 }
                 return formatted;
 
@@ -1372,6 +1489,15 @@
         }
 
         const getTodayDate = () => new Date().toISOString().split('T')[0];
+        
+        function calculateNextDate(dateStr, frequency) {
+            const d = new Date(dateStr);
+            if (frequency === 'daily') d.setDate(d.getDate() + 1);
+            if (frequency === 'weekly') d.setDate(d.getDate() + 7);
+            if (frequency === 'monthly') d.setMonth(d.getMonth() + 1);
+            if (frequency === 'yearly') d.setFullYear(d.getFullYear() + 1);
+            return d.toISOString().split('T')[0];
+        }
 
         function showToast(message, type = 'success') {
             toast.textContent = message;
@@ -1382,7 +1508,7 @@
             }, 3000);
         }
 
-        // --- DATA PERSISTENCE (localStorage) ---
+        // --- DATA PERSISTENCE & RECURRING LOGIC ---
         function loadDataFromStorage() {
             const data = localStorage.getItem('beijing_app_data');
             if (data) {
@@ -1391,6 +1517,8 @@
             const loggedInUser = localStorage.getItem('beijing_logged_in');
             if (loggedInUser && state.users[loggedInUser]) {
                 state.currentUser = loggedInUser;
+                state.users[state.currentUser] = ensureDataStructure(state.users[state.currentUser]);
+                processRecurringTransactions(state.users[state.currentUser]);
             }
             const theme = localStorage.getItem('beijing_theme');
             if (theme) {
@@ -1408,20 +1536,49 @@
             return state.users[state.currentUser];
         }
 
-        // --- DATA STRUCTURE MIGRATION ---
+        function processRecurringTransactions(data) {
+            let hasChanges = false;
+            const today = getTodayDate();
+            
+            data.transactions.forEach(t => {
+                if (t.isRecurring && t.nextOccurrence && t.nextOccurrence <= today) {
+                    // Loop to catch up if multiple periods have passed
+                    while (t.nextOccurrence <= today) {
+                        const newId = Date.now() + Math.random();
+                        const newTransaction = {
+                            id: newId,
+                            type: t.type,
+                            amount: t.amount,
+                            accountId: t.accountId,
+                            category: t.category,
+                            date: t.nextOccurrence,
+                            description: t.description ? t.description + ' (Auto)' : 'Transação Automática',
+                            isRecurring: false, // The newly generated one is just a standard record
+                            nextOccurrence: null
+                        };
+                        data.transactions.push(newTransaction);
+                        
+                        const account = data.accounts.find(a => a.id === t.accountId);
+                        if (account) {
+                            account.balance += t.type === 'receita' ? t.amount : -t.amount;
+                        }
+                        
+                        t.nextOccurrence = calculateNextDate(t.nextOccurrence, t.frequency);
+                        hasChanges = true;
+                    }
+                }
+            });
+            
+            if (hasChanges) {
+                saveDataToStorage();
+            }
+        }
+
         function ensureDataStructure(userData) {
-            if (!userData.settings) {
-                userData.settings = {};
-            }
-            if (!userData.settings.displayCurrency) {
-                 userData.settings.displayCurrency = 'AOA';
-            }
-            if (!userData.settings.exchangeRates) {
-                 userData.settings.exchangeRates = {};
-            }
-            if (userData.settings.pin === undefined) {
-                userData.settings.pin = null;
-            }
+            if (!userData.settings) userData.settings = {};
+            if (!userData.settings.displayCurrency) userData.settings.displayCurrency = 'AOA';
+            if (!userData.settings.exchangeRates) userData.settings.exchangeRates = {};
+            if (userData.settings.pin === undefined) userData.settings.pin = null;
 
             const defaultRates = { USD: 850.00, EUR: 920.00, GBP: 1050.00, BRL: 160.00, AOA: 1.0 };
             for(const currency in defaultRates) {
@@ -1430,12 +1587,9 @@
                 }
             }
 
-            if (!userData.categories) {
-                userData.categories = JSON.parse(JSON.stringify(defaultCategories));
-            }
-            if (!userData.goals) {
-                userData.goals = [];
-            }
+            if (!userData.categories) userData.categories = JSON.parse(JSON.stringify(defaultCategories));
+            if (!userData.goals) userData.goals = [];
+            
             userData.goals.forEach(goal => {
                 if (!goal.startDate) goal.startDate = getTodayDate();
                 if (!goal.endDate) goal.endDate = getTodayDate();
@@ -1445,6 +1599,11 @@
                     if (budget.period === 'custom' && !budget.customPeriodDays) {
                         budget.customPeriodDays = 30;
                     }
+                });
+            }
+            if (userData.transactions) {
+                userData.transactions.forEach(t => {
+                    if (t.isRecurring === undefined) t.isRecurring = false;
                 });
             }
 
@@ -1476,7 +1635,7 @@
                 link.classList.toggle('active', link.getAttribute('href') === `#${viewId}`);
             });
             state.currentView = viewId;
-            updateUI(); // Update UI whenever view changes
+            updateUI();
         }
 
         document.getElementById('main-nav').addEventListener('click', e => {
@@ -1485,7 +1644,6 @@
             if (link) {
                 const viewId = link.getAttribute('href').substring(1);
                 navigateTo(viewId);
-                // Close mobile menu after navigation
                 if (sidebar.classList.contains('mobile-nav-open')) {
                     sidebar.classList.remove('mobile-nav-open');
                 }
@@ -1497,7 +1655,6 @@
             navigateTo('transactions');
         });
 
-        // --- MOBILE NAVIGATION ---
         mobileMenuBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             sidebar.classList.toggle('mobile-nav-open');
@@ -1509,7 +1666,6 @@
             }
         });
 
-        // --- PASSWORD TOGGLE VISIBILITY ---
         document.body.addEventListener('click', (e) => {
             if (e.target.classList.contains('toggle-password')) {
                 const targetId = e.target.dataset.target;
@@ -1532,7 +1688,6 @@
         function handleLogin(email, password) {
             if (state.users[email] && state.users[email].profile.password === password) {
                 state.currentUser = email;
-                // Ensure data structure is up-to-date for old accounts
                 state.users[email] = ensureDataStructure(state.users[email]);
                 saveDataToStorage();
                 
@@ -1554,16 +1709,11 @@
                 transactions: [],
                 budgets: [],
                 goals: [],
-                categories: JSON.parse(JSON.stringify(defaultCategories)), // Deep copy
+                categories: JSON.parse(JSON.stringify(defaultCategories)), 
                 settings: {
                     displayCurrency: 'AOA',
                     pin: null,
-                    exchangeRates: {
-                        USD: 850.00, 
-                        EUR: 920.00,
-                        GBP: 1050.00,
-                        BRL: 160.00
-                    }
+                    exchangeRates: { USD: 850.00, EUR: 920.00, GBP: 1050.00, BRL: 160.00 }
                 }
             };
             saveDataToStorage();
@@ -1625,7 +1775,6 @@
             loginView.classList.remove('hidden');
         });
         
-        // --- THEME SWITCHER ---
         document.getElementById('theme-toggle').addEventListener('change', function() {
             if (this.checked) {
                 document.body.classList.remove('light-mode');
@@ -1636,7 +1785,7 @@
                 document.body.classList.add('light-mode');
                 localStorage.setItem('beijing_theme', 'light');
             }
-            updateUI(); // Redraw charts with new theme colors
+            updateUI(); 
         });
 
         // --- UI RENDERING ---
@@ -1687,7 +1836,6 @@
             document.getElementById('monthly-income').textContent = formatCurrency(monthlyIncome);
             document.getElementById('monthly-expenses').textContent = formatCurrency(monthlyExpenses);
 
-            // Render recent transactions
             const recentTransactionsList = document.getElementById('recent-transactions-list');
             recentTransactionsList.innerHTML = '';
             const recentTransactions = [...data.transactions].sort((a,b) => new Date(b.date) - new Date(a.date)).slice(0, 5);
@@ -1699,12 +1847,11 @@
                 });
             }
             
-            // Render dashboard chart
             renderChart('dashboard-chart', 'bar', {
                 labels: ['Receitas', 'Despesas'],
                 datasets: [{
                     label: `Este Mês (${data.settings.displayCurrency})`,
-                    data: [monthlyIncome, monthlyExpenses], // Data is always in AOA for charts
+                    data: [monthlyIncome, monthlyExpenses],
                     backgroundColor: [ 'rgba(126, 211, 33, 0.6)', 'rgba(233, 78, 119, 0.6)' ],
                     borderColor: [ 'rgb(126, 211, 33)', 'rgb(233, 78, 119)' ],
                     borderWidth: 1
@@ -1720,7 +1867,6 @@
             const motivationalList = document.getElementById('motivational-tip-list');
             const smartTipsList = document.getElementById('smart-tips-list');
             
-            // Motivational Tip of the Day
             const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
             const tipIndex = dayOfYear % motivationalTips.length;
             motivationalList.innerHTML = `
@@ -1734,7 +1880,6 @@
                 </li>
             `;
 
-            // Smart Tips
             const smartTips = generateSmartTips(data);
             if(smartTips.length > 0) {
                 smartTipsList.innerHTML = smartTips.map(tip => `
@@ -1751,7 +1896,6 @@
                 smartTipsList.innerHTML = `<li>Nenhuma dica especial por agora. Continue a registar as suas finanças!</li>`;
             }
 
-            // Cashflow Forecast
             renderCashflowForecast(data);
         }
 
@@ -1763,7 +1907,6 @@
             const currentYear = now.getFullYear();
             const lastMonthYear = lastMonth === 11 ? currentYear - 1 : currentYear;
 
-            // Tip 1: Spending increase
             const expensesByCategoryThisMonth = {};
             const expensesByCategoryLastMonth = {};
             
@@ -1782,7 +1925,7 @@
             for(const category in expensesByCategoryThisMonth) {
                 const lastMonthAmount = expensesByCategoryLastMonth[category] || 0;
                 const thisMonthAmount = expensesByCategoryThisMonth[category];
-                if(lastMonthAmount > 0 && thisMonthAmount > lastMonthAmount * 1.2) { // 20% increase
+                if(lastMonthAmount > 0 && thisMonthAmount > lastMonthAmount * 1.2) { 
                      tips.push({ 
                         type: 'warning', 
                         icon: 'fa-chart-line',
@@ -1791,7 +1934,6 @@
                 }
             }
             
-            // Tip 2: Budget Alerts
             data.budgets.forEach(b => {
                 let spent = 0;
                 data.transactions.forEach(t => {
@@ -1823,7 +1965,6 @@
                 }
             });
 
-            // Tip 3: Goal Alerts
             data.goals.forEach(g => {
                 const progress = (g.target > 0) ? (g.saved / g.target) * 100 : 0;
                 if (progress >= 95 && progress < 100) {
@@ -1841,8 +1982,6 @@
                 }
             });
 
-
-            // Tip 4: Largest expense
             const monthlyExpenses = data.transactions.filter(t => {
                 const tDate = new Date(t.date);
                 return t.type === 'despesa' && tDate.getMonth() === currentMonth && tDate.getFullYear() === currentYear;
@@ -1863,7 +2002,6 @@
             const now = new Date();
             let totalBalance = data.accounts.reduce((sum, acc) => sum + acc.balance, 0);
             
-            // Calculate average daily net income over the last 60 days
             let totalNetIncomeLast60Days = 0;
             const sixtyDaysAgo = new Date();
             sixtyDaysAgo.setDate(now.getDate() - 60);
@@ -1904,7 +2042,7 @@
                 plugins: { tooltip: { callbacks: { label: (context) => `Saldo previsto: ${formatCurrency(context.raw)}` } } },
                 scales: { 
                     x: { ticks: { color: textColor } }, 
-                    y: { ticks: { color: textColor, callback: (value) => formatCurrency(value).replace(/,.*/, '') } } // Format Y axis
+                    y: { ticks: { color: textColor, callback: (value) => formatCurrency(value).replace(/,.*/, '') } } 
                 },
             });
         }
@@ -1943,13 +2081,14 @@
         function createTransactionHTML(t) {
             const iconClass = t.type === 'receita' ? 'fa-arrow-up' : 'fa-arrow-down';
             const amountClass = t.type;
+            const recurringBadge = t.isRecurring ? `<span class="recurring-badge"><i class="fas fa-sync-alt"></i></span>` : '';
             return `
                 <li data-id="${t.id}">
                     <div class="transaction-icon ${t.type}">
                         <i class="fas ${iconClass}"></i>
                     </div>
                     <div class="transaction-details">
-                        <div class="description">${t.description || t.category}</div>
+                        <div class="description">${t.description || t.category} ${recurringBadge}</div>
                         <div class="category">${t.category} &bull; ${new Date(t.date).toLocaleDateString('pt-PT')}</div>
                     </div>
                     <div class="transaction-amount ${amountClass}">
@@ -1963,16 +2102,77 @@
             `;
         }
 
+        // Search and Filters Logic
+        const searchInput = document.getElementById('search-input');
+        const filterType = document.getElementById('filter-type');
+        const filterCategory = document.getElementById('filter-category');
+        const filterAccount = document.getElementById('filter-account');
+
+        [searchInput, filterType, filterCategory, filterAccount].forEach(el => {
+            el.addEventListener('input', renderTransactions);
+            el.addEventListener('change', renderTransactions);
+        });
+
+        function populateFilters() {
+            const data = getUserData();
+            
+            // Category Filter (All categories combined)
+            const allCats = new Set([...data.categories.receita, ...data.categories.despesa]);
+            filterCategory.innerHTML = '<option value="all">Todas as Categorias</option>';
+            allCats.forEach(cat => {
+                filterCategory.innerHTML += `<option value="${cat}">${cat}</option>`;
+            });
+
+            // Account Filter
+            filterAccount.innerHTML = '<option value="all">Todas as Contas</option>';
+            data.accounts.forEach(acc => {
+                filterAccount.innerHTML += `<option value="${acc.id}">${acc.name}</option>`;
+            });
+        }
+
         function renderTransactions() {
             const data = getUserData();
+            if(state.currentView === 'transactions') populateFilters();
+
             const list = document.getElementById('full-transactions-list');
+            if(!list) return;
+
             list.innerHTML = '';
-            const sortedTransactions = [...data.transactions].sort((a,b) => new Date(b.date) - new Date(a.date));
-            if (sortedTransactions.length === 0) {
-                list.innerHTML = '<li>Nenhuma transação encontrada.</li>';
+            
+            let filteredTransactions = [...data.transactions];
+
+            // Apply Search
+            const searchTerm = searchInput.value.toLowerCase();
+            if (searchTerm) {
+                filteredTransactions = filteredTransactions.filter(t => 
+                    (t.description || '').toLowerCase().includes(searchTerm) ||
+                    t.category.toLowerCase().includes(searchTerm)
+                );
+            }
+
+            // Apply Type Filter
+            if (filterType.value !== 'all') {
+                filteredTransactions = filteredTransactions.filter(t => t.type === filterType.value);
+            }
+
+            // Apply Category Filter
+            if (filterCategory.value !== 'all') {
+                filteredTransactions = filteredTransactions.filter(t => t.category === filterCategory.value);
+            }
+
+            // Apply Account Filter
+            if (filterAccount.value !== 'all') {
+                filteredTransactions = filteredTransactions.filter(t => t.accountId == filterAccount.value);
+            }
+
+            filteredTransactions.sort((a,b) => new Date(b.date) - new Date(a.date));
+
+            if (filteredTransactions.length === 0) {
+                list.innerHTML = '<li>Nenhuma transação encontrada com os filtros selecionados.</li>';
                 return;
             }
-            sortedTransactions.forEach(t => {
+            
+            filteredTransactions.forEach(t => {
                 list.innerHTML += createTransactionHTML(t);
             });
         }
@@ -1991,7 +2191,7 @@
             data.budgets.forEach(b => {
                 let spent = 0;
                 data.transactions.forEach(t => {
-                    const tDate = new Date(t.date + 'T00:00:00'); // Ensure date is parsed correctly
+                    const tDate = new Date(t.date + 'T00:00:00'); 
                     if (t.type === 'despesa' && t.category === b.category && isDateInPeriod(tDate, b.period, b.customPeriodDays)) {
                         spent += t.amount;
                     }
@@ -2028,7 +2228,7 @@
                     return tDate.toDateString() === now.toDateString();
                 case 'weekly':
                     const startOfWeek = new Date(now);
-                    startOfWeek.setDate(now.getDate() - now.getDay()); // Sunday
+                    startOfWeek.setDate(now.getDate() - now.getDay()); 
                     const endOfWeek = new Date(startOfWeek);
                     endOfWeek.setDate(startOfWeek.getDate() + 6);
                     return tDate >= startOfWeek && tDate <= endOfWeek;
@@ -2037,7 +2237,7 @@
                 case 'bimonthly':
                     return Math.floor(tDate.getMonth() / 2) === Math.floor(now.getMonth() / 2) && tDate.getFullYear() === now.getFullYear();
                 case 'custom':
-                    const startDate = new Date(); // Assuming custom period starts from today
+                    const startDate = new Date(); 
                     startDate.setDate(startDate.getDate() - (customDays - 1));
                     startDate.setHours(0,0,0,0);
                     return tDate >= startDate && tDate <= now;
@@ -2078,6 +2278,30 @@
             });
         }
 
+        function openDrilldownModal(category, type, month, year) {
+            const data = getUserData();
+            const list = document.getElementById('drilldown-list');
+            document.getElementById('drilldown-title').textContent = `Detalhes: ${category}`;
+            document.getElementById('drilldown-subtitle').textContent = `Mês ${month + 1}/${year}`;
+            
+            list.innerHTML = '';
+            
+            const filtered = data.transactions.filter(t => {
+                const d = new Date(t.date);
+                return t.type === type && t.category === category && d.getMonth() === month && d.getFullYear() === year;
+            });
+            
+            if(filtered.length === 0) {
+                list.innerHTML = '<li>Nenhum detalhe encontrado.</li>';
+            } else {
+                filtered.forEach(t => {
+                    list.innerHTML += createTransactionHTML(t);
+                });
+            }
+            
+            showModal('drilldown-modal');
+        }
+
         function renderAnalysis() {
             const data = getUserData();
             const isDarkMode = document.body.classList.contains('dark-mode');
@@ -2085,7 +2309,7 @@
             const tooltipCallback = { plugins: { tooltip: { callbacks: { label: (context) => formatCurrency(context.raw) } } } };
             const now = new Date();
 
-            // Expenses by Category (Pie Chart)
+            // Expenses by Category
             const expensesByCategory = {};
             data.transactions.forEach(t => {
                 const tDate = new Date(t.date);
@@ -2102,9 +2326,19 @@
                         'rgba(189, 16, 224, 0.8)', 'rgba(74, 144, 226, 0.8)', 'rgba(123, 102, 255, 0.8)'
                     ]
                 }]
-            }, { ...tooltipCallback, plugins: { ...tooltipCallback.plugins, legend: { labels: { color: textColor } } } });
+            }, { 
+                ...tooltipCallback, 
+                plugins: { ...tooltipCallback.plugins, legend: { labels: { color: textColor } } },
+                onClick: (e, elements, chart) => {
+                    if (elements && elements.length > 0) {
+                        const index = elements[0].index;
+                        const label = chart.data.labels[index];
+                        openDrilldownModal(label, 'despesa', now.getMonth(), now.getFullYear());
+                    }
+                }
+            });
 
-            // Income by Category (Pie Chart)
+            // Income by Category
             const incomeByCategory = {};
             data.transactions.forEach(t => {
                 const tDate = new Date(t.date);
@@ -2121,9 +2355,19 @@
                         'rgba(43, 177, 121, 0.8)', 'rgba(102, 255, 194, 0.8)', 'rgba(141, 198, 63, 0.8)'
                     ]
                 }]
-            }, { ...tooltipCallback, plugins: { ...tooltipCallback.plugins, legend: { labels: { color: textColor } } } });
+            }, { 
+                ...tooltipCallback, 
+                plugins: { ...tooltipCallback.plugins, legend: { labels: { color: textColor } } },
+                onClick: (e, elements, chart) => {
+                    if (elements && elements.length > 0) {
+                        const index = elements[0].index;
+                        const label = chart.data.labels[index];
+                        openDrilldownModal(label, 'receita', now.getMonth(), now.getFullYear());
+                    }
+                }
+            });
 
-            // Income vs Expenses (Bar Chart - Last 6 months)
+            // Income vs Expenses
             const monthLabels = [];
             const incomeData = [];
             const expenseData = [];
@@ -2152,7 +2396,7 @@
                 ]
             }, { ...tooltipCallback, scales: { x: { ticks: { color: textColor } }, y: { ticks: { color: textColor } } }, plugins: { ...tooltipCallback.plugins, legend: { labels: { color: textColor } } } });
             
-            // Balance Evolution (Line Chart)
+            // Balance Evolution
             const sortedTransactions = [...data.transactions].sort((a,b) => new Date(a.date) - new Date(b.date));
             let runningBalance = data.accounts.reduce((sum, acc) => sum + acc.initialBalance, 0);
             const balanceEvolutionLabels = ['Início'];
@@ -2178,16 +2422,13 @@
 
         function renderSettings() {
             const data = getUserData();
-            // Profile
             document.getElementById('settings-name').value = data.profile.name;
             document.getElementById('settings-password').value = '';
-            // Currency
             document.getElementById('settings-display-currency').value = data.settings.displayCurrency;
             document.getElementById('settings-rate-usd').value = data.settings.exchangeRates.USD;
             document.getElementById('settings-rate-eur').value = data.settings.exchangeRates.EUR;
             document.getElementById('settings-rate-gbp').value = data.settings.exchangeRates.GBP;
             document.getElementById('settings-rate-brl').value = data.settings.exchangeRates.BRL;
-            // PIN
             document.getElementById('settings-pin').value = '';
             document.getElementById('settings-pin').placeholder = data.settings.pin ? 'PIN atual definido' : 'Definir novo PIN';
         }
@@ -2211,7 +2452,6 @@
             categories.forEach(cat => {
                 select.innerHTML += `<option value="${cat}">${cat}</option>`;
             });
-            // Always add "Outros" at the end
             select.innerHTML += `<option value="Outros">Outros (Adicionar Nova)...</option>`;
         }
         
@@ -2228,7 +2468,6 @@
 
         // --- CRUD OPERATIONS ---
         
-        // Account CRUD
         document.getElementById('add-account-btn').addEventListener('click', () => {
             state.editingId = null;
             document.getElementById('account-form').reset();
@@ -2243,10 +2482,10 @@
             const name = document.getElementById('account-name').value;
             const balance = parseFloat(document.getElementById('account-balance').value);
             
-            if (state.editingId) { // Editing
+            if (state.editingId) {
                 const account = data.accounts.find(acc => acc.id === state.editingId);
                 account.name = name;
-            } else { // Creating
+            } else {
                 const newAccount = {
                     id: Date.now(),
                     name,
@@ -2308,12 +2547,23 @@
 
 
         // Transaction CRUD
+        document.getElementById('transaction-is-recurring').addEventListener('change', (e) => {
+            const freqGroup = document.getElementById('recurring-frequency-group');
+            if(e.target.checked) {
+                freqGroup.classList.remove('hidden');
+            } else {
+                freqGroup.classList.add('hidden');
+            }
+        });
+
         function openTransactionModal(type = null) {
             state.editingId = null;
             const form = document.getElementById('transaction-form');
             form.reset();
             document.getElementById('transaction-modal-title').textContent = 'Adicionar Transação';
             document.getElementById('transaction-date').value = getTodayDate();
+            
+            document.getElementById('recurring-frequency-group').classList.add('hidden');
             
             if (type) {
                 document.getElementById(`type-${type}`).checked = true;
@@ -2358,6 +2608,8 @@
             let category = document.getElementById('transaction-category').value;
             const date = document.getElementById('transaction-date').value;
             const description = document.getElementById('transaction-description').value;
+            const isRecurring = document.getElementById('transaction-is-recurring').checked;
+            const frequency = document.getElementById('transaction-frequency').value;
 
             if (category === 'Outros') {
                 const customCategoryInput = document.getElementById('transaction-custom-category');
@@ -2373,34 +2625,53 @@
                 }
             }
 
-            if (state.editingId) { // Editing
+            if (state.editingId) {
                 const transaction = data.transactions.find(t => t.id === state.editingId);
                 const originalAmount = transaction.amount;
                 const originalType = transaction.type;
                 const originalAccountId = transaction.accountId;
 
-                // Revert old transaction from account balance
                 const oldAccount = data.accounts.find(a => a.id === originalAccountId);
                 if (oldAccount) {
                     oldAccount.balance += originalType === 'receita' ? -originalAmount : originalAmount;
                 }
 
-                // Update transaction
                 transaction.type = type;
                 transaction.amount = amount;
                 transaction.accountId = accountId;
                 transaction.category = category;
                 transaction.date = date;
                 transaction.description = description;
+                
+                // If recurring is unchecked, we disable recurrency
+                transaction.isRecurring = isRecurring;
+                if(isRecurring) {
+                    transaction.frequency = frequency;
+                    transaction.nextOccurrence = calculateNextDate(date, frequency);
+                } else {
+                    transaction.nextOccurrence = null;
+                }
 
-            } else { // Creating
+            } else {
                 const newTransaction = {
-                    id: Date.now(), type, amount, accountId, category, date, description
+                    id: Date.now(), 
+                    type, 
+                    amount, 
+                    accountId, 
+                    category, 
+                    date, 
+                    description,
+                    isRecurring: isRecurring,
                 };
+                
+                if(isRecurring) {
+                    newTransaction.frequency = frequency;
+                    newTransaction.nextOccurrence = calculateNextDate(date, frequency);
+                }
+                
                 data.transactions.push(newTransaction);
             }
             
-            // Apply new/updated transaction to account balance
             const account = data.accounts.find(a => a.id === accountId);
             account.balance += type === 'receita' ? amount : -amount;
             
@@ -2508,7 +2779,6 @@
             const startDate = document.getElementById('goal-start-date').value;
             const endDate = document.getElementById('goal-end-date').value;
 
-            // Check if the user is trying to allocate more money than they have
             let totalBalance = data.accounts.reduce((sum, acc) => sum + acc.balance, 0);
             let totalCurrentlySaved = data.goals.reduce((sum, goal) => goal.id !== state.editingId ? sum + goal.saved : sum, 0);
             
@@ -2522,7 +2792,6 @@
             if (state.editingId) {
                 const index = data.goals.findIndex(g => g.id === state.editingId);
                 goalData.id = state.editingId;
-                // Preserve the original saved amount unless changed in the form
                 const originalGoal = data.goals[index];
                 goalData.saved = isNaN(saved) ? originalGoal.saved : saved;
                 data.goals[index] = goalData;
@@ -2543,7 +2812,6 @@
             
             const goal = data.goals.find(g => g.id === goalId);
 
-            // New logic: Check against available balance
             let totalBalance = data.accounts.reduce((sum, acc) => sum + acc.balance, 0);
             let totalSaved = data.goals.reduce((sum, g) => sum + g.saved, 0);
             let availableBalance = totalBalance - totalSaved;
@@ -2553,7 +2821,6 @@
                  return;
             }
 
-            // Add to goal without creating a transaction
             goal.saved += amount;
             
             saveDataToStorage();
@@ -2590,7 +2857,7 @@
             data.settings.exchangeRates.GBP = parseFloat(document.getElementById('settings-rate-gbp').value);
             data.settings.exchangeRates.BRL = parseFloat(document.getElementById('settings-rate-brl').value);
             saveDataToStorage();
-            updateUI(); // Redraw everything with the new currency
+            updateUI(); 
             showToast('Definições de moeda atualizadas!');
         });
         
@@ -2609,7 +2876,7 @@
             data.settings.pin = newPin;
             saveDataToStorage();
             pinInput.value = '';
-            renderSettings(); // Update placeholder
+            renderSettings();
             showToast('PIN definido/alterado com sucesso!');
         });
 
@@ -2647,7 +2914,6 @@
             reader.onload = (e) => {
                 try {
                     const restoredData = JSON.parse(e.target.result);
-                    // Basic validation
                     if (restoredData.profile && restoredData.accounts && restoredData.transactions) {
                         if (confirm('Tem a certeza? Isto irá substituir todos os seus dados atuais.')) {
                             state.users[state.currentUser] = ensureDataStructure(restoredData);
@@ -2663,9 +2929,8 @@
                 }
             };
             reader.readAsText(file);
-            event.target.value = ''; // Reset input
+            event.target.value = '';
         });
-
 
         document.getElementById('logout-btn-settings').addEventListener('click', handleLogout);
 
@@ -2697,7 +2962,7 @@
                     document.getElementById('account-id').value = item.id;
                     document.getElementById('account-name').value = item.name;
                     document.getElementById('account-balance').value = item.balance;
-                    document.getElementById('account-balance').disabled = true; // Can't edit balance directly
+                    document.getElementById('account-balance').disabled = true; 
                     showModal('account-modal');
                     break;
                 case 'transaction':
@@ -2713,6 +2978,15 @@
                     document.getElementById('transaction-description').value = item.description;
                     document.getElementById('custom-category-group').classList.add('hidden');
                     document.getElementById('transaction-custom-category').required = false;
+                    
+                    document.getElementById('transaction-is-recurring').checked = !!item.isRecurring;
+                    if(item.isRecurring) {
+                        document.getElementById('recurring-frequency-group').classList.remove('hidden');
+                        document.getElementById('transaction-frequency').value = item.frequency || 'monthly';
+                    } else {
+                        document.getElementById('recurring-frequency-group').classList.add('hidden');
+                    }
+
                     showModal('transaction-modal');
                     break;
                 case 'budget':
@@ -2755,7 +3029,6 @@
                 const data = getUserData();
                 
                 if (type === 'transaction') {
-                    // Revert transaction from account balance before deleting
                     const transaction = data.transactions.find(t => t.id === id);
                     const account = data.accounts.find(a => a.id === transaction.accountId);
                     if (account) {
@@ -2846,7 +3119,7 @@
                 ["Relatório Financeiro - Beijing"],
                 [`Utilizador: ${data.profile.name}`],
                 [`Data de Emissão: ${new Date().toLocaleDateString('pt-PT')}`],
-                [], // Blank row
+                [], 
                 ["RECEITAS"],
                 ['Data', 'Descrição', 'Categoria', 'Valor (Kz)', 'Conta']
             ];
@@ -2856,7 +3129,7 @@
                 ws_data.push([t.date, t.description || '', t.category, t.amount, accountName]);
             });
             ws_data.push(['', '', '', 'Total Receitas:', totalIncome]);
-            ws_data.push([]); // Blank row
+            ws_data.push([]); 
 
             ws_data.push(["DESPESAS"]);
             ws_data.push(['Data', 'Descrição', 'Categoria', 'Valor (Kz)', 'Conta']);
@@ -2868,13 +3141,12 @@
             
             const ws = XLSX.utils.aoa_to_sheet(ws_data);
             
-            // Formatting
             ws['!merges'] = [
-                { s: { r: 0, c: 0 }, e: { r: 0, c: 4 } }, // Title
-                { s: { r: 1, c: 0 }, e: { r: 1, c: 4 } }, // User
-                { s: { r: 2, c: 0 }, e: { r: 2, c: 4 } }, // Date
-                { s: { r: 4, c: 0 }, e: { r: 4, c: 4 } }, // Receitas header
-                { s: { r: 6 + incomes.length + 1, c: 0 }, e: { r: 6 + incomes.length + 1, c: 4 } } // Despesas header
+                { s: { r: 0, c: 0 }, e: { r: 0, c: 4 } }, 
+                { s: { r: 1, c: 0 }, e: { r: 1, c: 4 } }, 
+                { s: { r: 2, c: 0 }, e: { r: 2, c: 4 } }, 
+                { s: { r: 4, c: 0 }, e: { r: 4, c: 4 } }, 
+                { s: { r: 6 + incomes.length + 1, c: 0 }, e: { r: 6 + incomes.length + 1, c: 4 } } 
             ];
             ws['!cols'] = [{wch:12}, {wch:30}, {wch:15}, {wch:15}, {wch:20}];
 
@@ -2995,7 +3267,7 @@
             const printContainer = document.createElement('div');
             printContainer.style.position = 'absolute';
             printContainer.style.left = '-9999px';
-            printContainer.style.width = '210mm'; // A4 width
+            printContainer.style.width = '210mm'; 
             printContainer.innerHTML = reportHtml;
             document.body.appendChild(printContainer);
 
@@ -3044,7 +3316,7 @@
 
                 if (input.value === data.settings.pin) {
                     pinLockScreen.classList.add('hidden');
-                    input.value = ''; // Clear input for next time
+                    input.value = ''; 
                 } else {
                     showToast('PIN incorreto.', 'error');
                     pinContainer.classList.add('shake');
@@ -3085,5 +3357,3 @@
     </script>
 </body>
 </html>
-
-
