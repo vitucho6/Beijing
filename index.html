@@ -48,18 +48,12 @@
 
         html {
             scroll-behavior: smooth;
-            box-sizing: border-box;
-        }
-        
-        *, *:before, *:after {
-            box-sizing: inherit;
         }
 
         body {
             font-family: 'Poppins', sans-serif;
             margin: 0;
             transition: background-color 0.3s, color 0.3s;
-            min-height: 100vh;
         }
 
         body.light-mode {
@@ -100,7 +94,6 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 20px;
         }
 
         .auth-container {
@@ -137,6 +130,7 @@
             padding: 12px;
             border-radius: 8px;
             border: 1px solid;
+            box-sizing: border-box;
             transition: background-color 0.3s, border-color 0.3s;
         }
 
@@ -194,7 +188,6 @@
         /* --- Main App --- */
         #app-page {
             display: flex;
-            min-height: 100vh;
         }
 
         #sidebar {
@@ -208,8 +201,8 @@
             flex-direction: column;
             border-right: 1px solid;
             transition: background-color 0.3s, border-color 0.3s;
+            box-sizing: border-box;
             z-index: 100;
-            overflow-y: auto; /* Allows scrolling if sidebar content is too tall */
         }
         
         body.light-mode #sidebar { background-color: var(--light-card); border-color: var(--light-border); }
@@ -220,7 +213,6 @@
             justify-content: center;
             align-items: center;
             margin-bottom: 30px;
-            flex-shrink: 0;
         }
         
         #mobile-menu-btn {
@@ -229,7 +221,6 @@
             border: none;
             font-size: 1.5rem;
             cursor: pointer;
-            margin-right: 15px;
         }
         body.light-mode #mobile-menu-btn { color: var(--light-text); }
         body.dark-mode #mobile-menu-btn { color: var(--dark-text); }
@@ -271,8 +262,6 @@
 
         .sidebar-footer {
             margin-top: auto;
-            padding-top: 20px;
-            flex-shrink: 0;
         }
         
         .theme-switch-wrapper {
@@ -329,13 +318,11 @@
             margin-left: 250px;
             width: calc(100% - 250px);
             padding: 30px;
-            min-height: 100vh;
         }
         
         /* Main Content Sections */
         .content-section {
             animation: fadeIn 0.5s;
-            padding-bottom: 50px; /* Extra space at bottom */
         }
 
         @keyframes fadeIn {
@@ -345,8 +332,6 @@
         
         .page-header {
             display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 30px;
@@ -365,7 +350,6 @@
             font-weight: 500;
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
-            white-space: nowrap;
         }
         .btn:hover {
             transform: translateY(-2px);
@@ -387,7 +371,6 @@
             border-radius: 12px;
             box-shadow: var(--shadow);
             transition: background-color 0.3s;
-            overflow: hidden; /* Prevent content spill */
         }
         body.light-mode .summary-card, body.light-mode .card { background-color: var(--light-card); }
         body.dark-mode .summary-card, body.dark-mode .card { background-color: var(--dark-card); }
@@ -401,7 +384,6 @@
         .summary-card .amount {
             font-size: 2rem;
             font-weight: 700;
-            word-wrap: break-word;
         }
         
         .card-header {
@@ -409,8 +391,6 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 10px;
         }
         
         .card-header h3 {
@@ -419,8 +399,7 @@
         
         .quick-actions {
             display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
+            gap: 15px;
         }
         
         /* Transaction List */
@@ -459,20 +438,13 @@
         
         .transaction-details, .notification-details {
             flex-grow: 1;
-            min-width: 0; /* Enables text truncation in flexbox */
         }
-        .transaction-details .description { 
-            font-weight: 600; 
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
+        .transaction-details .description { font-weight: 600; }
         .transaction-details .category { font-size: 0.9rem; opacity: 0.7; }
         
         .transaction-amount {
             font-weight: 600;
             font-size: 1.1rem;
-            white-space: nowrap;
         }
         .transaction-amount.receita { color: var(--success-color); }
         .transaction-amount.despesa { color: var(--danger-color); }
@@ -480,7 +452,7 @@
         /* Accounts, Budgets, Goals Grid */
         .item-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 20px;
         }
         
@@ -535,7 +507,6 @@
             align-items: center;
             z-index: 1000;
             animation: fadeIn 0.3s;
-            padding: 20px; /* Add padding for small screens */
         }
         
         .modal-content {
@@ -545,8 +516,6 @@
             border-radius: 12px;
             position: relative;
             animation: slideIn 0.3s;
-            max-height: 90vh; /* Max height for scrolling */
-            overflow-y: auto;
         }
         body.light-mode .modal-content { background-color: var(--light-card); }
         body.dark-mode .modal-content { background-color: var(--dark-card); }
@@ -643,8 +612,6 @@
             opacity: 0;
             transition: opacity 0.5s, bottom 0.5s;
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            text-align: center;
-            max-width: 90%;
         }
         .toast.show {
             opacity: 1;
@@ -662,7 +629,15 @@
             cursor: pointer;
             opacity: 0.6;
             transition: opacity 0.2s;
-            z-index: 2;
+        }
+        .password-group .toggle-password {
+            /* Adjust for inputs without labels inside the group */
+            top: auto;
+            bottom: 13px;
+        }
+        .form-group > .password-group .toggle-password {
+            /* Adjust for inputs with labels outside the group */
+            top: 50%;
         }
 
         .toggle-password:hover {
@@ -727,33 +702,23 @@
                 position: relative;
                 border-right: none;
                 border-bottom: 1px solid;
-                padding: 15px;
+                padding: 10px 15px;
                 flex-direction: column;
-                align-items: center;
-                display: block; /* Reset display for better flow control */
+                align-items: flex-start;
             }
             .sidebar-header {
-                display: flex;
                 justify-content: space-between;
                 width: 100%;
                 margin-bottom: 0;
-                align-items: center;
             }
             
             #mobile-menu-btn {
                 display: block;
-                order: 0;
             }
-            
-            #app-logo {
-                order: 1;
-            }
-            
             #sidebar-collapsible-content {
                 display: none;
                 width: 100%;
-                margin-top: 20px;
-                flex-direction: column;
+                margin-top: 10px;
             }
             #sidebar.mobile-nav-open #sidebar-collapsible-content {
                 display: flex;
@@ -762,19 +727,9 @@
                 margin-left: 0;
                 width: 100%;
                 padding: 15px;
-                min-height: auto;
             }
             .page-header h2 {
                 font-size: 1.5rem;
-            }
-            
-            /* Stack export filters on mobile */
-            #export-filters .dashboard-grid {
-                grid-template-columns: 1fr !important;
-                align-items: stretch !important;
-            }
-            #export-filters .form-group {
-                margin-bottom: 10px;
             }
         }
     </style>
@@ -964,7 +919,7 @@
                     </div>
                     <div class="card">
                         <div class="card-header">
-                            <h3>Alertas e Análises</h3>
+                            <h3>Análises e Informações</h3>
                         </div>
                         <div class="notification-list">
                             <ul id="smart-tips-list">
@@ -1406,7 +1361,7 @@
                 }).format(displayValue);
                 
                 if (displayCurrency === 'AOA') {
-                    formatted = formatted.replace('AOA', 'Kz').replace(/\s/g, ''); // Remove space for Kz
+                    formatted = formatted.replace('AOA', 'Kz').replace(/\s/g, ''); 
                 }
                 return formatted;
 
@@ -1418,6 +1373,15 @@
         }
 
         const getTodayDate = () => new Date().toISOString().split('T')[0];
+        
+        function calculateNextDate(dateStr, frequency) {
+            const d = new Date(dateStr);
+            if (frequency === 'daily') d.setDate(d.getDate() + 1);
+            if (frequency === 'weekly') d.setDate(d.getDate() + 7);
+            if (frequency === 'monthly') d.setMonth(d.getMonth() + 1);
+            if (frequency === 'yearly') d.setFullYear(d.getFullYear() + 1);
+            return d.toISOString().split('T')[0];
+        }
 
         function showToast(message, type = 'success') {
             toast.textContent = message;
@@ -1428,15 +1392,22 @@
             }, 3000);
         }
 
-        // --- DATA PERSISTENCE (localStorage) ---
+        // --- DATA PERSISTENCE & RECURRING LOGIC ---
         function loadDataFromStorage() {
             const data = localStorage.getItem('beijing_app_data');
             if (data) {
-                state.users = JSON.parse(data);
+                try {
+                    state.users = JSON.parse(data);
+                } catch (e) {
+                    console.error("Erro ao ler os dados guardados. Os dados podem estar corrompidos.", e);
+                    state.users = {}; // Previne que o erro quebre a aplicação
+                }
             }
             const loggedInUser = localStorage.getItem('beijing_logged_in');
             if (loggedInUser && state.users[loggedInUser]) {
                 state.currentUser = loggedInUser;
+                state.users[state.currentUser] = ensureDataStructure(state.users[state.currentUser]);
+                processRecurringTransactions(state.users[state.currentUser]);
             }
             const theme = localStorage.getItem('beijing_theme');
             if (theme) {
@@ -1454,7 +1425,50 @@
             return state.users[state.currentUser];
         }
 
-        // --- DATA STRUCTURE MIGRATION ---
+        function processRecurringTransactions(data) {
+            try {
+                let hasChanges = false;
+                const today = getTodayDate();
+                
+                data.transactions.forEach(t => {
+                    if (t.isRecurring && t.nextOccurrence && t.nextOccurrence <= today) {
+                        // Loop para apanhar se múltiplos períodos já tiverem passado (com limite de segurança)
+                        let iterations = 0;
+                        while (t.nextOccurrence <= today && iterations < 100) { 
+                            const newId = Date.now() + Math.random();
+                            const newTransaction = {
+                                id: newId,
+                                type: t.type,
+                                amount: t.amount,
+                                accountId: t.accountId,
+                                category: t.category,
+                                date: t.nextOccurrence,
+                                description: t.description ? t.description + ' (Auto)' : 'Transação Automática',
+                                isRecurring: false, 
+                                nextOccurrence: null
+                            };
+                            data.transactions.push(newTransaction);
+                            
+                            const account = data.accounts.find(a => a.id === t.accountId);
+                            if (account) {
+                                account.balance += t.type === 'receita' ? t.amount : -t.amount;
+                            }
+                            
+                            t.nextOccurrence = calculateNextDate(t.nextOccurrence, t.frequency);
+                            hasChanges = true;
+                            iterations++;
+                        }
+                    }
+                });
+                
+                if (hasChanges) {
+                    saveDataToStorage();
+                }
+            } catch (error) {
+                console.error("Erro ao processar as transações automáticas recorrentes:", error);
+            }
+        }
+
         function ensureDataStructure(userData) {
             if (!userData.settings) {
                 userData.settings = {};
@@ -1491,6 +1505,11 @@
                     if (budget.period === 'custom' && !budget.customPeriodDays) {
                         budget.customPeriodDays = 30;
                     }
+                });
+            }
+            if (userData.transactions) {
+                userData.transactions.forEach(t => {
+                    if (t.isRecurring === undefined) t.isRecurring = false;
                 });
             }
 
@@ -2261,12 +2280,14 @@
             select.innerHTML += `<option value="Outros">Outros (Adicionar Nova)...</option>`;
         }
         
-        function populateAccountSelect(selectId) {
+        function populateAccountSelect(selectId, excludeId = null) {
             const data = getUserData();
             const select = document.getElementById(selectId);
             select.innerHTML = '';
             data.accounts.forEach(acc => {
-                select.innerHTML += `<option value="${acc.id}">${acc.name}</option>`;
+                if (acc.id !== excludeId) {
+                    select.innerHTML += `<option value="${acc.id}">${acc.name}</option>`;
+                }
             });
         }
 
@@ -2304,6 +2325,52 @@
             updateUI();
             hideAllModals();
         });
+
+        // Transfer Logic
+        document.getElementById('transfer-btn').addEventListener('click', () => {
+            const fromSelect = document.getElementById('transfer-from');
+            const toSelect = document.getElementById('transfer-to');
+            
+            populateAccountSelect('transfer-from');
+            populateAccountSelect('transfer-to', parseInt(fromSelect.value));
+
+            fromSelect.addEventListener('change', () => {
+                 populateAccountSelect('transfer-to', parseInt(fromSelect.value));
+            });
+
+            document.getElementById('transfer-form').reset();
+            showModal('transfer-modal');
+        });
+
+        document.getElementById('transfer-form').addEventListener('submit', e => {
+            e.preventDefault();
+            const data = getUserData();
+            const fromId = parseInt(document.getElementById('transfer-from').value);
+            const toId = parseInt(document.getElementById('transfer-to').value);
+            const amount = parseFloat(document.getElementById('transfer-amount').value);
+
+            if (fromId === toId) {
+                alert('A conta de origem e destino não podem ser a mesma.');
+                return;
+            }
+
+            const fromAccount = data.accounts.find(a => a.id === fromId);
+            const toAccount = data.accounts.find(a => a.id === toId);
+
+            if (fromAccount.balance < amount) {
+                alert('Saldo insuficiente na conta de origem.');
+                return;
+            }
+
+            fromAccount.balance -= amount;
+            toAccount.balance += amount;
+
+            saveDataToStorage();
+            updateUI();
+            hideAllModals();
+            showToast('Transferência realizada com sucesso!');
+        });
+
 
         // Transaction CRUD
         function openTransactionModal(type = null) {
