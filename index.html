@@ -26,34 +26,80 @@
 
 
     <style>
-        /* CSS Reset and Base Styles */
+        /* CSS Reset e Variáveis Modernizadas */
         :root {
-            --primary-color: #4a90e2;
-            --primary-hover: #357abd;
-            --secondary-color: #50e3c2;
-            --danger-color: #e94e77;
-            --warning-color: #f5a623;
-            --success-color: #7ed321;
-            --light-bg: #f8f9fa;
-            --dark-bg: #1a1a1a;
-            --light-card: #ffffff;
-            --dark-card: #2c2c2c;
-            --light-text: #333;
-            --dark-text: #f1f1f1;
-            --light-border: #e9ecef;
-            --dark-border: #444;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            --logo-red: #D92D20;
+            /* Nova Paleta Premium */
+            --primary-color: #4F46E5; /* Indigo 600 */
+            --primary-hover: #4338CA;
+            --primary-light: rgba(79, 70, 229, 0.1);
+            --secondary-color: #0EA5E9; /* Light Blue */
+            --danger-color: #F43F5E; /* Rose 500 */
+            --danger-light: rgba(244, 63, 94, 0.1);
+            --warning-color: #F59E0B; /* Amber 500 */
+            --success-color: #10B981; /* Emerald 500 */
+            --success-light: rgba(16, 185, 129, 0.1);
+            
+            /* Fundos */
+            --light-bg: #F3F4F6; /* Gray 100 */
+            --dark-bg: #111827; /* Gray 900 */
+            --light-card: #FFFFFF;
+            --dark-card: #1F2937; /* Gray 800 */
+            
+            /* Textos */
+            --light-text: #1F2937;
+            --dark-text: #F9FAFB;
+            --light-text-muted: #6B7280;
+            --dark-text-muted: #9CA3AF;
+            
+            /* Bordas e Sombras */
+            --light-border: #E5E7EB;
+            --dark-border: #374151;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-float: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            
+            /* UI */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --logo-red: #E11D48;
         }
 
         html {
             scroll-behavior: smooth;
+            box-sizing: border-box;
+        }
+        
+        *, *:before, *:after {
+            box-sizing: inherit;
+        }
+
+        /* Barras de Rolagem Customizadas */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #CBD5E1;
+            border-radius: 10px;
+        }
+        body.dark-mode ::-webkit-scrollbar-thumb {
+            background: #475569;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94A3B8;
         }
 
         body {
             font-family: 'Poppins', sans-serif;
             margin: 0;
-            transition: background-color 0.3s, color 0.3s;
+            transition: background-color 0.4s ease, color 0.4s ease;
+            min-height: 100vh;
         }
 
         body.light-mode {
@@ -70,7 +116,8 @@
         #app-logo .logo-text, #pin-lock-screen .logo-text {
             font-family: 'Poppins', sans-serif;
             font-size: 28px;
-            font-weight: 600;
+            font-weight: 700;
+            letter-spacing: -0.5px;
             transition: fill 0.3s;
         }
         body.light-mode #app-logo .logo-text, body.light-mode #pin-lock-screen .logo-text { fill: var(--light-text); }
@@ -94,105 +141,134 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            padding: 20px;
+            background: radial-gradient(circle at top left, var(--primary-light), transparent 50%),
+                        radial-gradient(circle at bottom right, var(--success-light), transparent 50%);
         }
 
         .auth-container {
             width: 100%;
-            max-width: 400px;
+            max-width: 420px;
             padding: 40px;
-            border-radius: 12px;
-            box-shadow: var(--shadow);
-            transition: background-color 0.3s;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-float);
+            transition: background-color 0.4s ease, transform 0.3s ease;
             position: relative;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
-        body.light-mode .auth-container { background-color: var(--light-card); }
-        body.dark-mode .auth-container { background-color: var(--dark-card); }
+        body.light-mode .auth-container { background-color: rgba(255, 255, 255, 0.95); }
+        body.dark-mode .auth-container { background-color: rgba(31, 41, 55, 0.95); border-color: rgba(255, 255, 255, 0.05); }
 
         .auth-container h1 {
             text-align: center;
             color: var(--primary-color);
-            margin-bottom: 30px;
+            margin-bottom: 35px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
         }
 
         .auth-form .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
         .auth-form label {
             display: block;
             margin-bottom: 8px;
             font-weight: 500;
+            font-size: 0.9rem;
+            color: inherit;
+            opacity: 0.9;
         }
 
-        .auth-form input {
+        .auth-form input, .auth-form select {
             width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid;
+            padding: 14px 16px;
+            border-radius: var(--radius-md);
+            border: 2px solid transparent;
             box-sizing: border-box;
-            transition: background-color 0.3s, border-color 0.3s;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
         }
 
-        body.light-mode .auth-form input {
+        body.light-mode .auth-form input, body.light-mode .auth-form select {
             background-color: var(--light-bg);
             border-color: var(--light-border);
             color: var(--light-text);
         }
-        body.dark-mode .auth-form input {
-            background-color: var(--dark-bg);
+        body.dark-mode .auth-form input, body.dark-mode .auth-form select {
+            background-color: rgba(17, 24, 39, 0.5);
             border-color: var(--dark-border);
             color: var(--dark-text);
         }
 
-        .auth-form input:focus {
+        .auth-form input:focus, .auth-form select:focus {
             outline: none;
             border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px var(--primary-light);
+            background-color: transparent;
         }
 
         #password-feedback {
             font-size: 0.8rem;
-            margin-top: 5px;
+            margin-top: 6px;
             height: 15px;
+            font-weight: 500;
         }
 
         .auth-btn {
             width: 100%;
-            padding: 14px;
+            padding: 16px;
             border: none;
-            border-radius: 8px;
-            background-color: var(--primary-color);
+            border-radius: var(--radius-md);
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
             color: white;
-            font-size: 1rem;
+            font-size: 1.05rem;
             font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.2s;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px var(--primary-light);
         }
 
         .auth-btn:hover {
-            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px var(--primary-light);
+        }
+        
+        .auth-btn:active {
+            transform: translateY(0);
         }
 
         .auth-toggle {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 25px;
+            font-size: 0.95rem;
         }
 
         .auth-toggle a {
             color: var(--primary-color);
             text-decoration: none;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
+            transition: color 0.2s;
+        }
+        
+        .auth-toggle a:hover {
+            color: var(--primary-hover);
+            text-decoration: underline;
         }
         
         /* --- Main App --- */
         #app-page {
             display: flex;
+            min-height: 100vh;
         }
 
         #sidebar {
-            width: 250px;
-            padding: 20px;
+            width: 260px;
+            padding: 24px 20px;
             height: 100vh;
             position: fixed;
             top: 0;
@@ -200,19 +276,20 @@
             display: flex;
             flex-direction: column;
             border-right: 1px solid;
-            transition: background-color 0.3s, border-color 0.3s;
-            box-sizing: border-box;
+            transition: background-color 0.4s ease, border-color 0.4s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 100;
+            overflow-y: auto;
         }
         
-        body.light-mode #sidebar { background-color: var(--light-card); border-color: var(--light-border); }
-        body.dark-mode #sidebar { background-color: var(--dark-card); border-color: var(--dark-border); }
+        body.light-mode #sidebar { background-color: var(--light-card); border-color: rgba(0,0,0,0.05); box-shadow: var(--shadow-sm); }
+        body.dark-mode #sidebar { background-color: var(--dark-card); border-color: rgba(255,255,255,0.05); }
 
         .sidebar-header {
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
+            flex-shrink: 0;
         }
         
         #mobile-menu-btn {
@@ -221,37 +298,58 @@
             border: none;
             font-size: 1.5rem;
             cursor: pointer;
+            margin-right: 15px;
+            padding: 8px;
+            border-radius: var(--radius-sm);
+            transition: background-color 0.2s;
         }
+        body.light-mode #mobile-menu-btn:hover { background-color: var(--light-bg); }
+        body.dark-mode #mobile-menu-btn:hover { background-color: rgba(255,255,255,0.1); }
+        
         body.light-mode #mobile-menu-btn { color: var(--light-text); }
         body.dark-mode #mobile-menu-btn { color: var(--dark-text); }
         
         #sidebar nav a {
             display: flex;
             align-items: center;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 8px;
+            padding: 14px 18px;
+            margin-bottom: 8px;
+            border-radius: var(--radius-md);
             text-decoration: none;
             font-weight: 500;
-            transition: background-color 0.2s, color 0.2s;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
         }
         
-        body.light-mode #sidebar nav a { color: #555; }
-        body.dark-mode #sidebar nav a { color: #bbb; }
+        body.light-mode #sidebar nav a { color: var(--light-text-muted); }
+        body.dark-mode #sidebar nav a { color: var(--dark-text-muted); }
         
-        #sidebar nav a.active, body.light-mode #sidebar nav a:hover {
-            background-color: var(--primary-color);
-            color: white;
+        #sidebar nav a:hover {
+            color: var(--primary-color);
         }
-        body.dark-mode #sidebar nav a:hover {
-            background-color: var(--primary-hover);
-            color: white;
+        body.light-mode #sidebar nav a:hover { background-color: var(--primary-light); }
+        body.dark-mode #sidebar nav a:hover { background-color: rgba(79, 70, 229, 0.15); }
+        
+        #sidebar nav a.active {
+            color: var(--primary-color);
+            background-color: var(--primary-light);
+            font-weight: 600;
+        }
+        body.dark-mode #sidebar nav a.active {
+            background-color: rgba(79, 70, 229, 0.2);
         }
 
         #sidebar nav a i {
-            width: 30px;
+            width: 24px;
             text-align: center;
-            margin-right: 10px;
+            margin-right: 14px;
+            font-size: 1.1rem;
+            transition: transform 0.2s;
+        }
+        
+        #sidebar nav a:hover i {
+            transform: scale(1.1);
         }
         
         #sidebar-collapsible-content {
@@ -262,20 +360,29 @@
 
         .sidebar-footer {
             margin-top: auto;
+            padding-top: 24px;
+            flex-shrink: 0;
+            border-top: 1px solid;
+            transition: border-color 0.4s ease;
         }
+        body.light-mode .sidebar-footer { border-color: var(--light-border); }
+        body.dark-mode .sidebar-footer { border-color: var(--dark-border); }
         
         .theme-switch-wrapper {
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 15px;
+            gap: 12px;
+            margin-bottom: 10px;
+            color: var(--light-text-muted);
         }
+        body.dark-mode .theme-switch-wrapper { color: var(--dark-text-muted); }
         
         .theme-switch {
             display: inline-block;
-            height: 24px;
+            height: 28px;
             position: relative;
-            width: 50px;
+            width: 54px;
         }
 
         .theme-switch input {
@@ -283,14 +390,14 @@
         }
 
         .slider {
-            background-color: #ccc;
+            background-color: #D1D5DB;
             bottom: 0;
             cursor: pointer;
             left: 0;
             position: absolute;
             right: 0;
             top: 0;
-            transition: .4s;
+            transition: .4s cubic-bezier(0.4, 0, 0.2, 1);
             border-radius: 34px;
         }
 
@@ -298,13 +405,16 @@
             background-color: #fff;
             bottom: 4px;
             content: "";
-            height: 16px;
+            height: 20px;
             left: 4px;
             position: absolute;
-            transition: .4s;
-            width: 16px;
+            transition: .4s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 20px;
             border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
+
+        body.dark-mode .slider { background-color: #4B5563; }
 
         input:checked + .slider {
             background-color: var(--primary-color);
@@ -315,94 +425,154 @@
         }
         
         #main-content {
-            margin-left: 250px;
-            width: calc(100% - 250px);
-            padding: 30px;
+            margin-left: 260px;
+            width: calc(100% - 260px);
+            padding: 40px;
+            min-height: 100vh;
+            background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.02) 100%);
+        }
+        body.dark-mode #main-content {
+             background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.01) 100%);
         }
         
         /* Main Content Sections */
         .content-section {
-            animation: fadeIn 0.5s;
+            animation: fadeIn 0.6s ease-out;
+            padding-bottom: 50px;
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
         
         .page-header {
             display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
+            margin-bottom: 35px;
         }
         
         .page-header h2 {
             margin: 0;
-            font-size: 2rem;
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
         }
         
         .btn {
-            padding: 10px 20px;
-            border-radius: 8px;
+            padding: 12px 24px;
+            border-radius: var(--radius-md);
             border: none;
             color: white;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
         }
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            box-shadow: var(--shadow-md);
         }
-        .btn-primary { background-color: var(--primary-color); }
-        .btn-success { background-color: var(--success-color); }
-        .btn-danger { background-color: var(--danger-color); }
+        .btn:active { transform: translateY(0); }
+        .btn-primary { background: linear-gradient(135deg, var(--primary-color), var(--primary-hover)); box-shadow: 0 4px 10px rgba(79, 70, 229, 0.2); }
+        .btn-primary:hover { box-shadow: 0 6px 15px rgba(79, 70, 229, 0.3); }
+        
+        .btn-success { background: linear-gradient(135deg, var(--success-color), #059669); box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2); }
+        .btn-success:hover { box-shadow: 0 6px 15px rgba(16, 185, 129, 0.3); }
+        
+        .btn-danger { background: linear-gradient(135deg, var(--danger-color), #E11D48); box-shadow: 0 4px 10px rgba(244, 63, 94, 0.2); }
+        .btn-danger:hover { box-shadow: 0 6px 15px rgba(244, 63, 94, 0.3); }
+        
+        .btn-secondary { background: linear-gradient(135deg, #6B7280, #4B5563); box-shadow: 0 4px 10px rgba(107, 114, 128, 0.2); }
+        .btn-secondary:hover { box-shadow: 0 6px 15px rgba(107, 114, 128, 0.3); }
+
+        .btn-warning { background: linear-gradient(135deg, var(--warning-color), #D97706); box-shadow: 0 4px 10px rgba(245, 158, 11, 0.2); }
 
         /* Dashboard */
         .dashboard-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+            gap: 24px;
         }
         
         .summary-card, .card {
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: var(--shadow);
-            transition: background-color 0.3s;
+            padding: 28px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.4s ease;
+            overflow: hidden; 
+            position: relative;
+            border: 1px solid transparent;
         }
-        body.light-mode .summary-card, body.light-mode .card { background-color: var(--light-card); }
-        body.dark-mode .summary-card, body.dark-mode .card { background-color: var(--dark-card); }
         
+        .summary-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-float);
+        }
+
+        body.light-mode .summary-card, body.light-mode .card { 
+            background-color: var(--light-card); 
+            border-color: rgba(0,0,0,0.03);
+        }
+        body.dark-mode .summary-card, body.dark-mode .card { 
+            background-color: var(--dark-card); 
+            border-color: rgba(255,255,255,0.03);
+        }
+        
+        /* Estilos especiais para os cartões de resumo */
+        .summary-card:nth-child(1) { border-top: 4px solid var(--primary-color); }
+        .summary-card:nth-child(2) { border-top: 4px solid var(--secondary-color); }
+        .summary-card:nth-child(3) { border-top: 4px solid var(--warning-color); }
+        .summary-card:nth-child(4) { border-top: 4px solid var(--success-color); }
+        .summary-card:nth-child(5) { border-top: 4px solid var(--danger-color); }
+
         .summary-card h3 {
             margin-top: 0;
-            font-size: 1rem;
-            font-weight: 500;
-            opacity: 0.8;
+            font-size: 0.95rem;
+            font-weight: 600;
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         .summary-card .amount {
-            font-size: 2rem;
+            font-size: 2.2rem;
             font-weight: 700;
+            word-wrap: break-word;
+            margin: 10px 0 0 0;
+            line-height: 1.2;
         }
         
         .card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 15px;
         }
         
         .card-header h3 {
             margin: 0;
+            font-weight: 600;
+            font-size: 1.25rem;
         }
         
         .quick-actions {
             display: flex;
-            gap: 15px;
+            gap: 12px;
+            flex-wrap: wrap;
         }
         
-        /* Transaction List */
+        /* Transaction List Modernizada */
         .transaction-list ul, .notification-list ul {
             list-style: none;
             padding: 0;
@@ -411,40 +581,78 @@
         .transaction-list li, .notification-list li {
             display: flex;
             align-items: center;
-            padding: 15px 0;
+            padding: 16px 12px;
             border-bottom: 1px solid;
+            border-radius: var(--radius-md);
+            transition: background-color 0.2s;
         }
+        
+        body.light-mode .transaction-list li:hover, body.light-mode .notification-list li:hover {
+            background-color: var(--light-bg);
+        }
+        body.dark-mode .transaction-list li:hover, body.dark-mode .notification-list li:hover {
+            background-color: rgba(255,255,255,0.02);
+        }
+
         body.light-mode .transaction-list li, body.light-mode .notification-list li { border-color: var(--light-border); }
         body.dark-mode .transaction-list li, body.dark-mode .notification-list li { border-color: var(--dark-border); }
         .transaction-list li:last-child, .notification-list li:last-child { border-bottom: none; }
         
         .transaction-icon, .notification-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
             display: flex;
             justify-content: center;
             align-items: center;
             color: white;
-            margin-right: 15px;
+            margin-right: 18px;
             flex-shrink: 0;
+            font-size: 1.2rem;
+            box-shadow: var(--shadow-sm);
         }
-        .transaction-icon.receita { background-color: var(--success-color); }
-        .transaction-icon.despesa { background-color: var(--danger-color); }
-        .notification-icon.tip { background-color: var(--primary-color); }
-        .notification-icon.warning { background-color: var(--warning-color); }
-        .notification-icon.praise { background-color: var(--secondary-color); }
-
+        .transaction-icon.receita { background: linear-gradient(135deg, var(--success-color), #059669); }
+        .transaction-icon.despesa { background: linear-gradient(135deg, var(--danger-color), #E11D48); }
+        .notification-icon.tip { background: linear-gradient(135deg, var(--primary-color), var(--primary-hover)); }
+        .notification-icon.warning { background: linear-gradient(135deg, var(--warning-color), #D97706); }
+        .notification-icon.praise { background: linear-gradient(135deg, var(--secondary-color), #0284C7); }
         
+        .recurring-badge {
+            font-size: 0.65rem;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 12px;
+            margin-left: 10px;
+            vertical-align: text-bottom;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
         .transaction-details, .notification-details {
             flex-grow: 1;
+            min-width: 0; 
         }
-        .transaction-details .description { font-weight: 600; }
-        .transaction-details .category { font-size: 0.9rem; opacity: 0.7; }
+        .transaction-details .description { 
+            font-weight: 600; 
+            font-size: 1.05rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: flex;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+        .transaction-details .category { 
+            font-size: 0.85rem; 
+            color: var(--light-text-muted); 
+        }
+        body.dark-mode .transaction-details .category { color: var(--dark-text-muted); }
         
         .transaction-amount {
-            font-weight: 600;
-            font-size: 1.1rem;
+            font-weight: 700;
+            font-size: 1.15rem;
+            white-space: nowrap;
         }
         .transaction-amount.receita { color: var(--success-color); }
         .transaction-amount.despesa { color: var(--danger-color); }
@@ -452,8 +660,8 @@
         /* Accounts, Budgets, Goals Grid */
         .item-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+            gap: 24px;
         }
         
         .account-card, .budget-card, .goal-card, .vault-card {
@@ -462,160 +670,254 @@
         
         .card-actions {
             position: absolute;
-            top: 15px;
-            right: 15px;
+            top: 18px;
+            right: 18px;
             display: flex;
-            gap: 10px;
+            gap: 8px;
         }
         .card-actions button {
-            background: none;
+            background: var(--light-bg);
             border: none;
             cursor: pointer;
-            font-size: 1rem;
-            opacity: 0.6;
-            transition: opacity 0.2s;
+            font-size: 0.9rem;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(-5px);
+            transition: all 0.3s ease;
         }
-        body.light-mode .card-actions button { color: var(--light-text); }
-        body.dark-mode .card-actions button { color: var(--dark-text); }
-        .card-actions button:hover { opacity: 1; }
+        body.dark-mode .card-actions button { background: var(--dark-border); }
+        
+        .card:hover .card-actions button, li:hover .card-actions button {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        body.light-mode .card-actions button { color: var(--light-text-muted); }
+        body.dark-mode .card-actions button { color: var(--dark-text-muted); }
+        
+        .card-actions button.edit-btn:hover { color: var(--primary-color); background: var(--primary-light); }
+        .card-actions button.delete-btn:hover { color: var(--danger-color); background: var(--danger-light); }
+        .card-actions button.contribute-btn:hover { color: var(--success-color); background: var(--success-light); }
         
         /* Progress Bar */
         .progress-bar-container {
             width: 100%;
-            height: 10px;
+            height: 12px;
             background-color: var(--light-border);
-            border-radius: 5px;
-            margin-top: 10px;
+            border-radius: 8px;
+            margin-top: 15px;
             overflow: hidden;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
         }
+        body.dark-mode .progress-bar-container { background-color: var(--dark-bg); }
+        
         .progress-bar {
             height: 100%;
-            border-radius: 5px;
-            transition: width 0.5s ease-in-out;
+            border-radius: 8px;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        /* Shine effect na progress bar */
+        .progress-bar::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
+            animation: shimmer 2s infinite;
+        }
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
         
-        /* Modal */
+        /* Modals com Glassmorphism */
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
+            background-color: rgba(17, 24, 39, 0.6);
+            backdrop-filter: blur(8px); /* Glassmorphism */
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 1000;
             animation: fadeIn 0.3s;
+            padding: 20px; 
         }
         
         .modal-content {
             width: 100%;
             max-width: 500px;
-            padding: 30px;
-            border-radius: 12px;
+            padding: 35px;
+            border-radius: var(--radius-xl);
             position: relative;
-            animation: slideIn 0.3s;
+            animation: scaleIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-height: 90vh; 
+            overflow-y: auto;
+            box-shadow: var(--shadow-float);
         }
-        body.light-mode .modal-content { background-color: var(--light-card); }
-        body.dark-mode .modal-content { background-color: var(--dark-card); }
         
-        @keyframes slideIn {
-            from { transform: translateY(-30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        body.light-mode .modal-content { background-color: var(--light-card); border: 1px solid rgba(255,255,255,0.8); }
+        body.dark-mode .modal-content { background-color: var(--dark-card); border: 1px solid rgba(255,255,255,0.05); }
+        
+        @keyframes scaleIn {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
         
         .modal-close-btn {
             position: absolute;
-            top: 15px;
-            right: 15px;
-            background: none;
+            top: 20px;
+            right: 20px;
+            background: var(--light-bg);
             border: none;
-            font-size: 1.5rem;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             cursor: pointer;
-            opacity: 0.7;
+            transition: all 0.2s;
+            color: var(--light-text-muted);
         }
-        body.light-mode .modal-close-btn { color: var(--light-text); }
-        body.dark-mode .modal-close-btn { color: var(--dark-text); }
+        body.dark-mode .modal-close-btn { background: var(--dark-bg); color: var(--dark-text-muted); }
+        .modal-close-btn:hover { background: var(--danger-light); color: var(--danger-color); transform: rotate(90deg); }
         
         .modal-content h3 {
             margin-top: 0;
             margin-bottom: 25px;
             text-align: center;
+            font-size: 1.5rem;
+            font-weight: 700;
         }
         
         .modal-form .form-group, .settings-form .form-group, #export-filters .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
-        .modal-form label, .settings-form label, #export-filters label {
+        .modal-form label, .settings-form label, #export-filters label, #transaction-search-filters label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             font-weight: 500;
+            font-size: 0.95rem;
         }
-        .modal-form input, .modal-form select, .settings-form input, .settings-form select, #export-filters input {
+        .modal-form input, .modal-form select, .settings-form input, .settings-form select, #export-filters input, #transaction-search-filters input, #transaction-search-filters select {
             width: 100%;
-            padding: 10px;
-            border-radius: 8px;
+            padding: 14px;
+            border-radius: var(--radius-md);
             border: 1px solid;
             box-sizing: border-box;
+            transition: all 0.3s;
+            font-family: inherit;
         }
         body.light-mode .modal-form input, body.light-mode .modal-form select,
         body.light-mode .settings-form input, body.light-mode .settings-form select,
-        body.light-mode #export-filters input {
+        body.light-mode #export-filters input, body.light-mode #transaction-search-filters input, body.light-mode #transaction-search-filters select {
             background-color: var(--light-bg);
-            border-color: var(--light-border);
+            border-color: transparent;
             color: var(--light-text);
         }
+        body.light-mode .modal-form input:focus, body.light-mode .modal-form select:focus {
+             background-color: white; border-color: var(--primary-color); box-shadow: 0 0 0 4px var(--primary-light);
+        }
+        
         body.dark-mode .modal-form input, body.dark-mode .modal-form select,
         body.dark-mode .settings-form input, body.dark-mode .settings-form select,
-        body.dark-mode #export-filters input {
-            background-color: var(--dark-bg);
+        body.dark-mode #export-filters input, body.dark-mode #transaction-search-filters input, body.dark-mode #transaction-search-filters select {
+            background-color: rgba(17, 24, 39, 0.5);
             border-color: var(--dark-border);
             color: var(--dark-text);
+        }
+        body.dark-mode .modal-form input:focus, body.dark-mode .modal-form select:focus {
+            background-color: var(--dark-bg); border-color: var(--primary-color); box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.2);
         }
         
         .form-group.radio-group {
             display: flex;
-            gap: 10px;
+            gap: 15px;
+            background: var(--light-bg);
+            padding: 6px;
+            border-radius: var(--radius-md);
         }
+        body.dark-mode .form-group.radio-group { background: var(--dark-bg); }
+
         .radio-group label {
             flex: 1;
             text-align: center;
-            padding: 10px;
-            border: 1px solid;
-            border-radius: 8px;
+            padding: 12px;
+            border-radius: var(--radius-sm);
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s;
+            margin-bottom: 0;
+            font-weight: 600;
         }
-        body.light-mode .radio-group label { border-color: var(--light-border); }
-        body.dark-mode .radio-group label { border-color: var(--dark-border); }
         
         .radio-group input[type="radio"] {
             display: none;
         }
         .radio-group input[type="radio"]:checked + label {
-            border-color: var(--primary-color);
-            background-color: var(--primary-color);
-            color: white;
+            background-color: var(--light-card);
+            color: var(--primary-color);
+            box-shadow: var(--shadow-sm);
+        }
+        body.dark-mode .radio-group input[type="radio"]:checked + label {
+            background-color: var(--dark-card);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: var(--light-bg);
+            border-radius: var(--radius-md);
+        }
+        body.dark-mode .checkbox-group { background: var(--dark-bg); }
+        
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--primary-color);
+        }
+        .checkbox-group label {
+            margin-bottom: 0;
+            cursor: pointer;
         }
 
         .toast {
             position: fixed;
-            bottom: 20px;
+            bottom: 30px;
             left: 50%;
-            transform: translateX(-50%);
+            transform: translateX(-50%) translateY(100px);
             background-color: var(--success-color);
             color: white;
-            padding: 15px 25px;
-            border-radius: 8px;
+            padding: 16px 32px;
+            border-radius: var(--radius-lg);
             z-index: 2000;
             opacity: 0;
-            transition: opacity 0.5s, bottom 0.5s;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            text-align: center;
+            font-weight: 600;
+            max-width: 90%;
         }
         .toast.show {
             opacity: 1;
-            bottom: 40px;
+            transform: translateX(-50%) translateY(0);
         }
 
         .password-group {
@@ -623,59 +925,69 @@
         }
         .toggle-password {
             position: absolute;
-            right: 15px;
+            right: 18px;
             top: 50%;
             transform: translateY(-50%);
             cursor: pointer;
-            opacity: 0.6;
+            opacity: 0.5;
             transition: opacity 0.2s;
+            z-index: 2;
+            padding: 5px;
         }
         .password-group .toggle-password {
-            /* Adjust for inputs without labels inside the group */
             top: auto;
-            bottom: 13px;
+            bottom: 12px;
         }
         .form-group > .password-group .toggle-password {
-            /* Adjust for inputs with labels outside the group */
             top: 50%;
         }
 
         .toggle-password:hover {
             opacity: 1;
+            color: var(--primary-color);
         }
 
-        /* PIN Lock Screen */
+        /* PIN Lock Screen com Glassmorphism */
         #pin-lock-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background-color: var(--light-bg);
+            background-color: rgba(243, 244, 246, 0.85); /* Light blur */
+            backdrop-filter: blur(15px);
             z-index: 9999;
             display: flex;
             justify-content: center;
             align-items: center;
         }
         body.dark-mode #pin-lock-screen {
-             background-color: var(--dark-bg);
+             background-color: rgba(17, 24, 39, 0.85); /* Dark blur */
         }
         #pin-container {
             text-align: center;
-            padding: 40px;
+            padding: 50px;
+            background: var(--light-card);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-float);
+            border: 1px solid rgba(255,255,255,0.2);
         }
+        body.dark-mode #pin-container { background: var(--dark-card); border-color: rgba(255,255,255,0.05);}
+        
         #pin-input {
-            font-size: 2rem;
-            letter-spacing: 1rem;
+            font-size: 2.5rem;
+            letter-spacing: 0.8rem;
             text-align: center;
             border: none;
-            border-bottom: 2px solid;
+            border-bottom: 3px solid var(--light-border);
             background: transparent;
-            width: 200px;
-            margin: 20px 0;
+            width: 240px;
+            margin: 30px 0;
             color: inherit;
+            font-family: monospace;
+            padding-bottom: 10px;
+            transition: border-color 0.3s;
         }
-        body.light-mode #pin-input { border-color: var(--light-border); }
         body.dark-mode #pin-input { border-color: var(--dark-border); }
 
         #pin-input:focus {
@@ -683,15 +995,17 @@
             border-color: var(--primary-color);
         }
         #pin-container.shake {
-            animation: shake 0.5s;
+            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+            border-color: var(--danger-color);
         }
         @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
-            20%, 40%, 60%, 80% { transform: translateX(10px); }
+            10%, 90% { transform: translate3d(-2px, 0, 0); }
+            20%, 80% { transform: translate3d(4px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-8px, 0, 0); }
+            40%, 60% { transform: translate3d(8px, 0, 0); }
         }
         
-        /* Responsive Design */
+        /* Responsive Design Otimizado */
         @media (max-width: 768px) {
             #app-page {
                 flex-direction: column;
@@ -702,34 +1016,82 @@
                 position: relative;
                 border-right: none;
                 border-bottom: 1px solid;
-                padding: 10px 15px;
+                padding: 15px;
                 flex-direction: column;
-                align-items: flex-start;
+                align-items: center;
+                display: block; 
+                z-index: 100;
             }
             .sidebar-header {
+                display: flex;
                 justify-content: space-between;
                 width: 100%;
                 margin-bottom: 0;
+                align-items: center;
             }
             
             #mobile-menu-btn {
                 display: block;
+                order: 0;
             }
+            
+            #app-logo {
+                order: 1;
+            }
+            
             #sidebar-collapsible-content {
                 display: none;
                 width: 100%;
-                margin-top: 10px;
+                margin-top: 20px;
+                flex-direction: column;
             }
             #sidebar.mobile-nav-open #sidebar-collapsible-content {
                 display: flex;
+                animation: fadeIn 0.3s;
             }
             #main-content {
                 margin-left: 0;
                 width: 100%;
-                padding: 15px;
+                padding: 20px 15px;
+                min-height: auto;
+            }
+            .page-header {
+                margin-top: 10px;
             }
             .page-header h2 {
-                font-size: 1.5rem;
+                font-size: 1.8rem;
+            }
+            
+            /* Melhoria de Grelha no Mobile */
+            #export-filters .dashboard-grid, #transaction-search-filters.dashboard-grid {
+                grid-template-columns: 1fr !important;
+                align-items: stretch !important;
+                gap: 15px;
+            }
+            
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .card-header .quick-actions {
+                width: 100%;
+            }
+            .card-header .quick-actions button {
+                flex: 1;
+                justify-content: center;
+            }
+            
+            /* Ajuste Modais */
+            .modal-content {
+                padding: 25px 20px;
+            }
+            .form-group.radio-group {
+                flex-direction: column;
+                gap: 8px;
+            }
+            #pin-container {
+                padding: 30px 20px;
+                width: 90%;
             }
         }
     </style>
@@ -745,7 +1107,7 @@
                 <text x="50" y="29" class="logo-text">Beijing</text>
             </svg>
             <h2>Insira o seu PIN</h2>
-            <p style="opacity: 0.7; margin-top: -15px;">A sua carteira está protegida.</p>
+            <p style="opacity: 0.7; margin-top: -15px; margin-bottom: 20px;">A sua carteira está protegida.</p>
             <input type="password" id="pin-input" maxlength="6" pattern="\d{6}" required autocomplete="off" autofocus>
         </div>
     </div>
@@ -759,39 +1121,39 @@
                 <form id="login-form" class="auth-form">
                     <div class="form-group">
                         <label for="login-email">Email</label>
-                        <input type="email" id="login-email" required>
+                        <input type="email" id="login-email" required placeholder="seu@email.com">
                     </div>
                     <div class="form-group">
                         <label for="login-password">Palavra-passe</label>
                         <div class="password-group">
-                            <input type="password" id="login-password" required>
+                            <input type="password" id="login-password" required placeholder="••••••••">
                             <i class="fas fa-eye toggle-password" data-target="login-password"></i>
                         </div>
                     </div>
-                    <button type="submit" class="auth-btn">Entrar</button>
+                    <button type="submit" class="auth-btn">Entrar na Aplicação</button>
                 </form>
-                <p class="auth-toggle">Não tem conta? <a id="show-register">Registe-se</a></p>
+                <p class="auth-toggle">Não tem conta? <a id="show-register">Registe-se aqui</a></p>
             </div>
             <div id="register-view" class="hidden">
                 <h1>Criar Conta</h1>
                 <form id="register-form" class="auth-form">
                     <div class="form-group">
-                        <label for="register-name">Nome</label>
-                        <input type="text" id="register-name" required>
+                        <label for="register-name">Nome Completo</label>
+                        <input type="text" id="register-name" required placeholder="João Silva">
                     </div>
                     <div class="form-group">
                         <label for="register-email">Email</label>
-                        <input type="email" id="register-email" required>
+                        <input type="email" id="register-email" required placeholder="seu@email.com">
                     </div>
                     <div class="form-group">
                         <label for="register-password">Palavra-passe</label>
                         <div class="password-group">
-                            <input type="password" id="register-password" required>
+                            <input type="password" id="register-password" required placeholder="Mín. 8 caracteres">
                             <i class="fas fa-eye toggle-password" data-target="register-password"></i>
                         </div>
                         <div id="password-feedback"></div>
                     </div>
-                    <button type="submit" class="auth-btn">Registar</button>
+                    <button type="submit" class="auth-btn">Criar Conta</button>
                 </form>
                 <p class="auth-toggle">Já tem conta? <a id="show-login">Faça Login</a></p>
             </div>
@@ -850,11 +1212,11 @@
                     </div>
                      <div class="summary-card">
                         <h3>Saldo Disponível</h3>
-                        <p class="amount" id="available-balance" style="color: var(--primary-color);">0,00 Kz</p>
+                        <p class="amount" id="available-balance" style="color: var(--secondary-color);">0,00 Kz</p>
                     </div>
                      <div class="summary-card">
                         <h3>Total Poupado</h3>
-                        <p class="amount" id="total-saved" style="color: var(--secondary-color);">0,00 Kz</p>
+                        <p class="amount" id="total-saved" style="color: var(--warning-color);">0,00 Kz</p>
                     </div>
                     <div class="summary-card">
                         <h3>Receitas (Mês)</h3>
@@ -865,14 +1227,14 @@
                         <p class="amount" id="monthly-expenses" style="color: var(--danger-color);">0,00 Kz</p>
                     </div>
                 </div>
-                <div class="dashboard-grid" style="margin-top: 20px;">
+                <div class="dashboard-grid" style="margin-top: 24px;">
                     <div class="card">
                         <div class="card-header">
                             <h3>Ações Rápidas</h3>
                         </div>
                         <div class="quick-actions">
-                            <button class="btn btn-success" id="quick-add-income"><i class="fas fa-plus"></i> <span>Receita</span></button>
-                            <button class="btn btn-danger" id="quick-add-expense"><i class="fas fa-minus"></i> <span>Despesa</span></button>
+                            <button class="btn btn-success" id="quick-add-income"><i class="fas fa-arrow-up"></i> <span>Nova Receita</span></button>
+                            <button class="btn btn-danger" id="quick-add-expense"><i class="fas fa-arrow-down"></i> <span>Nova Despesa</span></button>
                         </div>
                     </div>
                     <div class="card">
@@ -882,10 +1244,10 @@
                         <canvas id="dashboard-chart"></canvas>
                     </div>
                 </div>
-                 <div class="card" style="margin-top: 20px;">
+                 <div class="card" style="margin-top: 24px;">
                     <div class="card-header">
                         <h3>Últimas Transações</h3>
-                        <a href="#transactions" class="nav-link-inline" style="text-decoration: none; color: var(--primary-color);">Ver Todas</a>
+                        <a href="#transactions" class="nav-link-inline" style="text-decoration: none; font-weight: 600; color: var(--primary-color);">Ver Todas <i class="fas fa-chevron-right" style="font-size: 0.8em; margin-left: 5px;"></i></a>
                     </div>
                     <div class="transaction-list">
                         <ul id="recent-transactions-list">
@@ -949,24 +1311,50 @@
                 <div class="page-header">
                     <h2>Histórico de Transações</h2>
                     <div class="quick-actions">
-                        <button class="btn btn-success" id="export-xls-btn"><i class="fas fa-file-excel"></i> <span>Exportar (Excel)</span></button>
-                        <button class="btn btn-primary" id="export-doc-btn"><i class="fas fa-file-word"></i> <span>Exportar (Word)</span></button>
-                        <button class="btn btn-danger" id="export-pdf-btn"><i class="fas fa-file-pdf"></i> <span>Exportar (PDF)</span></button>
+                        <button class="btn btn-success" id="export-xls-btn"><i class="fas fa-file-excel"></i> <span>Excel</span></button>
+                        <button class="btn btn-primary" id="export-doc-btn"><i class="fas fa-file-word"></i> <span>Word</span></button>
+                        <button class="btn btn-danger" id="export-pdf-btn"><i class="fas fa-file-pdf"></i> <span>PDF</span></button>
                     </div>
                 </div>
-                <div id="export-filters" class="card" style="margin-bottom: 20px;">
-                    <h3 style="margin-top:0;">Filtros de Exportação</h3>
-                    <div class="dashboard-grid" style="align-items: flex-end; grid-template-columns: 1fr 1fr auto;">
-                        <div class="form-group">
+                
+                <!-- Pesquisa e Filtros -->
+                <div class="card" style="margin-bottom: 24px; padding: 20px 28px;">
+                    <h3 style="margin-top: 0; font-size: 1.1rem; margin-bottom: 15px;">Filtros e Pesquisa</h3>
+                    <div id="transaction-search-filters" class="dashboard-grid" style="grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 15px;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <input type="text" id="search-input" placeholder="🔍 Pesquisar descrição...">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <select id="filter-type">
+                                <option value="all">Todos os Tipos</option>
+                                <option value="receita">Apenas Receitas</option>
+                                <option value="despesa">Apenas Despesas</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <select id="filter-category"><option value="all">Todas as Categorias</option></select>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <select id="filter-account"><option value="all">Todas as Contas</option></select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filtros Exportação -->
+                <div id="export-filters" class="card" style="margin-bottom: 24px; padding: 20px 28px;">
+                    <h3 style="margin-top:0; font-size: 1.1rem; margin-bottom: 15px;">Exportar por Período</h3>
+                    <div class="dashboard-grid" style="align-items: flex-end; grid-template-columns: 1fr 1fr auto; gap: 15px;">
+                        <div class="form-group" style="margin-bottom: 0;">
                             <label for="export-start-date">Data de Início</label>
                             <input type="date" id="export-start-date">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" style="margin-bottom: 0;">
                             <label for="export-end-date">Data de Fim</label>
                             <input type="date" id="export-end-date">
                         </div>
                     </div>
                 </div>
+
                 <div class="card">
                     <div class="transaction-list">
                         <ul id="full-transactions-list">
@@ -1006,14 +1394,16 @@
                 <div class="dashboard-grid">
                     <div class="card">
                         <h3>Despesas por Categoria (Mês)</h3>
+                        <p style="font-size: 0.85rem; color: var(--light-text-muted); margin-top: -5px; margin-bottom: 15px;">Clique numa fatia para ver detalhes</p>
                         <canvas id="expenses-by-category-chart"></canvas>
                     </div>
                     <div class="card">
                         <h3>Receitas por Categoria (Mês)</h3>
+                        <p style="font-size: 0.85rem; color: var(--light-text-muted); margin-top: -5px; margin-bottom: 15px;">Clique numa fatia para ver detalhes</p>
                         <canvas id="income-by-category-chart"></canvas>
                     </div>
                 </div>
-                <div class="dashboard-grid" style="margin-top: 20px;">
+                <div class="dashboard-grid" style="margin-top: 24px;">
                     <div class="card">
                         <h3>Receitas vs Despesas (Últimos 6 meses)</h3>
                         <canvas id="income-vs-expenses-chart"></canvas>
@@ -1039,18 +1429,18 @@
                                 <input type="text" id="settings-name" required>
                             </div>
                             <div class="form-group password-group">
-                                <label for="settings-password">Nova Palavra-passe (deixe em branco para não alterar)</label>
+                                <label for="settings-password">Nova Palavra-passe <span style="font-size:0.8em;opacity:0.7;">(deixe vazio para não alterar)</span></label>
                                 <input type="password" id="settings-password">
                                 <i class="fas fa-eye toggle-password" data-target="settings-password"></i>
                             </div>
-                            <button type="submit" class="btn btn-primary">Guardar Perfil</button>
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">Guardar Perfil</button>
                         </form>
                     </div>
                     <div class="card">
                         <h3>Definições de Moeda</h3>
                         <form id="currency-settings-form" class="settings-form">
                             <div class="form-group">
-                                <label for="settings-display-currency">Moeda de Visualização</label>
+                                <label for="settings-display-currency">Moeda de Visualização Principal</label>
                                 <select id="settings-display-currency">
                                     <option value="AOA">Kwanza (Kz)</option>
                                     <option value="USD">Dólar Americano (USD)</option>
@@ -1059,7 +1449,7 @@
                                     <option value="BRL">Real Brasileiro (BRL)</option>
                                 </select>
                             </div>
-                            <p style="font-size: 0.9rem; opacity: 0.8;">Defina as taxas de câmbio em relação à moeda AOA.</p>
+                            <p style="font-size: 0.85rem; color: var(--light-text-muted); margin-bottom: 15px;">Defina as taxas de câmbio em relação à moeda AOA.</p>
                             <div class="form-group">
                                 <label for="settings-rate-usd" id="rate-usd-label">Câmbio (AOA por 1 USD)</label>
                                 <input type="number" id="settings-rate-usd" step="any" required>
@@ -1076,7 +1466,7 @@
                                 <label for="settings-rate-brl" id="rate-brl-label">Câmbio (AOA por 1 BRL)</label>
                                 <input type="number" id="settings-rate-brl" step="any" required>
                             </div>
-                            <button type="submit" class="btn btn-primary">Guardar Moeda</button>
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">Guardar Moeda</button>
                         </form>
                     </div>
                     <div class="card">
@@ -1087,24 +1477,24 @@
                                 <input type="password" id="settings-pin" maxlength="6" pattern="\d{6}" placeholder="PIN atual ou novo PIN" autocomplete="off">
                             </div>
                             <div class="quick-actions">
-                                <button type="submit" class="btn btn-primary">Definir/Alterar PIN</button>
-                                <button type="button" id="remove-pin-btn" class="btn btn-danger">Remover PIN</button>
+                                <button type="submit" class="btn btn-primary" style="flex:1;">Definir PIN</button>
+                                <button type="button" id="remove-pin-btn" class="btn btn-danger" style="flex:1;">Remover PIN</button>
                             </div>
                         </form>
                     </div>
                      <div class="card">
                         <h3>Gestão de Dados</h3>
-                        <p>Exporte todos os seus dados para um ficheiro para os guardar em segurança ou mover para outro dispositivo.</p>
-                        <div class="quick-actions">
-                            <button id="backup-btn" class="btn btn-primary"><i class="fas fa-download"></i> Criar Backup</button>
+                        <p style="font-size: 0.9rem; color: var(--light-text-muted); margin-bottom: 20px;">Exporte todos os seus dados para um ficheiro para os guardar em segurança ou mover para outro dispositivo.</p>
+                        <div class="quick-actions" style="flex-direction: column;">
+                            <button id="backup-btn" class="btn btn-primary"><i class="fas fa-download"></i> Criar Backup Total</button>
                             <button id="restore-btn" class="btn btn-warning"><i class="fas fa-upload"></i> Restaurar Backup</button>
                             <input type="file" id="restore-input" class="hidden" accept=".json">
                         </div>
                     </div>
-                    <div class="card">
+                    <div class="card" style="border: 1px solid var(--danger-light);">
                         <h3>Sessão</h3>
-                        <p>Termine a sua sessão atual de forma segura.</p>
-                        <button id="logout-btn-settings" class="btn btn-danger" style="width: 100%; margin-top: 10px;">Terminar Sessão</button>
+                        <p style="font-size: 0.9rem; color: var(--light-text-muted); margin-bottom: 20px;">Termine a sua sessão atual de forma segura. Volte em breve!</p>
+                        <button id="logout-btn-settings" class="btn btn-danger" style="width: 100%;"><i class="fas fa-sign-out-alt"></i> Terminar Sessão</button>
                     </div>
                 </div>
             </section>
@@ -1113,6 +1503,19 @@
 
     <!-- =========== MODALS =========== -->
     <div id="modal-container">
+        
+        <!-- Drilldown Modal para Gráficos -->
+        <div id="drilldown-modal" class="modal-overlay hidden">
+            <div class="modal-content">
+                <button class="modal-close-btn">&times;</button>
+                <h3 id="drilldown-title">Detalhes da Categoria</h3>
+                <p id="drilldown-subtitle" style="text-align: center; color: var(--light-text-muted); margin-top: -15px; margin-bottom: 25px;"></p>
+                <div class="transaction-list" style="margin-top: 10px;">
+                    <ul id="drilldown-list"></ul>
+                </div>
+            </div>
+        </div>
+
         <!-- Transfer Modal -->
         <div id="transfer-modal" class="modal-overlay hidden">
             <div class="modal-content">
@@ -1120,16 +1523,16 @@
                 <h3>Transferir entre Contas</h3>
                 <form id="transfer-form" class="modal-form">
                     <div class="form-group">
-                        <label for="transfer-from">De:</label>
+                        <label for="transfer-from">Transferir de:</label>
                         <select id="transfer-from" required></select>
                     </div>
                     <div class="form-group">
-                        <label for="transfer-to">Para:</label>
+                        <label for="transfer-to">Para a conta:</label>
                         <select id="transfer-to" required></select>
                     </div>
                     <div class="form-group">
                         <label for="transfer-amount">Valor (Kz)</label>
-                        <input type="number" id="transfer-amount" step="0.01" required>
+                        <input type="number" id="transfer-amount" step="0.01" required placeholder="Ex: 5000">
                     </div>
                     <button type="submit" class="btn btn-primary" style="width: 100%;">Confirmar Transferência</button>
                 </form>
@@ -1140,7 +1543,7 @@
         <div id="transaction-modal" class="modal-overlay hidden">
             <div class="modal-content">
                 <button class="modal-close-btn">&times;</button>
-                <h3 id="transaction-modal-title">Adicionar Transação</h3>
+                <h3 id="transaction-modal-title">Nova Transação</h3>
                 <form id="transaction-form" class="modal-form">
                     <input type="hidden" id="transaction-id">
                     <div class="form-group radio-group">
@@ -1151,10 +1554,10 @@
                     </div>
                     <div class="form-group">
                         <label for="transaction-amount">Valor (Kz)</label>
-                        <input type="number" id="transaction-amount" step="0.01" required>
+                        <input type="number" id="transaction-amount" step="0.01" required placeholder="0.00">
                     </div>
                     <div class="form-group">
-                        <label for="transaction-account">Conta</label>
+                        <label for="transaction-account">Conta Bancária</label>
                         <select id="transaction-account" required></select>
                     </div>
                     <div class="form-group">
@@ -1163,17 +1566,33 @@
                     </div>
                     <div class="form-group hidden" id="custom-category-group">
                         <label for="transaction-custom-category">Nome da Nova Categoria</label>
-                        <input type="text" id="transaction-custom-category">
+                        <input type="text" id="transaction-custom-category" placeholder="Escreva o nome...">
                     </div>
                     <div class="form-group">
-                        <label for="transaction-date">Data</label>
+                        <label for="transaction-date">Data da Transação</label>
                         <input type="date" id="transaction-date" required>
                     </div>
+                    
+                    <!-- Secção de Transação Recorrente -->
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="transaction-is-recurring">
+                        <label for="transaction-is-recurring">Repetir transação automaticamente</label>
+                    </div>
+                    <div class="form-group hidden" id="recurring-frequency-group" style="padding-left: 32px;">
+                        <label for="transaction-frequency">Qual a frequência?</label>
+                        <select id="transaction-frequency">
+                            <option value="daily">Diariamente</option>
+                            <option value="weekly">Semanalmente</option>
+                            <option value="monthly" selected>Mensalmente</option>
+                            <option value="yearly">Anualmente</option>
+                        </select>
+                    </div>
+
                     <div class="form-group">
                         <label for="transaction-description">Descrição (opcional)</label>
-                        <input type="text" id="transaction-description">
+                        <input type="text" id="transaction-description" placeholder="Ex: Jantar com amigos">
                     </div>
-                    <button type="submit" class="btn btn-primary" style="width: 100%;">Salvar</button>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Gravar Transação</button>
                 </form>
             </div>
         </div>
@@ -1186,14 +1605,14 @@
                 <form id="account-form" class="modal-form">
                     <input type="hidden" id="account-id">
                     <div class="form-group">
-                        <label for="account-name">Nome da Conta</label>
-                        <input type="text" id="account-name" required>
+                        <label for="account-name">Nome da Instituição/Conta</label>
+                        <input type="text" id="account-name" required placeholder="Ex: Banco BAI">
                     </div>
                     <div class="form-group">
-                        <label for="account-balance">Saldo Inicial (Kz)</label>
-                        <input type="number" id="account-balance" step="0.01" required>
+                        <label for="account-balance">Saldo Inicial Atual (Kz)</label>
+                        <input type="number" id="account-balance" step="0.01" required placeholder="0.00">
                     </div>
-                    <button type="submit" class="btn btn-primary" style="width: 100%;">Salvar</button>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Gravar Conta</button>
                 </form>
             </div>
         </div>
@@ -1202,36 +1621,36 @@
         <div id="budget-modal" class="modal-overlay hidden">
             <div class="modal-content">
                 <button class="modal-close-btn">&times;</button>
-                <h3 id="budget-modal-title">Criar Orçamento</h3>
+                <h3 id="budget-modal-title">Definir Orçamento</h3>
                 <form id="budget-form" class="modal-form">
                     <input type="hidden" id="budget-id">
                     <div class="form-group">
-                        <label for="budget-category">Categoria</label>
+                        <label for="budget-category">Categoria a Controlar</label>
                         <select id="budget-category" required></select>
                     </div>
                     <div class="form-group hidden" id="custom-budget-category-group">
                         <label for="budget-custom-category">Nome da Nova Categoria</label>
-                        <input type="text" id="budget-custom-category">
+                        <input type="text" id="budget-custom-category" placeholder="Escreva o nome...">
                     </div>
                     <div class="form-group">
-                        <label for="budget-amount">Valor do Orçamento (Kz)</label>
-                        <input type="number" id="budget-amount" step="0.01" required>
+                        <label for="budget-amount">Limite de Gastos (Kz)</label>
+                        <input type="number" id="budget-amount" step="0.01" required placeholder="Ex: 50000">
                     </div>
                     <div class="form-group">
-                        <label for="budget-period">Período</label>
+                        <label for="budget-period">Ciclo do Orçamento</label>
                         <select id="budget-period" required>
                             <option value="daily">Diário</option>
                             <option value="weekly">Semanal</option>
                             <option value="monthly">Mensal</option>
                             <option value="bimonthly">Bimestral</option>
-                            <option value="custom">Outro (Personalizado)...</option>
+                            <option value="custom">Período Personalizado...</option>
                         </select>
                     </div>
                     <div class="form-group hidden" id="custom-budget-period-group">
-                        <label for="budget-custom-period">Duração do Período (em dias)</label>
-                        <input type="number" id="budget-custom-period" min="1">
+                        <label for="budget-custom-period">Duração em dias</label>
+                        <input type="number" id="budget-custom-period" min="1" placeholder="Ex: 15">
                     </div>
-                    <button type="submit" class="btn btn-primary" style="width: 100%;">Salvar</button>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Gravar Orçamento</button>
                 </form>
             </div>
         </div>
@@ -1240,30 +1659,30 @@
         <div id="goal-modal" class="modal-overlay hidden">
             <div class="modal-content">
                 <button class="modal-close-btn">&times;</button>
-                <h3 id="goal-modal-title">Definir Meta</h3>
+                <h3 id="goal-modal-title">Novo Objetivo de Poupança</h3>
                 <form id="goal-form" class="modal-form">
                     <input type="hidden" id="goal-id">
                     <div class="form-group">
-                        <label for="goal-name">Nome da Meta</label>
-                        <input type="text" id="goal-name" required>
+                        <label for="goal-name">O que quer alcançar?</label>
+                        <input type="text" id="goal-name" required placeholder="Ex: Viagem ao Dubai">
                     </div>
                     <div class="form-group">
-                        <label for="goal-target">Valor Alvo (Kz)</label>
-                        <input type="number" id="goal-target" step="0.01" required>
+                        <label for="goal-target">Valor Necessário (Kz)</label>
+                        <input type="number" id="goal-target" step="0.01" required placeholder="Ex: 1500000">
                     </div>
                      <div class="form-group">
-                        <label for="goal-start-date">Data de Começo</label>
+                        <label for="goal-start-date">Data de Início</label>
                         <input type="date" id="goal-start-date" required>
                     </div>
                     <div class="form-group">
-                        <label for="goal-end-date">Data de Término</label>
+                        <label for="goal-end-date">Data Limite</label>
                         <input type="date" id="goal-end-date" required>
                     </div>
                     <div class="form-group">
-                        <label for="goal-saved">Valor Já Poupado (Kz)</label>
+                        <label for="goal-saved">Já tem algum valor guardado? (Kz)</label>
                         <input type="number" id="goal-saved" step="0.01" required value="0">
                     </div>
-                    <button type="submit" class="btn btn-primary" style="width: 100%;">Salvar</button>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Gravar Meta</button>
                 </form>
             </div>
         </div>
@@ -1272,30 +1691,30 @@
         <div id="contribute-goal-modal" class="modal-overlay hidden">
             <div class="modal-content">
                 <button class="modal-close-btn">&times;</button>
-                <h3>Contribuir para a Meta</h3>
+                <h3>Reforçar Poupança</h3>
                 <form id="contribute-goal-form" class="modal-form">
                     <input type="hidden" id="contribute-goal-id">
                     <div class="form-group">
-                        <label for="contribute-amount">Valor a Contribuir (Kz)</label>
-                        <input type="number" id="contribute-amount" step="0.01" required>
+                        <label for="contribute-amount">Valor a Depositar (Kz)</label>
+                        <input type="number" id="contribute-amount" step="0.01" required placeholder="Ex: 5000">
                     </div>
                     <div class="form-group">
-                        <label for="contribute-from-account">Retirar da Conta</label>
+                        <label for="contribute-from-account">Retirar dinheiro de:</label>
                         <select id="contribute-from-account" required></select>
                     </div>
-                    <button type="submit" class="btn btn-primary">Contribuir</button>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Confirmar Reforço</button>
                 </form>
             </div>
         </div>
         
         <!-- Confirmation Modal -->
         <div id="confirm-modal" class="modal-overlay hidden">
-            <div class="modal-content" style="max-width: 400px;">
-                <h3 id="confirm-modal-title">Tem a certeza?</h3>
-                <p id="confirm-modal-text">Esta ação não pode ser desfeita.</p>
-                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
-                    <button id="confirm-cancel-btn" class="btn" style="background-color: #ccc;">Cancelar</button>
-                    <button id="confirm-delete-btn" class="btn btn-danger">Apagar</button>
+            <div class="modal-content" style="max-width: 400px; padding: 40px 30px; text-align: center;">
+                <h3 id="confirm-modal-title" style="color: var(--danger-color); margin-bottom: 15px;">Tem a certeza?</h3>
+                <p id="confirm-modal-text" style="color: var(--light-text-muted); margin-bottom: 30px;">Esta ação é irreversível e os dados não poderão ser recuperados.</p>
+                <div style="display: flex; gap: 15px;">
+                    <button id="confirm-cancel-btn" class="btn btn-secondary" style="flex: 1; justify-content: center;">Cancelar</button>
+                    <button id="confirm-delete-btn" class="btn btn-danger" style="flex: 1; justify-content: center;">Sim, Apagar</button>
                 </div>
             </div>
         </div>
@@ -1765,18 +2184,28 @@
             }
             
             // Render dashboard chart
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            const textColor = isDarkMode ? '#9CA3AF' : '#6B7280';
+            
             renderChart('dashboard-chart', 'bar', {
                 labels: ['Receitas', 'Despesas'],
                 datasets: [{
                     label: `Este Mês (${data.settings.displayCurrency})`,
-                    data: [monthlyIncome, monthlyExpenses], // Data is always in AOA for charts
-                    backgroundColor: [ 'rgba(126, 211, 33, 0.6)', 'rgba(233, 78, 119, 0.6)' ],
-                    borderColor: [ 'rgb(126, 211, 33)', 'rgb(233, 78, 119)' ],
-                    borderWidth: 1
+                    data: [monthlyIncome, monthlyExpenses], 
+                    backgroundColor: [ 'rgba(16, 185, 129, 0.7)', 'rgba(244, 63, 94, 0.7)' ],
+                    borderColor: [ '#10B981', '#F43F5E' ],
+                    borderWidth: 1,
+                    borderRadius: 8
                 }]
             }, { 
-                scales: { y: { beginAtZero: true } },
-                plugins: { tooltip: { callbacks: { label: (context) => formatCurrency(context.raw) } } }
+                scales: { 
+                    y: { beginAtZero: true, grid: { color: isDarkMode ? '#374151' : '#E5E7EB' }, ticks: { color: textColor } },
+                    x: { grid: { display: false }, ticks: { color: textColor } }
+                },
+                plugins: { 
+                    tooltip: { callbacks: { label: (context) => formatCurrency(context.raw) } },
+                    legend: { labels: { color: textColor } }
+                }
             });
         }
         
@@ -1953,23 +2382,27 @@
             }
             
             const isDarkMode = document.body.classList.contains('dark-mode');
-            const textColor = isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)';
+            const textColor = isDarkMode ? '#9CA3AF' : '#6B7280';
+            const gridColor = isDarkMode ? '#374151' : '#E5E7EB';
 
             renderChart('cashflow-chart', 'line', {
                 labels: forecastLabels,
                 datasets: [{
                     label: 'Previsão de Saldo',
                     data: forecastData,
-                    borderColor: 'var(--primary-color)',
-                    backgroundColor: 'rgba(74, 144, 226, 0.1)',
+                    borderColor: '#0EA5E9',
+                    backgroundColor: 'rgba(14, 165, 233, 0.15)',
                     fill: true,
-                    tension: 0.1
+                    tension: 0.4 // Curva mais suave
                 }]
             }, {
-                plugins: { tooltip: { callbacks: { label: (context) => `Saldo previsto: ${formatCurrency(context.raw)}` } } },
+                plugins: { 
+                    tooltip: { callbacks: { label: (context) => `Saldo previsto: ${formatCurrency(context.raw)}` } },
+                    legend: { labels: { color: textColor } }
+                },
                 scales: { 
-                    x: { ticks: { color: textColor } }, 
-                    y: { ticks: { color: textColor, callback: (value) => formatCurrency(value).replace(/,.*/, '') } } // Format Y axis
+                    x: { grid: { display: false }, ticks: { color: textColor } }, 
+                    y: { grid: { color: gridColor }, ticks: { color: textColor, callback: (value) => formatCurrency(value).replace(/,.*/, '') } } 
                 },
             });
         }
@@ -1988,7 +2421,7 @@
             }
 
             if (data.accounts.length === 0) {
-                grid.innerHTML = '<p>Nenhuma conta adicionada. Crie a sua primeira conta!</p>';
+                grid.innerHTML = '<p style="grid-column: 1 / -1; text-align:center; color: var(--light-text-muted);">Nenhuma conta adicionada. Crie a sua primeira conta!</p>';
                 return;
             }
             data.accounts.forEach(acc => {
@@ -2008,13 +2441,14 @@
         function createTransactionHTML(t) {
             const iconClass = t.type === 'receita' ? 'fa-arrow-up' : 'fa-arrow-down';
             const amountClass = t.type;
+            const recurringBadge = t.isRecurring ? `<span class="recurring-badge"><i class="fas fa-sync-alt"></i></span>` : '';
             return `
                 <li data-id="${t.id}">
                     <div class="transaction-icon ${t.type}">
                         <i class="fas ${iconClass}"></i>
                     </div>
                     <div class="transaction-details">
-                        <div class="description">${t.description || t.category}</div>
+                        <div class="description">${t.description || t.category} ${recurringBadge}</div>
                         <div class="category">${t.category} &bull; ${new Date(t.date).toLocaleDateString('pt-PT')}</div>
                     </div>
                     <div class="transaction-amount ${amountClass}">
@@ -2028,16 +2462,77 @@
             `;
         }
 
+        // Search and Filters Logic
+        const searchInput = document.getElementById('search-input');
+        const filterType = document.getElementById('filter-type');
+        const filterCategory = document.getElementById('filter-category');
+        const filterAccount = document.getElementById('filter-account');
+
+        [searchInput, filterType, filterCategory, filterAccount].forEach(el => {
+            el.addEventListener('input', renderTransactions);
+            el.addEventListener('change', renderTransactions);
+        });
+
+        function populateFilters() {
+            const data = getUserData();
+            
+            // Category Filter (All categories combined)
+            const allCats = new Set([...data.categories.receita, ...data.categories.despesa]);
+            filterCategory.innerHTML = '<option value="all">Todas as Categorias</option>';
+            allCats.forEach(cat => {
+                filterCategory.innerHTML += `<option value="${cat}">${cat}</option>`;
+            });
+
+            // Account Filter
+            filterAccount.innerHTML = '<option value="all">Todas as Contas</option>';
+            data.accounts.forEach(acc => {
+                filterAccount.innerHTML += `<option value="${acc.id}">${acc.name}</option>`;
+            });
+        }
+
         function renderTransactions() {
             const data = getUserData();
+            if(state.currentView === 'transactions') populateFilters();
+
             const list = document.getElementById('full-transactions-list');
+            if(!list) return;
+
             list.innerHTML = '';
-            const sortedTransactions = [...data.transactions].sort((a,b) => new Date(b.date) - new Date(a.date));
-            if (sortedTransactions.length === 0) {
-                list.innerHTML = '<li>Nenhuma transação encontrada.</li>';
+            
+            let filteredTransactions = [...data.transactions];
+
+            // Apply Search
+            const searchTerm = searchInput.value.toLowerCase();
+            if (searchTerm) {
+                filteredTransactions = filteredTransactions.filter(t => 
+                    (t.description || '').toLowerCase().includes(searchTerm) ||
+                    t.category.toLowerCase().includes(searchTerm)
+                );
+            }
+
+            // Apply Type Filter
+            if (filterType.value !== 'all') {
+                filteredTransactions = filteredTransactions.filter(t => t.type === filterType.value);
+            }
+
+            // Apply Category Filter
+            if (filterCategory.value !== 'all') {
+                filteredTransactions = filteredTransactions.filter(t => t.category === filterCategory.value);
+            }
+
+            // Apply Account Filter
+            if (filterAccount.value !== 'all') {
+                filteredTransactions = filteredTransactions.filter(t => t.accountId == filterAccount.value);
+            }
+
+            filteredTransactions.sort((a,b) => new Date(b.date) - new Date(a.date));
+
+            if (filteredTransactions.length === 0) {
+                list.innerHTML = '<li style="justify-content:center; color: var(--light-text-muted);">Nenhuma transação encontrada com os filtros selecionados.</li>';
                 return;
             }
-            sortedTransactions.forEach(t => {
+            
+            filteredTransactions.forEach(t => {
                 list.innerHTML += createTransactionHTML(t);
             });
         }
@@ -2047,7 +2542,7 @@
             const grid = document.getElementById('budgets-grid');
             grid.innerHTML = '';
             if (data.budgets.length === 0) {
-                grid.innerHTML = '<p>Nenhum orçamento definido. Crie um para controlar os seus gastos!</p>';
+                grid.innerHTML = '<p style="grid-column: 1 / -1; text-align:center; color: var(--light-text-muted);">Nenhum orçamento definido. Crie um para controlar os seus gastos!</p>';
                 return;
             }
             
@@ -2056,7 +2551,7 @@
             data.budgets.forEach(b => {
                 let spent = 0;
                 data.transactions.forEach(t => {
-                    const tDate = new Date(t.date + 'T00:00:00'); // Ensure date is parsed correctly
+                    const tDate = new Date(t.date + 'T00:00:00'); 
                     if (t.type === 'despesa' && t.category === b.category && isDateInPeriod(tDate, b.period, b.customPeriodDays)) {
                         spent += t.amount;
                     }
@@ -2093,7 +2588,7 @@
                     return tDate.toDateString() === now.toDateString();
                 case 'weekly':
                     const startOfWeek = new Date(now);
-                    startOfWeek.setDate(now.getDate() - now.getDay()); // Sunday
+                    startOfWeek.setDate(now.getDate() - now.getDay()); 
                     const endOfWeek = new Date(startOfWeek);
                     endOfWeek.setDate(startOfWeek.getDate() + 6);
                     return tDate >= startOfWeek && tDate <= endOfWeek;
@@ -2102,7 +2597,7 @@
                 case 'bimonthly':
                     return Math.floor(tDate.getMonth() / 2) === Math.floor(now.getMonth() / 2) && tDate.getFullYear() === now.getFullYear();
                 case 'custom':
-                    const startDate = new Date(); // Assuming custom period starts from today
+                    const startDate = new Date(); 
                     startDate.setDate(startDate.getDate() - (customDays - 1));
                     startDate.setHours(0,0,0,0);
                     return tDate >= startDate && tDate <= now;
@@ -2116,7 +2611,7 @@
             const grid = document.getElementById('goals-grid');
             grid.innerHTML = '';
             if (data.goals.length === 0) {
-                grid.innerHTML = '<p>Nenhuma meta definida. Comece a poupar para os seus sonhos!</p>';
+                grid.innerHTML = '<p style="grid-column: 1 / -1; text-align:center; color: var(--light-text-muted);">Nenhuma meta definida. Comece a poupar para os seus sonhos!</p>';
                 return;
             }
             
@@ -2143,12 +2638,42 @@
             });
         }
 
+        function openDrilldownModal(category, type, month, year) {
+            const data = getUserData();
+            const list = document.getElementById('drilldown-list');
+            document.getElementById('drilldown-title').textContent = `Detalhes: ${category}`;
+            document.getElementById('drilldown-subtitle').textContent = `Mês ${month + 1}/${year}`;
+            
+            list.innerHTML = '';
+            
+            const filtered = data.transactions.filter(t => {
+                const d = new Date(t.date);
+                return t.type === type && t.category === category && d.getMonth() === month && d.getFullYear() === year;
+            });
+            
+            if(filtered.length === 0) {
+                list.innerHTML = '<li style="justify-content:center;">Nenhum detalhe encontrado.</li>';
+            } else {
+                filtered.forEach(t => {
+                    list.innerHTML += createTransactionHTML(t);
+                });
+            }
+            
+            showModal('drilldown-modal');
+        }
+
         function renderAnalysis() {
             const data = getUserData();
             const isDarkMode = document.body.classList.contains('dark-mode');
-            const textColor = isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)';
+            const textColor = isDarkMode ? '#9CA3AF' : '#6B7280';
+            const gridColor = isDarkMode ? '#374151' : '#E5E7EB';
             const tooltipCallback = { plugins: { tooltip: { callbacks: { label: (context) => formatCurrency(context.raw) } } } };
             const now = new Date();
+
+            // Moderna paleta para gráficos circulares
+            const modernColors = isDarkMode ? 
+                ['#818CF8', '#34D399', '#FBBF24', '#F472B6', '#A78BFA', '#60A5FA'] :
+                ['#4F46E5', '#10B981', '#F59E0B', '#E11D48', '#8B5CF6', '#3B82F6'];
 
             // Expenses by Category (Pie Chart)
             const expensesByCategory = {};
@@ -2158,16 +2683,26 @@
                     expensesByCategory[t.category] = (expensesByCategory[t.category] || 0) + t.amount;
                 }
             });
-            renderChart('expenses-by-category-chart', 'pie', {
+            renderChart('expenses-by-category-chart', 'doughnut', { // Doughnut is more modern
                 labels: Object.keys(expensesByCategory),
                 datasets: [{
                     data: Object.values(expensesByCategory),
-                    backgroundColor: [
-                        'rgba(233, 78, 119, 0.8)', 'rgba(245, 166, 35, 0.8)', 'rgba(248, 212, 62, 0.8)',
-                        'rgba(189, 16, 224, 0.8)', 'rgba(74, 144, 226, 0.8)', 'rgba(123, 102, 255, 0.8)'
-                    ]
+                    backgroundColor: modernColors,
+                    borderWidth: isDarkMode ? 0 : 2,
+                    borderColor: varLightCard = getComputedStyle(document.documentElement).getPropertyValue('--light-card')
                 }]
-            }, { ...tooltipCallback, plugins: { ...tooltipCallback.plugins, legend: { labels: { color: textColor } } } });
+            }, { 
+                ...tooltipCallback, 
+                cutout: '60%', // For doughnut
+                plugins: { ...tooltipCallback.plugins, legend: { position: 'bottom', labels: { color: textColor, padding: 20 } } },
+                onClick: (e, elements, chart) => {
+                    if (elements && elements.length > 0) {
+                        const index = elements[0].index;
+                        const label = chart.data.labels[index];
+                        openDrilldownModal(label, 'despesa', now.getMonth(), now.getFullYear());
+                    }
+                }
+            });
 
             // Income by Category (Pie Chart)
             const incomeByCategory = {};
@@ -2177,16 +2712,25 @@
                     incomeByCategory[t.category] = (incomeByCategory[t.category] || 0) + t.amount;
                 }
             });
-            renderChart('income-by-category-chart', 'pie', {
+            renderChart('income-by-category-chart', 'doughnut', {
                 labels: Object.keys(incomeByCategory),
                 datasets: [{
                     data: Object.values(incomeByCategory),
-                    backgroundColor: [
-                        'rgba(126, 211, 33, 0.8)', 'rgba(80, 227, 194, 0.8)', 'rgba(62, 207, 248, 0.8)',
-                        'rgba(43, 177, 121, 0.8)', 'rgba(102, 255, 194, 0.8)', 'rgba(141, 198, 63, 0.8)'
-                    ]
+                    backgroundColor: modernColors,
+                    borderWidth: isDarkMode ? 0 : 2
                 }]
-            }, { ...tooltipCallback, plugins: { ...tooltipCallback.plugins, legend: { labels: { color: textColor } } } });
+            }, { 
+                ...tooltipCallback, 
+                cutout: '60%',
+                plugins: { ...tooltipCallback.plugins, legend: { position: 'bottom', labels: { color: textColor, padding: 20 } } },
+                onClick: (e, elements, chart) => {
+                    if (elements && elements.length > 0) {
+                        const index = elements[0].index;
+                        const label = chart.data.labels[index];
+                        openDrilldownModal(label, 'receita', now.getMonth(), now.getFullYear());
+                    }
+                }
+            });
 
             // Income vs Expenses (Bar Chart - Last 6 months)
             const monthLabels = [];
@@ -2212,10 +2756,17 @@
             renderChart('income-vs-expenses-chart', 'bar', {
                 labels: monthLabels,
                 datasets: [
-                    { label: 'Receitas', data: incomeData, backgroundColor: 'rgba(126, 211, 33, 0.6)' },
-                    { label: 'Despesas', data: expenseData, backgroundColor: 'rgba(233, 78, 119, 0.6)' }
+                    { label: 'Receitas', data: incomeData, backgroundColor: 'rgba(16, 185, 129, 0.8)', borderRadius: 4 },
+                    { label: 'Despesas', data: expenseData, backgroundColor: 'rgba(244, 63, 94, 0.8)', borderRadius: 4 }
                 ]
-            }, { ...tooltipCallback, scales: { x: { ticks: { color: textColor } }, y: { ticks: { color: textColor } } }, plugins: { ...tooltipCallback.plugins, legend: { labels: { color: textColor } } } });
+            }, { 
+                ...tooltipCallback, 
+                scales: { 
+                    x: { grid: {display: false}, ticks: { color: textColor } }, 
+                    y: { grid: { color: gridColor }, ticks: { color: textColor } } 
+                }, 
+                plugins: { ...tooltipCallback.plugins, legend: { labels: { color: textColor } } } 
+            });
             
             // Balance Evolution (Line Chart)
             const sortedTransactions = [...data.transactions].sort((a,b) => new Date(a.date) - new Date(b.date));
@@ -2234,11 +2785,19 @@
                 datasets: [{
                     label: 'Saldo Total',
                     data: balanceEvolutionData,
-                    borderColor: 'var(--primary-color)',
-                    tension: 0.1,
-                    fill: false
+                    borderColor: '#4F46E5',
+                    backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                    tension: 0.4,
+                    fill: true
                 }]
-            }, { ...tooltipCallback, scales: { x: { ticks: { color: textColor } }, y: { ticks: { color: textColor } } }, plugins: { ...tooltipCallback.plugins, legend: { labels: { color: textColor } } } });
+            }, { 
+                ...tooltipCallback, 
+                scales: { 
+                    x: { grid: {display: false}, ticks: { color: textColor, maxTicksLimit: 10 } }, 
+                    y: { grid: { color: gridColor }, ticks: { color: textColor } } 
+                }, 
+                plugins: { ...tooltipCallback.plugins, legend: { labels: { color: textColor } } } 
+            });
         }
 
         function renderSettings() {
@@ -2373,12 +2932,23 @@
 
 
         // Transaction CRUD
+        document.getElementById('transaction-is-recurring').addEventListener('change', (e) => {
+            const freqGroup = document.getElementById('recurring-frequency-group');
+            if(e.target.checked) {
+                freqGroup.classList.remove('hidden');
+            } else {
+                freqGroup.classList.add('hidden');
+            }
+        });
+
         function openTransactionModal(type = null) {
             state.editingId = null;
             const form = document.getElementById('transaction-form');
             form.reset();
             document.getElementById('transaction-modal-title').textContent = 'Adicionar Transação';
             document.getElementById('transaction-date').value = getTodayDate();
+            
+            document.getElementById('recurring-frequency-group').classList.add('hidden');
             
             if (type) {
                 document.getElementById(`type-${type}`).checked = true;
@@ -2423,6 +2993,8 @@
             let category = document.getElementById('transaction-category').value;
             const date = document.getElementById('transaction-date').value;
             const description = document.getElementById('transaction-description').value;
+            const isRecurring = document.getElementById('transaction-is-recurring').checked;
+            const frequency = document.getElementById('transaction-frequency').value;
 
             if (category === 'Outros') {
                 const customCategoryInput = document.getElementById('transaction-custom-category');
@@ -2438,34 +3010,53 @@
                 }
             }
 
-            if (state.editingId) { // Editing
+            if (state.editingId) {
                 const transaction = data.transactions.find(t => t.id === state.editingId);
                 const originalAmount = transaction.amount;
                 const originalType = transaction.type;
                 const originalAccountId = transaction.accountId;
 
-                // Revert old transaction from account balance
                 const oldAccount = data.accounts.find(a => a.id === originalAccountId);
                 if (oldAccount) {
                     oldAccount.balance += originalType === 'receita' ? -originalAmount : originalAmount;
                 }
 
-                // Update transaction
                 transaction.type = type;
                 transaction.amount = amount;
                 transaction.accountId = accountId;
                 transaction.category = category;
                 transaction.date = date;
                 transaction.description = description;
+                
+                // If recurring is unchecked, we disable recurrency
+                transaction.isRecurring = isRecurring;
+                if(isRecurring) {
+                    transaction.frequency = frequency;
+                    transaction.nextOccurrence = calculateNextDate(date, frequency);
+                } else {
+                    transaction.nextOccurrence = null;
+                }
 
-            } else { // Creating
+            } else {
                 const newTransaction = {
-                    id: Date.now(), type, amount, accountId, category, date, description
+                    id: Date.now(), 
+                    type, 
+                    amount, 
+                    accountId, 
+                    category, 
+                    date, 
+                    description,
+                    isRecurring: isRecurring,
                 };
+                
+                if(isRecurring) {
+                    newTransaction.frequency = frequency;
+                    newTransaction.nextOccurrence = calculateNextDate(date, frequency);
+                }
+                
                 data.transactions.push(newTransaction);
             }
             
-            // Apply new/updated transaction to account balance
             const account = data.accounts.find(a => a.id === accountId);
             account.balance += type === 'receita' ? amount : -amount;
             
@@ -2778,6 +3369,15 @@
                     document.getElementById('transaction-description').value = item.description;
                     document.getElementById('custom-category-group').classList.add('hidden');
                     document.getElementById('transaction-custom-category').required = false;
+                    
+                    document.getElementById('transaction-is-recurring').checked = !!item.isRecurring;
+                    if(item.isRecurring) {
+                        document.getElementById('recurring-frequency-group').classList.remove('hidden');
+                        document.getElementById('transaction-frequency').value = item.frequency || 'monthly';
+                    } else {
+                        document.getElementById('recurring-frequency-group').classList.add('hidden');
+                    }
+
                     showModal('transaction-modal');
                     break;
                 case 'budget':
