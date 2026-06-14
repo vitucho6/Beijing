@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <title>Beijing</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
     
     <!-- Google Fonts: Poppins -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1791,15 +1791,41 @@
             }
         }
 
-        const getTodayDate = () => new Date().toISOString().split('T')[0];
+        const getTodayDate = () => {
+            const d = new Date();
+            const year = d.getFullYear();
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        };
+
+        // Prevenção de erro de fuso horário lendo apenas o ano, mês e dia da string (Ex: 2024-05-14)
+        function parseLocalDate(dateString) {
+            if (!dateString) return new Date();
+            const parts = dateString.split('T')[0].split('-');
+            if (parts.length === 3) {
+                return new Date(parts[0], parts[1] - 1, parts[2]);
+            }
+            return new Date(dateString);
+        }
+
+        // Formatação direta "DD/MM/AAAA" com base na string introduzida
+        function formatDatePT(dateString) {
+            if (!dateString) return '';
+            const parts = dateString.split('T')[0].split('-');
+            if (parts.length === 3) {
+                return `${parts[2]}/${parts[1]}/${parts[0]}`;
+            }
+            return dateString;
+        }
         
         function calculateNextDate(dateStr, frequency) {
-            const d = new Date(dateStr);
+            const d = parseLocalDate(dateStr);
             if (frequency === 'daily') d.setDate(d.getDate() + 1);
             if (frequency === 'weekly') d.setDate(d.getDate() + 7);
             if (frequency === 'monthly') d.setMonth(d.getMonth() + 1);
             if (frequency === 'yearly') d.setFullYear(d.getFullYear() + 1);
-            return d.toISOString().split('T')[0];
+            return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
         }
 
         function showToast(message, type = 'success') {
@@ -1851,7 +1877,6 @@
                 
                 data.transactions.forEach(t => {
                     if (t.isRecurring && t.nextOccurrence && t.nextOccurrence <= today) {
-                        // Loop para apanhar se múltiplos períodos já tiverem passado (com limite de segurança)
                         let iterations = 0;
                         while (t.nextOccurrence <= today && iterations < 100) { 
                             const newId = Date.now() + Math.random();
@@ -2158,7 +2183,7 @@
             let monthlyExpenses = 0;
 
             data.transactions.forEach(t => {
-                const tDate = new Date(t.date);
+                const tDate = parseLocalDate(t.date);
                 if (tDate.getMonth() === currentMonth && tDate.getFullYear() === currentYear) {
                     if (t.type === 'receita') monthlyIncome += t.amount;
                     if (t.type === 'despesa') monthlyExpenses += t.amount;
@@ -2174,7 +2199,7 @@
             // Render recent transactions
             const recentTransactionsList = document.getElementById('recent-transactions-list');
             recentTransactionsList.innerHTML = '';
-            const recentTransactions = [...data.transactions].sort((a,b) => new Date(b.date) - new Date(a.date)).slice(0, 5);
+            const recentTransactions = [...data.transactions].sort((a,b) => b.date.localeCompare(a.date)).slice(0, 5);
             if (recentTransactions.length === 0) {
                 recentTransactionsList.innerHTML = '<li>Nenhuma transação recente.</li>';
             } else {
@@ -2262,7 +2287,7 @@
             const expensesByCategoryLastMonth = {};
             
             data.transactions.forEach(t => {
-                const tDate = new Date(t.date);
+                const tDate = parseLocalDate(t.date);
                 if (t.type === 'despesa') {
                     if(tDate.getMonth() === currentMonth && tDate.getFullYear() === currentYear) {
                         expensesByCategoryThisMonth[t.category] = (expensesByCategoryThisMonth[t.category] || 0) + t.amount;
@@ -2289,7 +2314,7 @@
             data.budgets.forEach(b => {
                 let spent = 0;
                 data.transactions.forEach(t => {
-                    const tDate = new Date(t.date + 'T00:00:00');
+                    const tDate = parseLocalDate(t.date);
                     if (t.type === 'despesa' && t.category === b.category && isDateInPeriod(tDate, b.period, b.customPeriodDays)) {
                         spent += t.amount;
                     }
@@ -2338,7 +2363,7 @@
 
             // Tip 4: Largest expense
             const monthlyExpenses = data.transactions.filter(t => {
-                const tDate = new Date(t.date);
+                const tDate = parseLocalDate(t.date);
                 return t.type === 'despesa' && tDate.getMonth() === currentMonth && tDate.getFullYear() === currentYear;
             });
             if(monthlyExpenses.length > 0) {
@@ -2363,7 +2388,7 @@
             sixtyDaysAgo.setDate(now.getDate() - 60);
 
             data.transactions.forEach(t => {
-                const tDate = new Date(t.date);
+                const tDate = parseLocalDate(t.date);
                 if (tDate >= sixtyDaysAgo) {
                     totalNetIncomeLast60Days += (t.type === 'receita' ? t.amount : -t.amount);
                 }
@@ -2402,7 +2427,7 @@
                 },
                 scales: { 
                     x: { grid: { display: false }, ticks: { color: textColor } }, 
-                    y: { grid: { color: gridColor }, ticks: { color: textColor, callback: (value) => formatCurrency(value).replace(/,.*/, '') } } 
+                    y: { grid: { color: gridColor }, ticks: { color: textColor, callback: (value) => formatCurrency(value).replace(/,.*/, '') } } // Format Y axis
                 },
             });
         }
@@ -2449,7 +2474,7 @@
                     </div>
                     <div class="transaction-details">
                         <div class="description">${t.description || t.category} ${recurringBadge}</div>
-                        <div class="category">${t.category} &bull; ${new Date(t.date).toLocaleDateString('pt-PT')}</div>
+                        <div class="category">${t.category} &bull; ${formatDatePT(t.date)}</div>
                     </div>
                     <div class="transaction-amount ${amountClass}">
                         ${t.type === 'receita' ? '+' : '-'}${formatCurrency(t.amount)}
@@ -2525,7 +2550,7 @@
                 filteredTransactions = filteredTransactions.filter(t => t.accountId == filterAccount.value);
             }
 
-            filteredTransactions.sort((a,b) => new Date(b.date) - new Date(a.date));
+            filteredTransactions.sort((a,b) => b.date.localeCompare(a.date));
 
             if (filteredTransactions.length === 0) {
                 list.innerHTML = '<li style="justify-content:center; color: var(--light-text-muted);">Nenhuma transação encontrada com os filtros selecionados.</li>';
@@ -2551,7 +2576,7 @@
             data.budgets.forEach(b => {
                 let spent = 0;
                 data.transactions.forEach(t => {
-                    const tDate = new Date(t.date + 'T00:00:00'); 
+                    const tDate = parseLocalDate(t.date); 
                     if (t.type === 'despesa' && t.category === b.category && isDateInPeriod(tDate, b.period, b.customPeriodDays)) {
                         spent += t.amount;
                     }
@@ -2617,8 +2642,8 @@
             
             data.goals.forEach(g => {
                 const progress = (g.target > 0) ? Math.min((g.saved / g.target) * 100, 100) : 0;
-                const startDate = new Date(g.startDate).toLocaleDateString('pt-PT');
-                const endDate = new Date(g.endDate).toLocaleDateString('pt-PT');
+                const startDate = formatDatePT(g.startDate);
+                const endDate = formatDatePT(g.endDate);
 
                 grid.innerHTML += `
                     <div class="card goal-card">
@@ -2647,7 +2672,7 @@
             list.innerHTML = '';
             
             const filtered = data.transactions.filter(t => {
-                const d = new Date(t.date);
+                const d = parseLocalDate(t.date);
                 return t.type === type && t.category === category && d.getMonth() === month && d.getFullYear() === year;
             });
             
@@ -2678,7 +2703,7 @@
             // Expenses by Category (Pie Chart)
             const expensesByCategory = {};
             data.transactions.forEach(t => {
-                const tDate = new Date(t.date);
+                const tDate = parseLocalDate(t.date);
                 if (t.type === 'despesa' && tDate.getMonth() === now.getMonth() && tDate.getFullYear() === now.getFullYear()) {
                     expensesByCategory[t.category] = (expensesByCategory[t.category] || 0) + t.amount;
                 }
@@ -2689,7 +2714,7 @@
                     data: Object.values(expensesByCategory),
                     backgroundColor: modernColors,
                     borderWidth: isDarkMode ? 0 : 2,
-                    borderColor: varLightCard = getComputedStyle(document.documentElement).getPropertyValue('--light-card')
+                    borderColor: getComputedStyle(document.documentElement).getPropertyValue('--light-card')
                 }]
             }, { 
                 ...tooltipCallback, 
@@ -2707,7 +2732,7 @@
             // Income by Category (Pie Chart)
             const incomeByCategory = {};
             data.transactions.forEach(t => {
-                const tDate = new Date(t.date);
+                const tDate = parseLocalDate(t.date);
                 if (t.type === 'receita' && tDate.getMonth() === now.getMonth() && tDate.getFullYear() === now.getFullYear()) {
                     incomeByCategory[t.category] = (incomeByCategory[t.category] || 0) + t.amount;
                 }
@@ -2744,7 +2769,7 @@
                 let monthIncome = 0;
                 let monthExpense = 0;
                 data.transactions.forEach(t => {
-                    const tDate = new Date(t.date);
+                    const tDate = parseLocalDate(t.date);
                     if (tDate.getMonth() === d.getMonth() && tDate.getFullYear() === d.getFullYear()) {
                         if (t.type === 'receita') monthIncome += t.amount;
                         else monthExpense += t.amount;
@@ -2769,14 +2794,14 @@
             });
             
             // Balance Evolution (Line Chart)
-            const sortedTransactions = [...data.transactions].sort((a,b) => new Date(a.date) - new Date(b.date));
+            const sortedTransactions = [...data.transactions].sort((a,b) => a.date.localeCompare(b.date));
             let runningBalance = data.accounts.reduce((sum, acc) => sum + acc.initialBalance, 0);
             const balanceEvolutionLabels = ['Início'];
             const balanceEvolutionData = [runningBalance];
             
             sortedTransactions.forEach(t => {
                 runningBalance += (t.type === 'receita' ? t.amount : -t.amount);
-                balanceEvolutionLabels.push(new Date(t.date).toLocaleDateString('pt-PT'));
+                balanceEvolutionLabels.push(formatDatePT(t.date));
                 balanceEvolutionData.push(runningBalance);
             });
             
@@ -3458,13 +3483,13 @@
             let transactionsToExport = data.transactions;
 
             if (startDate && endDate) {
-                const start = new Date(startDate);
+                const start = parseLocalDate(startDate);
                 start.setHours(0, 0, 0, 0);
-                const end = new Date(endDate);
+                const end = parseLocalDate(endDate);
                 end.setHours(23, 59, 59, 999);
                 
                 transactionsToExport = data.transactions.filter(t => {
-                    const tDate = new Date(t.date);
+                    const tDate = parseLocalDate(t.date);
                     return tDate >= start && tDate <= end;
                 });
             }
@@ -3484,7 +3509,7 @@
                 alert('Por favor, selecione uma data de início e de fim, ou deixe ambos os campos em branco para exportar tudo.');
                 return;
             }
-            if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
+            if (startDate && endDate && parseLocalDate(startDate) > parseLocalDate(endDate)) {
                 alert('A data de início não pode ser posterior à data de fim.');
                 return;
             }
@@ -3510,7 +3535,7 @@
             const ws_data = [
                 ["Relatório Financeiro - Beijing"],
                 [`Utilizador: ${data.profile.name}`],
-                [`Data de Emissão: ${new Date().toLocaleDateString('pt-PT')}`],
+                [`Data de Emissão: ${formatDatePT(getTodayDate())}`],
                 [], // Blank row
                 ["RECEITAS"],
                 ['Data', 'Descrição', 'Categoria', 'Valor (Kz)', 'Conta']
@@ -3518,7 +3543,7 @@
 
             incomes.forEach(t => {
                 const accountName = data.accounts.find(a => a.id === t.accountId)?.name || 'N/A';
-                ws_data.push([t.date, t.description || '', t.category, t.amount, accountName]);
+                ws_data.push([formatDatePT(t.date), t.description || '', t.category, t.amount, accountName]);
             });
             ws_data.push(['', '', '', 'Total Receitas:', totalIncome]);
             ws_data.push([]); // Blank row
@@ -3527,7 +3552,7 @@
             ws_data.push(['Data', 'Descrição', 'Categoria', 'Valor (Kz)', 'Conta']);
             expenses.forEach(t => {
                 const accountName = data.accounts.find(a => a.id === t.accountId)?.name || 'N/A';
-                ws_data.push([t.date, t.description || '', t.category, t.amount, accountName]);
+                ws_data.push([formatDatePT(t.date), t.description || '', t.category, t.amount, accountName]);
             });
             ws_data.push(['', '', '', 'Total Despesas:', totalExpense]);
             
@@ -3553,7 +3578,7 @@
             
             let periodText = 'Todas as transações registadas';
             if (startDate && endDate) {
-                periodText = `De ${new Date(startDate).toLocaleDateString('pt-PT')} a ${new Date(endDate).toLocaleDateString('pt-PT')}`;
+                periodText = `De ${formatDatePT(startDate)} a ${formatDatePT(endDate)}`;
             }
 
             let analysisText;
@@ -3579,7 +3604,7 @@
                     <h1 style="font-size: 24px; color: #333; text-align: center; margin-top: 20px;">Relatório Financeiro</h1>
                     <section style="margin-top: 30px;">
                         <p><strong>Utilizador:</strong> ${data.profile.name}</p>
-                        <p><strong>Data de Emissão:</strong> ${new Date().toLocaleDateString('pt-PT')}</p>
+                        <p><strong>Data de Emissão:</strong> ${formatDatePT(getTodayDate())}</p>
                         <p><strong>Período do Relatório:</strong> ${periodText}</p>
                     </section>
                     <section style="margin-top: 30px;">
@@ -3603,7 +3628,7 @@
                             <tbody>
                                 ${incomes.map(t => `
                                     <tr>
-                                        <td style="border: 1px solid #ddd; padding: 8px;">${new Date(t.date).toLocaleDateString('pt-PT')}</td>
+                                        <td style="border: 1px solid #ddd; padding: 8px;">${formatDatePT(t.date)}</td>
                                         <td style="border: 1px solid #ddd; padding: 8px;">${t.description || ''}</td>
                                         <td style="border: 1px solid #ddd; padding: 8px;">${t.category}</td>
                                         <td style="border: 1px solid #ddd; padding: 8px; text-align: right;">${t.amount.toFixed(2)}</td>
@@ -3629,7 +3654,7 @@
                             <tbody>
                                 ${expenses.map(t => `
                                     <tr>
-                                        <td style="border: 1px solid #ddd; padding: 8px;">${new Date(t.date).toLocaleDateString('pt-PT')}</td>
+                                        <td style="border: 1px solid #ddd; padding: 8px;">${formatDatePT(t.date)}</td>
                                         <td style="border: 1px solid #ddd; padding: 8px;">${t.description || ''}</td>
                                         <td style="border: 1px solid #ddd; padding: 8px;">${t.category}</td>
                                         <td style="border: 1px solid #ddd; padding: 8px; text-align: right;">${t.amount.toFixed(2)}</td>
